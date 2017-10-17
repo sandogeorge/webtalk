@@ -1,0 +1,8 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body > .container {
+    padding: 60px 15px 25px;
+}

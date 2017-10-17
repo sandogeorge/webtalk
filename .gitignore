@@ -1,0 +1,7 @@
+% Intellij
+.idea/
+*.iml
+
+% Prolog and Logtalk
+.lgt_tmp/
+httpd.log

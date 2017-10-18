@@ -18,6 +18,9 @@
     :- private(render_from_base/3).
     render_from_base(Template, Data, Title, AStyles, AClasses, AScripts, Render) :-
         user:site_name(Sitename),
+        user:jquery_version(JQueryV),
+        user:popper_version(PopperV),
+        user:bootstrap_version(BStrapV),
         lists:union([
             '/static/css/style.css'
         ], AStyles, Styles),
@@ -35,7 +38,10 @@
             body_classes: Classes,
             scripts: Scripts,
             page_content: Content,
-            site_name: Sitename
+            site_name: Sitename,
+            jquery_version: JQueryV,
+            popper_version: PopperV,
+            bootstrap_version: BStrapV
         ]),
         ::parse_template(template(base), BaseData, Base),
         string_concat('Content-type: text/html~n~n', Base, Render).

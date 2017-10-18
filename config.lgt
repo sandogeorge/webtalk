@@ -20,3 +20,16 @@ server_port(5000).
 :- multifile user:site_name/1.
 :- dynamic user:site_name/1.
 site_name('WebTalk').
+
+% Templates.
+:- multifile user:jquery_version/1.
+:- dynamic user:jquery_version/1.
+jquery_version('3.2.1').
+
+:- multifile user:popper_version/1.
+:- dynamic user:popper_version/1.
+popper_version('1.11.0').
+
+:- multifile user:bootstrap_version/1.
+:- dynamic user:bootstrap_version/1.
+bootstrap_version('4.0.0-beta').

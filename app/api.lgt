@@ -18,15 +18,31 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :- object(api).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/10/19,
+        comment is 'Defines handlers for RESTful API endpoints.'
+    ]).
+
     :- public(index/1).
+    :- info(index/1, [
+        comment is 'Index page (/).',
+        argnames is ['_Request']
+    ]).
     index(_Request) :-
-        ::write_json(_{
-            status: "OK"
-        }).
+        dict_create(Data, _, [status: 'OK']),
+        ::write_json(Data).
 
     :- private(write_json/1).
+    :- info(write_json/1, [
+        comment is 'Utility function for outputting JSON formatted data.',
+        argnames is ['Data']
+    ]).
     write_json(Data) :-
         format('Content-type: application/json~n~n'),
         current_output(Out),
         http_json:json_write(Out, Data).
+
 :- end_object.

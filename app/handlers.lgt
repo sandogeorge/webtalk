@@ -17,7 +17,13 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Declare handlers.
+%% Declare handlers.
+
+% Index page.
 :- http_handler(root('.'), [Request]>>(frontend::index(Request)), []).
+
+% Static files.
 :- http_handler(static('.'), [Request]>>(frontend::static(Request)), [prefix]).
+
+% API endpoints.
 :- http_handler(api('.'), [Request]>>(api::index(Request)), []).

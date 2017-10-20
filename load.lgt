@@ -17,6 +17,15 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Load application.
+%
+% This code:
+% 1. Loads all applications source files.
+% 2. Determines the deployment environment to be used and gets the appropriate
+% configuration object.
+% 3. Starts the HTTP server, listening on the configured server port.
+% 4. Makes the correct configuration object available to the rest of the
+% application.
 :- initialization((
     logtalk_load([
         'modules',

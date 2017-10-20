@@ -19,7 +19,28 @@
 
 :- object(frontend).
 
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/10/19,
+        comment is 'Defines handlers for HTML pages.'
+    ]).
+
+    :- public(index/1).
+    :- info(index/1, [
+        comment is 'Index page (/).',
+        argnames is ['_Request']
+    ]).
+    index(_Request) :-
+        dict_create(Data, _, []),
+        render_from_base(index, Data, 'Home', [], [], [], Render),
+        format(Render).
+
     :- public(static/1).
+    :- info(static/1, [
+        comment is 'Serve files from the static directory.',
+        argnames is ['_Request']
+    ]).
     static(_Request) :-
         lists:member(path(Path), _Request),
         expand_file_search_path(app(Path), Expanded),
@@ -28,13 +49,14 @@
     static(_Request) :-
         http_dispatch:http_404([], _Request).
 
-    :- public(index/1).
-    index(_Request) :-
-        dict_create(Data, _, []),
-        render_from_base(index, Data, 'Home', [], [], [], Render),
-        format(Render).
-
-    :- private(render_from_base/3).
+    :- private(render_from_base/7).
+    :- info(render_from_base/7, [
+        comment is 'Render the supplied template as part of the base template.',
+        argnames is [
+            'Template', 'Data', 'Title', 'AStyles',
+            'AClasses', 'AScripts', 'Render'
+        ]
+    ]).
     render_from_base(Template, Data, Title, AStyles, AClasses, AScripts, Render) :-
         user:app_config(AppConfig),
         call(AppConfig::site_name(Sitename)),
@@ -67,6 +89,10 @@
         string_concat('Content-type: text/html~n~n', Base, Render).
 
     :- private(parse_template/3).
+    :- info(parse_template/3, [
+        comment is 'Parse a template file, replacing vars with supplied data.',
+        argnames is ['Template', 'Data', 'Content']
+    ]).
     parse_template(Template, Data, Content) :-
         memfile:new_memory_file(Handle),
         memfile:open_memory_file(Handle, write, Out),

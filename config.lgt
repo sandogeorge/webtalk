@@ -17,45 +17,99 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Directory paths.
+%% Directory paths.
 :- prolog_load_context(directory, Dir),
     string_concat(Dir, "/../app", AppDir),
     asserta(user:file_search_path(app, AppDir)),
     asserta(user:file_search_path(static, app('static'))),
     asserta(user:file_search_path(template, app('templates'))).
 
-% Abstract paths.
+%% Abstract paths.
 :- multifile http:location/3.
 :- dynamic http:location/3.
 http:location(static, root('static'), []).
 http:location(api, root('api'), []).
 
+%% Application configuration.
+
+% app_prefix(?Prefix)
+%
+% The application prefix is used when importing configuration values from
+% environment variables. Its main purpose is to avoid conflicts with variables
+% used by other software on the system.
 :- multifile user:app_prefix/1.
 :- dynamic user:app_prefix/1.
 app_prefix('WEBTALK_').
 
+% app_config(?Config).
+%
+% The application configuration is a value representing the deployment
+% environment of the application. It should be one of `development`, `testing`
+% and `production` in order to be consistent with the configuration objects
+% declared in this file. The use of deployment specific configuration objects
+% contributes to a smooth integration and deployment workflows from development
+% machines, to production servers. This value is set during loading.
 :- multifile user:app_config/1.
 :- dynamic user:app_config/1.
 
+% Configuration objects.
+%
+% The values defined in the `config` object are overriden, if necessary, in the
+% deployment specific configuration objects.
 :- object(config).
 
-    :- public([
-        server_port/1,
-        site_name/1,
-        jquery_version/1,
-        popper_version/1,
-        bootstrap_version/1
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/10/19,
+        comment is 'Base configuration object.'
     ]).
-    :- dynamic([
-        server_port/1,
-        site_name/1,
-        jquery_version/1,
-        popper_version/1,
-        bootstrap_version/1
+
+    :- public(server_port/1).
+    :- dynamic(server_port/1).
+    :- info(server_port/1, [
+        comment is 'Network port that the application will listen on.',
+        argnames is ['ServerPort'],
+        redefinition is 'specialize'
+    ]).
+
+    :- public(site_name/1).
+    :- dynamic(site_name/1).
+    :- info(site_name/1, [
+        comment is 'Name of site as displayed in the naviagtion bar.',
+        argnames is ['SiteName'],
+        redefinition is 'specialize'
+    ]).
+
+    :- public(jquery_version/1).
+    :- dynamic(jquery_version/1).
+    :- info(jquery_version/1, [
+        comment is 'jQuery version used in HTML pages.',
+        argnames is ['JQueryVersion'],
+        redefinition is 'specialize'
+    ]).
+
+    :- public(popper_version/1).
+    :- dynamic(popper_version/1).
+    :- info(popper_version/1, [
+        comment is 'Popper.js version used in HTML pages.',
+        argnames is ['PopperVersion'],
+        redefinition is 'specialize'
+    ]).
+
+    :- public(bootstrap_version/1).
+    :- dynamic(bootstrap_version/1).
+    :- info(bootstrap_version/1, [
+        comment is 'Bootstrap version used in HTML pages.',
+        argnames is ['BootstrapVersion'],
+        redefinition is 'specialize'
     ]).
 
     :- initialization(init).
     :- private(init/0).
+    :- info(init/0, [
+        comment is 'Read common configs from env vars. Use defaults if empty.'
+    ]).
     init :-
         (get_env('SERVER_PORT', ServerPort) ->
             ::asserta(server_port(ServerPort))
@@ -79,6 +133,10 @@ app_prefix('WEBTALK_').
             ::asserta(bootstrap_version('4.0.0-beta'))).
 
     :- private(get_env/2).
+    :- info(get_env/2, [
+        comment is 'Append prefix to variable name and attempt to get value.',
+        argnames is ['Name', 'Value']
+    ]).
     get_env(Name, Value) :-
         user:app_prefix(Prefix),
         string_concat(Prefix, Name, Envar),
@@ -89,14 +147,35 @@ app_prefix('WEBTALK_').
 :- object(development_config,
     extends(config)).
 
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/10/19,
+        comment is 'Development environment specific configuration object.'
+    ]).
+
 :- end_object.
 
 :- object(testing_config,
     extends(config)).
 
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/10/19,
+        comment is 'Testing environment specific configuration object.'
+    ]).
+
 :- end_object.
 
 :- object(production_config,
     extends(config)).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/10/19,
+        comment is 'Production environment specific configuration object.'
+    ]).
 
 :- end_object.

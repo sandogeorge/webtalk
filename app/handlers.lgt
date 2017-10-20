@@ -17,6 +17,13 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+%% Abstract paths.
+:- multifile http:location/3.
+:- dynamic http:location/3.
+http:location(static, root('static'), []).
+http:location(api, root('api'), []).
+
 %% Declare handlers.
 
 % Index page.

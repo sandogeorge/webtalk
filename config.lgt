@@ -24,12 +24,6 @@
     asserta(user:file_search_path(static, app('static'))),
     asserta(user:file_search_path(template, app('templates'))).
 
-%% Abstract paths.
-:- multifile http:location/3.
-:- dynamic http:location/3.
-http:location(static, root('static'), []).
-http:location(api, root('api'), []).
-
 %% Application configuration.
 
 % app_prefix(?Prefix)

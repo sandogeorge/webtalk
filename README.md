@@ -1,6 +1,6 @@
-# WebTalk
+# Webtalk
 
-Welcome to WebTalk, a repository of boilerplate code for building web applications using [Logtalk](http://logtalk.org/) with [SWI-Prolog](http://www.swi-prolog.org/) as the backend.
+Welcome to Webtalk, a repository of boilerplate code for building web applications using [Logtalk](http://logtalk.org/) with [SWI-Prolog](http://www.swi-prolog.org/) as the backend.
 
 ## Features
 - [Bootstrap](https://getbootstrap.com/)  based templates using the [simple-template](https://github.com/rla/simple-template) template processor for SWI-Prolog.

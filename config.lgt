@@ -11,25 +11,73 @@
 http:location(static, root('static'), []).
 http:location(api, root('api'), []).
 
-% Server.
-:- multifile user:server_port/1.
-:- dynamic user:server_port/1.
-server_port(5000).
+:- multifile user:app_prefix/1.
+:- dynamic user:app_prefix/1.
+app_prefix('WEBTALK_').
 
-% Site.
-:- multifile user:site_name/1.
-:- dynamic user:site_name/1.
-site_name('WebTalk').
+:- multifile user:app_config/1.
+:- dynamic user:app_config/1.
 
-% Templates.
-:- multifile user:jquery_version/1.
-:- dynamic user:jquery_version/1.
-jquery_version('3.2.1').
+:- object(config).
 
-:- multifile user:popper_version/1.
-:- dynamic user:popper_version/1.
-popper_version('1.11.0').
+    :- public([
+        server_port/1,
+        site_name/1,
+        jquery_version/1,
+        popper_version/1,
+        bootstrap_version/1
+    ]).
+    :- dynamic([
+        server_port/1,
+        site_name/1,
+        jquery_version/1,
+        popper_version/1,
+        bootstrap_version/1
+    ]).
 
-:- multifile user:bootstrap_version/1.
-:- dynamic user:bootstrap_version/1.
-bootstrap_version('4.0.0-beta').
+    :- initialization(init).
+    :- private(init/0).
+    init :-
+        (get_env('SERVER_PORT', ServerPort) ->
+            ::asserta(server_port(ServerPort))
+        ;
+            ::asserta(server_port(5000))),
+        (get_env('SITE_NAME', SiteName) ->
+            ::asserta(site_name(SiteName))
+        ;
+            ::asserta(site_name('WebTalk'))),
+        (get_env('JQUERY_VERSION', JQueryVersion) ->
+            ::asserta(jquery_version(JQueryVersion))
+        ;
+            ::asserta(jquery_version('3.2.1'))),
+        (get_env('POPPER_VERSION', PopperVersion) ->
+            ::asserta(popper_version(PopperVersion))
+        ;
+            ::asserta(popper_version('1.11.0'))),
+        (get_env('BOOTSTRAP_VERSION', BootstrapVersion) ->
+            ::asserta(bootstrap_version(BootstrapVersion))
+        ;
+            ::asserta(bootstrap_version('4.0.0-beta'))).
+
+    :- private(get_env/2).
+    get_env(Name, Value) :-
+        user:app_prefix(Prefix),
+        string_concat(Prefix, Name, Envar),
+        getenv(Envar, Value).
+
+:- end_object.
+
+:- object(development_config,
+    extends(config)).
+
+:- end_object.
+
+:- object(testing_config,
+    extends(config)).
+
+:- end_object.
+
+:- object(production_config,
+    extends(config)).
+
+:- end_object.

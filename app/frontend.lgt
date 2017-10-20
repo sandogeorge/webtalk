@@ -17,10 +17,11 @@
 
     :- private(render_from_base/3).
     render_from_base(Template, Data, Title, AStyles, AClasses, AScripts, Render) :-
-        user:site_name(Sitename),
-        user:jquery_version(JQueryV),
-        user:popper_version(PopperV),
-        user:bootstrap_version(BStrapV),
+        user:app_config(AppConfig),
+        call(AppConfig::site_name(Sitename)),
+        call(AppConfig::jquery_version(JQueryV)),
+        call(AppConfig::popper_version(PopperV)),
+        call(AppConfig::bootstrap_version(BStrapV)),
         lists:union([
             '/static/css/style.css'
         ], AStyles, Styles),

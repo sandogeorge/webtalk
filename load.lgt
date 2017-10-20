@@ -30,6 +30,7 @@
     logtalk_load([
         'modules',
         'config',
+        'app/templating',
         'app/frontend',
         'app/api',
         'app/handlers'

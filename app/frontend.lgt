@@ -32,8 +32,13 @@
         argnames is ['_Request']
     ]).
     index(_Request) :-
-        dict_create(Data, _, []),
-        templating::render_from_base(index, Data, 'Home', [], [], [], Render),
+        dict_create(Data, _, [
+            title: 'Home',
+            styles: [],
+            scripts: [],
+            body_classes: ['index']
+        ]),
+        templating::render_from_base(index, Data, Render),
         format(Render).
 
     :- public(static/1).

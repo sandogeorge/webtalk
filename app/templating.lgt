@@ -29,6 +29,12 @@
     :- private(globals/1).
     :- dynamic(globals/1).
 
+    :- private(default_styles/1).
+    default_styles(['/static/css/style.css']).
+
+    :- private(default_scripts/1).
+    default_scripts(['/static/js/script.js']).
+
     :- public(init/0).
     :- info(init/0, [
         comment is 'Get global config variables to be passed to templates.'
@@ -44,37 +50,37 @@
             ), Configs),
         ::build_globals(Configs).
 
-    :- public(render_from_base/7).
-    :- info(render_from_base/7, [
+    :- public(render_from_base/3).
+    :- info(render_from_base/3, [
         comment is 'Render the supplied template as part of the base template.',
-        argnames is [
-            'Template', 'Data', 'Title', 'AStyles',
-            'AClasses', 'AScripts', 'Render'
-        ]
+        argnames is ['Template', 'Data', 'Render']
     ]).
-    render_from_base(Template, Data, Title, AStyles, AClasses, AScripts, Render) :-
+    render_from_base(Template, Data, Render) :-
         ::globals(GlobalData),
-        lists:union([
-            '/static/css/style.css'
-        ], AStyles, Styles),
-        atom_string(Template, TStr),
-        lists:union([
-            TStr
-        ], AClasses, Classes),
-        lists:union([
-            '/static/js/script.js'
-        ], AScripts, Scripts),
-        put_dict(GlobalData, Data, TData),
-        ::parse_template(template(Template), TData, Content),
-        dict_create(BData, _, [
-            title: Title,
-            styles: Styles,
-            body_classes: Classes,
-            scripts: Scripts,
-            page_content: Content
-        ]),
-        put_dict(GlobalData, BData, BaseData),
-        ::parse_template(template(base), BaseData, Base),
+        %
+        % Merge global data with content specific data and parse contnent
+        % template.
+        put_dict(GlobalData, Data, ContentData),
+        ::parse_template(template(Template), ContentData, Content),
+        dict_create(_Content, _, [page_content:Content]),
+        put_dict(_Content, ContentData, BaseDataContent),
+        %
+        % Merge default template styles with supplied page specific styles.
+        ::default_styles(DefStyles),
+        lists:union(DefStyles, BaseDataContent.styles, Styles),
+        dict_create(_Styles, _, [styles:Styles]),
+        put_dict(_Styles, BaseDataContent, BaseDataStyles),
+        %
+        % Merge default template scripts with supplied page specific scripts.
+        ::default_scripts(DefScripts),
+        lists:union(DefScripts, BaseDataStyles.scripts, Scripts),
+        dict_create(_Scripts, _, [scripts:Scripts]),
+        put_dict(_Scripts, BaseDataStyles, BaseDataScripts),
+        %
+        % Merge global data with complete base data, parse base template and
+        % render final content.
+        put_dict(GlobalData, BaseDataScripts, BaseDataAll),
+        ::parse_template(template(base), BaseDataAll, Base),
         string_concat('Content-type: text/html~n~n', Base, Render).
 
     :- private(parse_template/3).

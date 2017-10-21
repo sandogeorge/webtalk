@@ -26,6 +26,24 @@
         comment is 'Utility predicates for template handling.'
     ]).
 
+    :- public(globals/1).
+    :- dynamic(globals/1).
+
+    :- public(init/0).
+    :- info(init/0, [
+        comment is 'Get global config variables to be passed to templates.'
+    ]).
+    init :-
+        dict_create(Dict, _, []),
+        ::asserta(globals(Dict)),
+        user:app_config(AppConfig),
+        findall(X, (
+            AppConfig::current_predicate(Y), %% get config directive
+            compound_name_arguments(Y, _, Args), %% extract name/arity pair
+            lists:nth0(0, Args, X) %% extract name
+            ), Configs),
+        ::build_globals(Configs).
+
     :- public(render_from_base/7).
     :- info(render_from_base/7, [
         comment is 'Render the supplied template as part of the base template.',
@@ -35,11 +53,7 @@
         ]
     ]).
     render_from_base(Template, Data, Title, AStyles, AClasses, AScripts, Render) :-
-        user:app_config(AppConfig),
-        call(AppConfig::site_name(Sitename)),
-        call(AppConfig::jquery_version(JQueryV)),
-        call(AppConfig::popper_version(PopperV)),
-        call(AppConfig::bootstrap_version(BStrapV)),
+        ::globals(GlobalData),
         lists:union([
             '/static/css/style.css'
         ], AStyles, Styles),
@@ -50,18 +64,16 @@
         lists:union([
             '/static/js/script.js'
         ], AScripts, Scripts),
-        ::parse_template(template(Template), Data, Content),
-        dict_create(BaseData, _, [
+        put_dict(GlobalData, Data, TData),
+        ::parse_template(template(Template), TData, Content),
+        dict_create(BData, _, [
             title: Title,
             styles: Styles,
             body_classes: Classes,
             scripts: Scripts,
-            page_content: Content,
-            site_name: Sitename,
-            jquery_version: JQueryV,
-            popper_version: PopperV,
-            bootstrap_version: BStrapV
+            page_content: Content
         ]),
+        put_dict(GlobalData, BData, BaseData),
         ::parse_template(template(base), BaseData, Base),
         string_concat('Content-type: text/html~n~n', Base, Render).
 
@@ -79,5 +91,21 @@
         memfile:open_memory_file(Handle, read, In, [free_on_close(true)]),
         read_string(In, _, Content),
         close(In).
+
+    :- private(build_globals/1).
+    :- info(build_globals/1, [
+        comment is 'Populate template global dict from application config.'
+    ]).
+    build_globals([]).
+    build_globals([Item|Predicates]) :-
+        user:app_config(AppConfig),
+        Callable =.. [Item, Value],
+        call(AppConfig::Callable),
+        dict_create(NewData, _, [Item:Value]),
+        ::globals(Globals),
+        ::retract(globals(_)),
+        put_dict(NewData, Globals, NewGlobals),
+        ::asserta(globals(NewGlobals)),
+        build_globals(Predicates).
 
 :- end_object.

@@ -26,7 +26,7 @@
         comment is 'Utility predicates for template handling.'
     ]).
 
-    :- public(globals/1).
+    :- private(globals/1).
     :- dynamic(globals/1).
 
     :- public(init/0).

@@ -53,50 +53,16 @@ app_prefix('WEBTALK_').
 :- object(config).
 
     :- info([
-        version is 1.0,
+        version is 2,
         author is 'Sando George',
-        date is 2017/10/19,
+        date is 2017/10/23,
         comment is 'Base configuration object.'
     ]).
 
-    :- public(server_port/1).
-    :- dynamic(server_port/1).
-    :- info(server_port/1, [
-        comment is 'Network port that the application will listen on.',
-        argnames is ['ServerPort'],
-        redefinition is 'specialize'
-    ]).
-
-    :- public(site_name/1).
-    :- dynamic(site_name/1).
-    :- info(site_name/1, [
-        comment is 'Name of site as displayed in the naviagtion bar.',
-        argnames is ['SiteName'],
-        redefinition is 'specialize'
-    ]).
-
-    :- public(jquery_version/1).
-    :- dynamic(jquery_version/1).
-    :- info(jquery_version/1, [
-        comment is 'jQuery version used in HTML pages.',
-        argnames is ['JQueryVersion'],
-        redefinition is 'specialize'
-    ]).
-
-    :- public(popper_version/1).
-    :- dynamic(popper_version/1).
-    :- info(popper_version/1, [
-        comment is 'Popper.js version used in HTML pages.',
-        argnames is ['PopperVersion'],
-        redefinition is 'specialize'
-    ]).
-
-    :- public(bootstrap_version/1).
-    :- dynamic(bootstrap_version/1).
-    :- info(bootstrap_version/1, [
-        comment is 'Bootstrap version used in HTML pages.',
-        argnames is ['BootstrapVersion'],
-        redefinition is 'specialize'
+    :- public(config_property/2).
+    :- dynamic(config_property/2).
+    :- info(config_property/2, [
+        comment is 'Set application wide configuration porperty.'
     ]).
 
     :- initialization(init).
@@ -106,25 +72,27 @@ app_prefix('WEBTALK_').
     ]).
     init :-
         (get_env('SERVER_PORT', ServerPort) ->
-            ::asserta(server_port(ServerPort))
+            ::asserta(config_property(server_port, ServerPort))
         ;
-            ::asserta(server_port(5000))),
+            ::asserta(config_property(server_port, 5000))),
         (get_env('SITE_NAME', SiteName) ->
-            ::asserta(site_name(SiteName))
+            ::asserta(config_property(site_name, SiteName))
         ;
-            ::asserta(site_name('WebTalk'))),
+            ::asserta(config_property(site_name, 'WebTalk'))),
         (get_env('JQUERY_VERSION', JQueryVersion) ->
-            ::asserta(jquery_version(JQueryVersion))
+            ::asserta(config_property(jquery_version, JQueryVersion))
         ;
-            ::asserta(jquery_version('3.2.1'))),
+            ::asserta(config_property(jquery_version, '3.2.1'))),
         (get_env('POPPER_VERSION', PopperVersion) ->
-            ::asserta(popper_version(PopperVersion))
+            ::asserta(config_property(popper_version, PopperVersion))
         ;
-            ::asserta(popper_version('1.11.0'))),
+            ::asserta(config_property(popper_version, '1.11.0'))),
         (get_env('BOOTSTRAP_VERSION', BootstrapVersion) ->
-            ::asserta(bootstrap_version(BootstrapVersion))
+            ::asserta(config_property(bootstrap_version, BootstrapVersion))
         ;
-            ::asserta(bootstrap_version('4.0.0-beta'))).
+            ::asserta(config_property(bootstrap_version, '4.0.0-beta'))).
+
+
 
     :- private(get_env/2).
     :- info(get_env/2, [

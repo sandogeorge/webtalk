@@ -41,6 +41,6 @@
     atom_concat(Config, '_config', AppConfig),
     asserta(user:app_config(AppConfig)),
     templating::init,
-    call(AppConfig::server_port(ServerPort)),
+    call(AppConfig::config_property(server_port, ServerPort)),
     threaded_ignore(http_server(http_dispatch, [port(ServerPort)]))
 )).

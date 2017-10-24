@@ -41,6 +41,11 @@
     atom_concat(Config, '_config', AppConfig),
     asserta(user:app_config(AppConfig)),
     templating::init,
-    call(AppConfig::server_port(ServerPort)),
-    threaded_ignore(http_server(http_dispatch, [port(ServerPort)]))
+    call(AppConfig::config_property(server_port, ServerPort)),
+    (app_daemonize ->
+        findall(X, (AppConfig::daemon_option(O, V), X =.. [O, V]), Options),
+        use_module(library(http/http_unix_daemon)),
+        http_daemon(Options)
+    ;
+        threaded_ignore(http_server(http_dispatch, [port(ServerPort)])))
 )).

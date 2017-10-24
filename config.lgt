@@ -46,6 +46,13 @@ app_prefix('WEBTALK_').
 :- multifile user:app_config/1.
 :- dynamic user:app_config/1.
 
+% app_daemonize(+Boolean)
+%
+% Indicates whether or not the application is to be integrated with the
+% unix service system.
+:- multifile user:app_daemonize/0.
+app_daemonize :- false.
+
 % Configuration objects.
 %
 % The values defined in the `config` object are overriden, if necessary, in the
@@ -53,50 +60,22 @@ app_prefix('WEBTALK_').
 :- object(config).
 
     :- info([
-        version is 1.0,
+        version is 2,
         author is 'Sando George',
-        date is 2017/10/19,
+        date is 2017/10/23,
         comment is 'Base configuration object.'
     ]).
 
-    :- public(server_port/1).
-    :- dynamic(server_port/1).
-    :- info(server_port/1, [
-        comment is 'Network port that the application will listen on.',
-        argnames is ['ServerPort'],
-        redefinition is 'specialize'
+    :- public(config_property/2).
+    :- dynamic(config_property/2).
+    :- info(config_property/2, [
+        comment is 'Set application wide configuration porperty.'
     ]).
 
-    :- public(site_name/1).
-    :- dynamic(site_name/1).
-    :- info(site_name/1, [
-        comment is 'Name of site as displayed in the naviagtion bar.',
-        argnames is ['SiteName'],
-        redefinition is 'specialize'
-    ]).
-
-    :- public(jquery_version/1).
-    :- dynamic(jquery_version/1).
-    :- info(jquery_version/1, [
-        comment is 'jQuery version used in HTML pages.',
-        argnames is ['JQueryVersion'],
-        redefinition is 'specialize'
-    ]).
-
-    :- public(popper_version/1).
-    :- dynamic(popper_version/1).
-    :- info(popper_version/1, [
-        comment is 'Popper.js version used in HTML pages.',
-        argnames is ['PopperVersion'],
-        redefinition is 'specialize'
-    ]).
-
-    :- public(bootstrap_version/1).
-    :- dynamic(bootstrap_version/1).
-    :- info(bootstrap_version/1, [
-        comment is 'Bootstrap version used in HTML pages.',
-        argnames is ['BootstrapVersion'],
-        redefinition is 'specialize'
+    :- public(daemon_option/2).
+    :- dynamic(daemon_option/2).
+    :- info(daemon_option/2, [
+        comment is 'Set option to be passed to http_daemon.'
     ]).
 
     :- initialization(init).
@@ -105,26 +84,88 @@ app_prefix('WEBTALK_').
         comment is 'Read common configs from env vars. Use defaults if empty.'
     ]).
     init :-
+        init_config_properties,
+        init_daemon_options.
+
+    :- private(init_config_properties/0).
+    :- info(init_config_properties/0, [
+        comment is 'Initialize config vars from env vars or use defaults.'
+    ]).
+    init_config_properties :-
         (get_env('SERVER_PORT', ServerPort) ->
-            ::asserta(server_port(ServerPort))
+            ::asserta(config_property(server_port, ServerPort))
         ;
-            ::asserta(server_port(5000))),
+            ::asserta(config_property(server_port, 5000))),
         (get_env('SITE_NAME', SiteName) ->
-            ::asserta(site_name(SiteName))
+            ::asserta(config_property(site_name, SiteName))
         ;
-            ::asserta(site_name('WebTalk'))),
+            ::asserta(config_property(site_name, 'WebTalk'))),
         (get_env('JQUERY_VERSION', JQueryVersion) ->
-            ::asserta(jquery_version(JQueryVersion))
+            ::asserta(config_property(jquery_version, JQueryVersion))
         ;
-            ::asserta(jquery_version('3.2.1'))),
+            ::asserta(config_property(jquery_version, '3.2.1'))),
         (get_env('POPPER_VERSION', PopperVersion) ->
-            ::asserta(popper_version(PopperVersion))
+            ::asserta(config_property(popper_version, PopperVersion))
         ;
-            ::asserta(popper_version('1.11.0'))),
+            ::asserta(config_property(popper_version, '1.11.0'))),
         (get_env('BOOTSTRAP_VERSION', BootstrapVersion) ->
-            ::asserta(bootstrap_version(BootstrapVersion))
+            ::asserta(config_property(bootstrap_version, BootstrapVersion))
         ;
-            ::asserta(bootstrap_version('4.0.0-beta'))).
+            ::asserta(config_property(bootstrap_version, '4.0.0-beta'))).
+
+    :- private(init_daemon_options/0).
+    :- info(init_daemon_options/0, [
+        comment is 'Initialize HTTP daemon options from env vars or use defaults.'
+    ]).
+    init_daemon_options :-
+        (get_env('DAEMON_PORT', Port) ->
+            ::asserta(daemon_option(port, Port)) ; true),
+        (get_env('DAEMON_IP', IP) ->
+            ::asserta(daemon_option(ip, IP)) ; true),
+        (get_env('DAEMON_DEBUG', Debug) ->
+            ::asserta(daemon_option(debug, Debug)) ; true),
+        (get_env('DAEMON_SYSLOG', Syslog) ->
+            ::asserta(daemon_option(syslog, Syslog)) ; true),
+        (get_env('DAEMON_USER', User) ->
+            ::asserta(daemon_option(user, User)) ; true),
+        (get_env('DAEMON_GROUP', Group) ->
+            ::asserta(daemon_option(group, Group)) ; true),
+        (get_env('DAEMON_PIDFILE', Pidfile) ->
+            ::asserta(daemon_option(pidfile, Pidfile))
+        ;
+            ::asserta(daemon_option(pidfile, '/var/run/webtalk'))),
+        (get_env('DAEMON_OUTPUT', Output) ->
+            ::asserta(daemon_option(output, Output))
+        ;
+            ::asserta(daemon_option(output, '/var/log/webtalk.log'))),
+        (get_env('DAEMON_FORK', Fork) ->
+            ::asserta(daemon_option(fork, Fork))
+        ;
+            ::asserta(daemon_option(fork, true))),
+        (get_env('DAEMON_HTTP', Http) ->
+            ::asserta(daemon_option(http, Http)) ; true),
+        (get_env('DAEMON_HTTPS', Https) ->
+            ::asserta(daemon_option(https, Https)) ; true),
+        (get_env('DAEMON_CERTFILE', Certfile) ->
+            ::asserta(daemon_option(certfile, Certfile)) ; true),
+        (get_env('DAEMON_KEYFILE', Keyfile) ->
+            ::asserta(daemon_option(keyfile, Keyfile)) ; true),
+        (get_env('DAEMON_PWFILE', Pwfile) ->
+            ::asserta(daemon_option(pwfile, Pwfile)) ; true),
+        (get_env('DAEMON_PASSWORD', Password) ->
+            ::asserta(daemon_option(password, Password)) ; true),
+        (get_env('DAEMON_CIPHERLIST', Cipherlist) ->
+            ::asserta(daemon_option(cipherlist, Cipherlist)) ; true),
+        (get_env('DAEMON_INTERACTIVE', Interactive) ->
+            ::asserta(daemon_option(interactive, Interactive)) ; true),
+        (get_env('DAEMON_GTRACE', Gtrace) ->
+            ::asserta(daemon_option(gtrace, Gtrace)) ; true),
+        (get_env('DAEMON_SIGHUP', Sighup) ->
+            ::asserta(daemon_option(sighup, Sighup)) ; true),
+        (get_env('DAEMON_WORKERS', Workers) ->
+            ::asserta(daemon_option(workers, Workers))
+        ;
+            ::asserta(daemon_option(workers, 2))).
 
     :- private(get_env/2).
     :- info(get_env/2, [

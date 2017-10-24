@@ -33,10 +33,10 @@
 
     succeeds(override_property) :-
         create_object(Config, [extends(config)], [], []),
-        Config::server_port(Port),
+        Config::config_property(server_port, Port),
         Port == 5000,
-        Config::asserta(server_port(4000)),
-        Config::server_port(NewPort),
+        Config::asserta(config_property(server_port, 4000)),
+        Config::config_property(server_port, NewPort),
         NewPort == 4000,
         abolish_object(Config).
 

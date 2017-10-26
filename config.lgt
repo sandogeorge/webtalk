@@ -107,7 +107,7 @@ app_prefix('WEBTALK_').
         (get_env('SITE_NAME', SiteName) ->
             ::asserta(config_property(site_name, SiteName))
         ;
-            ::asserta(config_property(site_name, 'WebTalk'))),
+            ::asserta(config_property(site_name, 'Webtalk'))),
         (get_env('JQUERY_VERSION', JQueryVersion) ->
             ::asserta(config_property(jquery_version, JQueryVersion))
         ;

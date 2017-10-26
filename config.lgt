@@ -35,6 +35,19 @@
 :- dynamic user:app_prefix/1.
 app_prefix('WEBTALK_').
 
+% app_daemonize(+Boolean)
+%
+% Indicates whether or not the application is to be integrated with the
+% unix service system.
+:- multifile user:app_daemonize/1.
+app_daemonize(false).
+
+% app_http_only(+Boolean)
+%
+% Force redirect to HTTPS.
+:- multifile user:app_http_only/1.
+app_http_only(false).
+
 % app_config(?Config).
 %
 % The application configuration is a value representing the deployment
@@ -45,13 +58,6 @@ app_prefix('WEBTALK_').
 % machines, to production servers. This value is set during loading.
 :- multifile user:app_config/1.
 :- dynamic user:app_config/1.
-
-% app_daemonize(+Boolean)
-%
-% Indicates whether or not the application is to be integrated with the
-% unix service system.
-:- multifile user:app_daemonize/0.
-app_daemonize :- false.
 
 % Configuration objects.
 %
@@ -72,11 +78,14 @@ app_daemonize :- false.
         comment is 'Set application wide configuration porperty.'
     ]).
 
+
     :- public(daemon_option/2).
     :- dynamic(daemon_option/2).
     :- info(daemon_option/2, [
         comment is 'Set option to be passed to http_daemon.'
     ]).
+    daemon_option(pidfile, '/var/run/webtalk').
+    daemon_option(output, '/var/log/webtalk.log').
 
     :- initialization(init).
     :- private(init/0).
@@ -131,17 +140,11 @@ app_daemonize :- false.
         (get_env('DAEMON_GROUP', Group) ->
             ::asserta(daemon_option(group, Group)) ; true),
         (get_env('DAEMON_PIDFILE', Pidfile) ->
-            ::asserta(daemon_option(pidfile, Pidfile))
-        ;
-            ::asserta(daemon_option(pidfile, '/var/run/webtalk'))),
+            ::asserta(daemon_option(pidfile, Pidfile)) ; true),
         (get_env('DAEMON_OUTPUT', Output) ->
-            ::asserta(daemon_option(output, Output))
-        ;
-            ::asserta(daemon_option(output, '/var/log/webtalk.log'))),
+            ::asserta(daemon_option(output, Output)) ; true),
         (get_env('DAEMON_FORK', Fork) ->
-            ::asserta(daemon_option(fork, Fork))
-        ;
-            ::asserta(daemon_option(fork, true))),
+            ::asserta(daemon_option(fork, Fork)) ; true),
         (get_env('DAEMON_HTTP', Http) ->
             ::asserta(daemon_option(http, Http)) ; true),
         (get_env('DAEMON_HTTPS', Https) ->
@@ -163,9 +166,7 @@ app_daemonize :- false.
         (get_env('DAEMON_SIGHUP', Sighup) ->
             ::asserta(daemon_option(sighup, Sighup)) ; true),
         (get_env('DAEMON_WORKERS', Workers) ->
-            ::asserta(daemon_option(workers, Workers))
-        ;
-            ::asserta(daemon_option(workers, 2))).
+            ::asserta(daemon_option(workers, Workers)) ; true).
 
     :- private(get_env/2).
     :- info(get_env/2, [

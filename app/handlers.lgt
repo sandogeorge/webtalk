@@ -28,7 +28,8 @@ http:location(api, root('api'), []).
 :- multifile http:request_expansion/2.
 http:request_expansion(_RequestIn, _RequestOut) :-
    member(protocol(P), _RequestIn),
-   user:app_http_only(Bool),
+   user:app_config(AppConfig),
+   AppConfig::http_only(Bool),
    ((Bool, P == 'http') ->
         member(host(Host), _RequestIn),
         member(request_uri(Uri), _RequestIn),

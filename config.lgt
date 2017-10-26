@@ -35,19 +35,6 @@
 :- dynamic user:app_prefix/1.
 app_prefix('WEBTALK_').
 
-% app_daemonize(+Boolean)
-%
-% Indicates whether or not the application is to be integrated with the
-% unix service system.
-:- multifile user:app_daemonize/1.
-app_daemonize(false).
-
-% app_http_only(+Boolean)
-%
-% Force redirect to HTTPS.
-:- multifile user:app_http_only/1.
-app_http_only(false).
-
 % app_config(?Config).
 %
 % The application configuration is a value representing the deployment
@@ -66,7 +53,7 @@ app_http_only(false).
 :- object(config).
 
     :- info([
-        version is 2,
+        version is 3,
         author is 'Sando George',
         date is 2017/10/23,
         comment is 'Base configuration object.'
@@ -86,6 +73,18 @@ app_http_only(false).
     ]).
     daemon_option(pidfile, '/var/run/webtalk').
     daemon_option(output, '/var/log/webtalk.log').
+
+    :- public(daemonize/1).
+    :- info(daemonize/1, [
+        comment is 'Whether or not the app shoud use http_unix_daemon.'
+    ]).
+    daemonize(false).
+
+    :- public(http_only/1).
+    :- info(http_only/1, [
+        comment is 'Force use of HTTPS pages.'
+    ]).
+    http_only(false).
 
     :- initialization(init).
     :- private(init/0).

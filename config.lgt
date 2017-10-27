@@ -82,13 +82,13 @@ app_prefix('WEBTALK_').
     :- info(daemonize/1, [
         comment is 'Whether or not the app shoud use http_unix_daemon.'
     ]).
-    daemonize(false).
+    daemonize(true).
 
-    :- public(http_only/1).
-    :- info(http_only/1, [
+    :- public(https_only/1).
+    :- info(https_only/1, [
         comment is 'Force use of HTTPS pages.'
     ]).
-    http_only(false).
+    https_only(true).
 
     :- initialization(init).
     :- private(init/0).

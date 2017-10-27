@@ -29,7 +29,7 @@ http:location(api, root('api'), []).
 http:request_expansion(_RequestIn, _RequestOut) :-
    member(protocol(P), _RequestIn),
    user:app_config(AppConfig),
-   AppConfig::http_only(Bool),
+   AppConfig::https_only(Bool),
    ((Bool, P == 'http') ->
         member(host(Host), _RequestIn),
         member(request_uri(Uri), _RequestIn),

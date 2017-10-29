@@ -79,16 +79,18 @@ app_prefix('WEBTALK_').
     daemon_option(output, '/var/log/webtalk.log').
 
     :- public(daemonize/1).
+    :- dynamic(daemonize/1).
     :- info(daemonize/1, [
         comment is 'Whether or not the app shoud use http_unix_daemon.'
     ]).
-    daemonize(true).
+    daemonize(false).
 
     :- public(https_only/1).
+    :- dynamic(https_only/1).
     :- info(https_only/1, [
         comment is 'Force use of HTTPS pages.'
     ]).
-    https_only(true).
+    https_only(false).
 
     :- initialization(init).
     :- private(init/0).
@@ -125,6 +127,12 @@ app_prefix('WEBTALK_').
         comment is 'Initialize HTTP daemon options from env vars or use defaults.'
     ]).
     init_daemon_options :-
+        (get_env('DAEMONIZE', Daemonize) ->
+            ::asserta(daemonize(Daemonize))
+        ; true),
+        (get_env('DAEMON_HTTPS_ONLY', HttpsOnly) ->
+            ::asserta(https_only(HttpsOnly))
+        ; true),
         (get_env('DAEMON_PORT', Port) ->
             ::asserta(daemon_option(port, Port))
         ; true),

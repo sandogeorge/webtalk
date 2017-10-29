@@ -23,7 +23,7 @@ All configurations are currently in `config.lgt`. Supported configurations inclu
 To run the application, issue the following command in the base directory:
 
 ```bash
-$ swilgt -s load.lgt
+$ swilgt -s app.lgt
 ```
 
 ## Development

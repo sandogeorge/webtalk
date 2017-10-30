@@ -22,6 +22,7 @@
 :- multifile http:location/3.
 :- dynamic http:location/3.
 http:location(static, root('static'), []).
+http:location(well_known, root('.well-known'), []).
 http:location(api, root('api'), []).
 
 %% Pre-handler goals.
@@ -44,6 +45,9 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 
 % Static files.
 :- http_handler(static('.'), [Request]>>(frontend::static(Request)), [prefix]).
+
+% Certbot.
+:- http_handler(well_known('.'), [Request]>>(frontend::well_known(Request)), [prefix]).
 
 % API endpoints.
 :- http_handler(api('.'), [Request]>>(api::index(Request)), []).

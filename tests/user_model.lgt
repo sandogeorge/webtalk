@@ -41,7 +41,7 @@
         user_model:add_user(george, 'george@example.com', administrator).
 
     succeeds(get_user_role) :-
-        user_model_:current_user(sando, _, Role),
+        user_model:current_user(sando, _, Role),
         Role == user.
 
     succeeds(change_user_role) :-

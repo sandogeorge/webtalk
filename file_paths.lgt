@@ -17,16 +17,12 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- initialization((
-    set_logtalk_flag(report, warnings),
-    logtalk_load('file_paths'),
-    logtalk_load(lgtunit(loader)),
-    logtalk_load(config),
-    use_module('app/models/user_model'),
-    logtalk_load([
-        'tests/config',
-        'tests/user_model'
-    ], [hook(lgtunit)]),
-    config_tests::run,
-    user_model_tests::run
-)).
+%% Directory paths.
+:- prolog_load_context(directory, Dir),
+    string_concat(Dir, "/..", BaseDir),
+    asserta(user:file_search_path(base, BaseDir)),
+    asserta(user:file_search_path(data, base('data'))),
+    asserta(user:file_search_path(app, base('app'))),
+    asserta(user:file_search_path(models, app('models'))),
+    asserta(user:file_search_path(static, app('static'))),
+    asserta(user:file_search_path(template, app('templates'))).

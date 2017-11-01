@@ -17,13 +17,6 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Directory paths.
-:- prolog_load_context(directory, Dir),
-    string_concat(Dir, "/../app", AppDir),
-    asserta(user:file_search_path(app, AppDir)),
-    asserta(user:file_search_path(static, app('static'))),
-    asserta(user:file_search_path(template, app('templates'))).
-
 %% Application configuration.
 
 % app_prefix(?Prefix)

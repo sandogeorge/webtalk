@@ -28,6 +28,7 @@
 % application.
 :- initialization((
     logtalk_load([
+        'file_paths',
         'modules',
         'config',
         'app/templating',

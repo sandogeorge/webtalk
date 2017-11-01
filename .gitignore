@@ -1,3 +1,7 @@
+% Webtalk
+/data/*
+!/data/.gitkeep
+
 % Intellij
 .idea/
 *.iml

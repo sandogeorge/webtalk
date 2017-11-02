@@ -60,10 +60,10 @@
         user_model:delete_user(sando).
 
     fails(check_user_deleted) :-
-        user_model:current_user(sando, _, Role),
-        var(Role).
+        user_model:current_user(sando, _, _).
 
     cleanup :-
+        user_model:detach_user_db,
         expand_file_search_path(data('user_db.test'), File),
         delete_file(File).
 

@@ -18,5 +18,5 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :- initialization(
-    logtalk_load(config)
+    logtalk_load([config, model(model)])
 ).

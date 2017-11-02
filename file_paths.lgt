@@ -23,6 +23,6 @@
     asserta(user:file_search_path(base, BaseDir)),
     asserta(user:file_search_path(data, base('data'))),
     asserta(user:file_search_path(app, base('app'))),
-    asserta(user:file_search_path(models, app('models'))),
+    asserta(user:file_search_path(model, app('models'))),
     asserta(user:file_search_path(static, app('static'))),
     asserta(user:file_search_path(template, app('templates'))).

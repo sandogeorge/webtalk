@@ -17,6 +17,8 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(crypto)).
+
 :- object(frontend).
 
     :- info([
@@ -40,6 +42,43 @@
         ]),
         templating::render_from_base(index, Data, Render),
         format(Render).
+
+    :- public(install/1).
+    :- info(install/1, [
+        comment is 'Present for initial configuration'
+    ]).
+    install(_Request) :-
+        lists:member(method(Method), _Request),
+        ((Method == 'post', handle_install_post(_Request)) ->
+            lists:member(path(Base), _Request),
+            http_dispatch:http_absolute_location(root('.'), Url, [relative_to(Base)]),
+            throw(http_reply(moved_temporary(Url)))
+        ;
+            dict_create(Data, _, [
+                title: 'Install Webtalk',
+                page_header: 'Install Webtalk',
+                styles: [],
+                scripts: ['/static/js/install.js'],
+                body_classes: ['install']
+            ]),
+            templating::render_standalone(install, Data, Render),
+            format(Render)).
+
+    :- private(handle_install_post/1).
+    handle_install_post(_Request) :-
+        http_parameters:http_parameters(_Request, [
+            admin_username(Username, [atom]),
+            admin_email(Email, [atom]),
+            admin_password(Password, [atom])
+        ]),
+        pcre:re_match("^.+[@].+[.].{2,}$", Email),
+        crypto:crypto_password_hash(Password, Hash),
+        user:get_model(user, User),
+        not(User::exec(current, [Username, _, _, _])),
+        not(User::exec(current, [_, _, Email, _])),
+        User::exec(add, [Username, Hash, Email, administrator]),
+        user:get_model(flag, Flag),
+        Flag::exec(add, [installed, true]).
 
     :- public(static/1).
     :- info(static/1, [

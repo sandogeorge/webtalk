@@ -36,6 +36,7 @@
         'app/api',
         'app/handlers'
     ]),
+    logtalk_load('app/models/model'),
     user:app_prefix(AppPrefix),
     atom_concat(AppPrefix, 'CONFIG', Envar),
     (getenv(Envar, Config) -> true ; Config = 'development'),

@@ -17,6 +17,19 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(model(flag_model)).
+:- use_module(model(user_model)).
+
+% get_model(+Name, -Model)
+%
+% Return an object to interface the specified persistency model.
+get_model(Name, Model) :-
+    create_object(Model,
+        [extends(model)],
+        [initialization(::init)],
+        [name(Name)]
+    ).
+
 :- object(model).
 
     :- info([

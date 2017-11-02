@@ -76,6 +76,34 @@
         ::parse_template(template(base), BaseDataAll, Base),
         string_concat('Content-type: text/html~n~n', Base, Render).
 
+    :- public(render_standalone/3).
+    :- info(render_standlaone/3, [
+        comment is 'Render the supplied template as a standalone page.',
+        argnames is ['Template', 'Data', 'Render']
+    ]).
+    render_standalone(Template, Data, Render) :-
+        ::default_data(DefaultData),
+        %
+        % Merge global data with content specific data and parse contnent
+        % template.
+        put_dict(DefaultData, Data, ContentData),
+        %
+        % Merge default template styles with supplied page specific styles.
+        ::default_styles(DefStyles),
+        lists:union(DefStyles, ContentData.styles, Styles),
+        dict_create(_Styles, _, [styles:Styles]),
+        put_dict(_Styles, ContentData, BaseDataStyles),
+        %
+        % Merge default template scripts with supplied page specific scripts.
+        ::default_scripts(DefScripts),
+        lists:union(DefScripts, BaseDataStyles.scripts, Scripts),
+        dict_create(_Scripts, _, [scripts:Scripts]),
+        put_dict(_Scripts, BaseDataStyles, BaseDataAll),
+        %
+        % Parse base template and render final content.
+        ::parse_template(template(Template), BaseDataAll, Base),
+        string_concat('Content-type: text/html~n~n', Base, Render).
+
     :- private(parse_template/3).
     :- info(parse_template/3, [
         comment is 'Parse a template file, replacing vars with supplied data.',

@@ -112,7 +112,7 @@
     parse_template(Template, Data, Content) :-
         memfile:new_memory_file(Handle),
         memfile:open_memory_file(Handle, write, Out),
-        dict_create(StOptions, _, [frontend:semblance]),
+        dict_create(StOptions, _, [frontend:semblance, undefined: false]),
         st_render:st_render_file(Template, Data, Out, StOptions),
         close(Out),
         memfile:open_memory_file(Handle, read, In, [free_on_close(true)]),

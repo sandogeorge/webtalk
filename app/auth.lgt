@@ -64,6 +64,18 @@
             http_session:http_session_assert(logged_in(true))
         ; false).
 
+    :- public(logout/1).
+    :- info(logout/1, [
+        comment is 'Log out authenticated user.',
+        argnames is ['_Request']
+    ]).
+    logout(_Request) :-
+        ((::is_authenticated(Auth), Auth, http_session:http_session_id(Id)) ->
+            http_session:http_close_session(Id)
+        ; true),
+        lists:member(path(Base), _Request),
+        routing::redirect(root('.'), Base).
+
     :- public(is_authenticated/1).
     is_authenticated(Out) :-
         (http_session:http_session_data(logged_in(_)) ->

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/css/bootstrap.min.css" crossorigin="anonymous">
     {% each styles, style %}
     <link rel="stylesheet" type="text/css" href="{{ style }}" />
     {% end %}
@@ -13,7 +13,10 @@
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button"
+                        data-toggle="collapse" data-target="#navbarMain"
+                        aria-controls="navbarMain" aria-expanded="false"
+                        aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <span class="navbar-brand mb-0">{{ site_name }}</span>
@@ -26,10 +29,14 @@
                     </li>
                 </ul>
 
-                <ul class="nav justify-content-end" id="userNav">
+                <ul class="nav navbar-right" id="userNav">
                     {% if \+ is_authenticated() %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for("auth.login") }}">Log in</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out</a>
                     </li>
                     {% end %}
                 </ul>

@@ -45,6 +45,9 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 :- http_handler(auth('login'),
     [Request]>>(auth::login(Request)), [id("auth.login")]).
 
+:- http_handler(auth('logout'),
+    [Request]>>(auth::logout(Request)), [id("auth.logout")]).
+
 % Static files.
 :- http_handler(static('.'),
     [Request]>>(main::static(Request)), [id("static"), prefix]).

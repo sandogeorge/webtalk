@@ -31,6 +31,7 @@
         'file_paths',
         'modules',
         'config',
+        'app/routing',
         'app/templating',
         'app/auth',
         'app/frontend',

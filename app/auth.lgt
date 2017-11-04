@@ -39,8 +39,7 @@
         lists:member(method(Method), _Request),
         ((Method == 'post', handle_login(_Request)) ->
             lists:member(path(Base), _Request),
-            http_dispatch:http_absolute_location(root('.'), Url, [relative_to(Base)]),
-            throw(http_reply(moved_temporary(Url)))
+            routing::redirect(root('.'), Base)
         ;
             dict_create(Data, _, [
                 title: 'Login',

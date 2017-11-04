@@ -29,33 +29,8 @@ http:location(api, root('api'), []).
 %% Pre-handler goals.
 :- multifile http:request_expansion/2.
 http:request_expansion(_RequestIn, _RequestOut) :-
-    lists:member(protocol(Proto), _RequestIn),
-    lists:member(path(Path), _RequestIn),
-    user:app_config(AppConfig),
-    AppConfig::https_only(Bool),
-    ((Bool, Proto == 'http') ->
-        lists:member(host(Host), _RequestIn),
-        atomic_list_concat(['https://', Host, Path], To),
-        throw(http_reply(moved_temporary(To)))
-    ; (user:get_model(flag, Flag),
-            not(Flag::exec(current, [installed, _])),
-            not(pcre:re_match("^/install[/]?$", Path)),
-            not(pcre:re_match("^/static", Path))) ->
-        lists:member(host(Host), _RequestIn),
-        lists:member(port(Port), _RequestIn),
-        http_dispatch:http_absolute_location(root('install'), Url, [relative_to(Path)]),
-        atomic_list_concat([Proto, '://', Host, ':', Port, Url], To),
-        throw(http_reply(moved_temporary(To)))
-    ; (user:get_model(flag, Flag),
-            Flag::exec(current, [installed, Installed]),
-            Installed,
-            pcre:re_match("^/install[/]?$", Path)) ->
-        lists:member(host(Host), _RequestIn),
-        lists:member(port(Port), _RequestIn),
-        http_dispatch:http_absolute_location(root('.'), Url, [relative_to(Path)]),
-        atomic_list_concat([Proto, '://', Host, ':', Port, Url], To),
-        throw(http_reply(moved_temporary(To)))
-    ; _RequestOut = _RequestIn).
+    routing::handle_expansion(_RequestIn),
+    _RequestOut = _RequestIn.
 
 %% Declare handlers.
 

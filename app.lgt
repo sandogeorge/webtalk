@@ -34,7 +34,7 @@
         'app/routing',
         'app/templating',
         'app/auth',
-        'app/frontend',
+        'app/main',
         'app/api',
         'app/handlers'
     ]),

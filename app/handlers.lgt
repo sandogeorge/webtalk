@@ -35,19 +35,19 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 %% Declare handlers.
 
 % Index page.
-:- http_handler(root('.'), [Request]>>(frontend::index(Request)), []).
+:- http_handler(root('.'), [Request]>>(main::index(Request)), []).
 
 % Install page.
-:- http_handler(root('install'), [Request]>>(frontend::install(Request)), []).
+:- http_handler(root('install'), [Request]>>(main::install(Request)), []).
 
 % Authentication pages.
 :- http_handler(auth('login'), [Request]>>(auth::login(Request)), []).
 
 % Static files.
-:- http_handler(static('.'), [Request]>>(frontend::static(Request)), [prefix]).
+:- http_handler(static('.'), [Request]>>(main::static(Request)), [prefix]).
 
 % Certbot.
-:- http_handler(well_known('.'), [Request]>>(frontend::well_known(Request)), [prefix]).
+:- http_handler(well_known('.'), [Request]>>(main::well_known(Request)), [prefix]).
 
 % API endpoints.
 :- http_handler(api('.'), [Request]>>(api::index(Request)), []).

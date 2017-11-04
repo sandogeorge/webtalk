@@ -19,7 +19,7 @@
 
 :- use_module(library(crypto)).
 
-:- object(frontend).
+:- object(main).
 
     :- info([
         version is 1.0,

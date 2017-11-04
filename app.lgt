@@ -35,8 +35,7 @@
         'app/templating',
         'app/auth',
         'app/main',
-        'app/api',
-        'app/handlers'
+        'app/api'
     ]),
     logtalk_load('app/models/model'),
     user:app_prefix(AppPrefix),

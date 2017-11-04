@@ -17,8 +17,49 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Abstract paths.
+:- multifile http:location/3.
+:- dynamic http:location/3.
+http:location(static, root('static'), []).
+http:location(well_known, root('.well-known'), []).
+http:location(auth, root('auth'), []).
+http:location(api, root('api'), []).
+
+%% Pre-handler goals.
+:- multifile http:request_expansion/2.
+http:request_expansion(_RequestIn, _RequestOut) :-
+    routing::handle_expansion(_RequestIn),
+    _RequestOut = _RequestIn.
+
+%% Declare handlers.
+
+% Index page.
+:- http_handler(root('.'),
+    [Request]>>(main::index(Request)), [id('main.index')]).
+
+% Install page.
+:- http_handler(root('install'),
+    [Request]>>(main::install(Request)), [id('main.install')]).
+
+% Authentication pages.
+:- http_handler(auth('login'),
+    [Request]>>(auth::login(Request)), [id('auth.login')]).
+
+% Static files.
+:- http_handler(static('.'),
+    [Request]>>(main::static(Request)), [id('static'), prefix]).
+
+% Certbot.
+:- http_handler(well_known('.'),
+    [Request]>>(main::well_known(Request)), [id('well_known'), prefix]).
+
+% API endpoints.
+:- http_handler(api('.'),
+    [Request]>>(api::index(Request)), [id('api.index')]).
+
+%% Template functions.
 :- st_expr:st_set_function(url_for, 1,
-                            [Id, Out]>>(routing::url_for(Id, Out))).
+    [Id, Out]>>(routing::url_for(Id, Out))).
 
 :- object(routing).
 

@@ -28,7 +28,11 @@ http:location(api, root('api'), []).
 %% Pre-handler goals.
 :- multifile http:request_expansion/2.
 http:request_expansion(_RequestIn, _RequestOut) :-
-    routing::handle_expansion(_RequestIn),
+    lists:member(path(Path), _RequestIn),
+    ((not(pcre:re_match("^/static", Path)),
+      not(pcre:re_match("^/[.]well-known", Path))) ->
+        routing::handle_expansion(_RequestIn)
+    ; true),
     _RequestOut = _RequestIn.
 
 %% Declare handlers.
@@ -73,13 +77,29 @@ http:request_expansion(_RequestIn, _RequestOut) :-
         comment is 'Defines common routing functions.'
     ]).
 
-    :- public(redirect/2).
-    :- info(redirect/2, [
-        comment is 'Perform a 302 redirect.'
+    :- private(expansion_hook/2).
+    :- dynamic(expansion_hook/2).
+    :- info(expansion_hook/2, [
+        comment is 'External goals to be called to validate requests.'
     ]).
-    redirect(Spec, Base) :-
-        http_dispatch:http_absolute_location(Spec, Url, [relative_to(Base)]),
-        throw(http_reply(moved_temporary(Url))).
+
+    :- public(assert_expansion_hook/2).
+    :- info(assert_expansioin_hook/2, [
+        comment is 'Register expansion hooks.'
+    ]).
+    assert_expansion_hook(Object, Predicate) :-
+        ((nonvar(Object), nonvar(Predicate)) ->
+            ::asserta(expansion_hook(Object, Predicate))
+        ; true).
+
+    :- public(retract_expansion_hook/2).
+    :- info(retract_expansioin_hook/2, [
+        comment is 'Deregister expansion hooks.'
+    ]).
+    retract_expansion_hook(Object, Predicate) :-
+        (nonvar(Object) ->
+            ::retract(expansion_hook(Object, Predicate))
+        ; true).
 
     :- public(handle_expansion/1).
     :- info(handle_expansion/1, [
@@ -88,7 +108,9 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     handle_expansion(_Request) :-
         ::check_protocol(_Request),
         ::check_not_installed(_Request),
-        ::check_already_installed(_Request).
+        ::check_already_installed(_Request),
+        findall(X, (expansion_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
+        ::call_expansion_hooks(Hooks, _Request).
 
     :- private(check_protocol/1).
     :- info(check_protocol/1, [
@@ -113,8 +135,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
         lists:member(path(Path), _Request),
         user:get_model(flag, Flag),
         ((not(Flag::exec(current, [installed, _])),
-          not(pcre:re_match("^/install[/]?$", Path)),
-          not(pcre:re_match("^/static", Path))) ->
+          not(pcre:re_match("^/install[/]?$", Path))) ->
             lists:member(protocol(Proto), _Request),
             lists:member(host(Host), _Request),
             lists:member(port(Port), _Request),
@@ -140,6 +161,26 @@ http:request_expansion(_RequestIn, _RequestOut) :-
             atomic_list_concat([Proto, '://', Host, ':', Port, Url], To),
             throw(http_reply(moved_temporary(To)))
         ; true).
+
+    :- private(call_expansion_hooks/2).
+    :- info(call_expansion_hooks/2, [
+        comment is 'Pass request to all expansion hooks for validation.'
+    ]).
+    call_expansion_hooks([], _).
+    call_expansion_hooks([Hook|Hooks], _Request) :-
+        lists:nth0(0, Hook, Object),
+        lists:nth0(1, Hook, Pred),
+        Callable =.. [Pred, _Request],
+        Object::Callable,
+        call_expansion_hooks(Hooks, _Request).
+
+    :- public(redirect/2).
+    :- info(redirect/2, [
+        comment is 'Perform a 302 redirect.'
+    ]).
+    redirect(Spec, Base) :-
+        http_dispatch:http_absolute_location(Spec, Url, [relative_to(Base)]),
+        throw(http_reply(moved_temporary(Url))).
 
     :- public(url_for/2).
     :- info(url_for/2, [

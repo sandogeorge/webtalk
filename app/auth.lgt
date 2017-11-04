@@ -30,6 +30,12 @@
         comment is 'Defines handlers for authentication pages.'
     ]).
 
+    :- initialization(init).
+    :- private(init/0).
+    init :-
+        routing::assert_expansion_hook(auth, validate_login_access),
+        routing::assert_expansion_hook(auth, validate_logout_access).
+
     :- public(login/1).
     :- info(login/1, [
         comment is 'Serve login page',
@@ -82,5 +88,27 @@
             Out = true
         ;
             Out = false).
+
+    :- public(validate_login_access/1).
+    :- info(validate_login_access/1, [
+        comment is 'Redirect to index if the user is already logged in.'
+    ]).
+    validate_login_access(_Request) :-
+        lists:member(path(Path), _Request),
+        ::is_authenticated(Bool),
+        ((Bool, pcre:re_match("^/auth/login[/]?", Path)) ->
+            routing::redirect(root('.'), Path)
+        ; true).
+
+    :- public(validate_logout_access/1).
+    :- info(validate_logout_access/1, [
+        comment is 'Redirect to index if the user is not logged in.'
+    ]).
+    validate_logout_access(_Request) :-
+        lists:member(path(Path), _Request),
+        ::is_authenticated(Bool),
+        ((not(Bool), pcre:re_match("^/auth/logout[/]?", Path)) ->
+            routing::redirect(root('.'), Path)
+        ; true).
 
 :- end_object.

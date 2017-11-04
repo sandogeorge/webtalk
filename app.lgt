@@ -32,6 +32,7 @@
         'modules',
         'config',
         'app/templating',
+        'app/auth',
         'app/frontend',
         'app/api',
         'app/handlers'

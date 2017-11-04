@@ -23,6 +23,7 @@
 :- dynamic http:location/3.
 http:location(static, root('static'), []).
 http:location(well_known, root('.well-known'), []).
+http:location(auth, root('auth'), []).
 http:location(api, root('api'), []).
 
 %% Pre-handler goals.
@@ -63,6 +64,9 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 
 % Install page.
 :- http_handler(root('install'), [Request]>>(frontend::install(Request)), []).
+
+% Authentication pages.
+:- http_handler(auth('login'), [Request]>>(auth::login(Request)), []).
 
 % Static files.
 :- http_handler(static('.'), [Request]>>(frontend::static(Request)), [prefix]).

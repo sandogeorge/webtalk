@@ -62,7 +62,8 @@
                 body_classes: ['install']
             ]),
             templating::render_standalone(install, Data, Render),
-            format(Render)).
+            format(Render)
+        ).
 
     :- private(handle_install_post/1).
     handle_install_post(_Request) :-

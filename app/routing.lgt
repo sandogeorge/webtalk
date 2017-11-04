@@ -35,27 +35,27 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 
 % Index page.
 :- http_handler(root('.'),
-    [Request]>>(main::index(Request)), [id('main.index')]).
+    [Request]>>(main::index(Request)), [id("main.index")]).
 
 % Install page.
 :- http_handler(root('install'),
-    [Request]>>(main::install(Request)), [id('main.install')]).
+    [Request]>>(main::install(Request)), [id("main.install")]).
 
 % Authentication pages.
 :- http_handler(auth('login'),
-    [Request]>>(auth::login(Request)), [id('auth.login')]).
+    [Request]>>(auth::login(Request)), [id("auth.login")]).
 
 % Static files.
 :- http_handler(static('.'),
-    [Request]>>(main::static(Request)), [id('static'), prefix]).
+    [Request]>>(main::static(Request)), [id("static"), prefix]).
 
 % Certbot.
 :- http_handler(well_known('.'),
-    [Request]>>(main::well_known(Request)), [id('well_known'), prefix]).
+    [Request]>>(main::well_known(Request)), [id("well_known"), prefix]).
 
 % API endpoints.
 :- http_handler(api('.'),
-    [Request]>>(api::index(Request)), [id('api.index')]).
+    [Request]>>(api::index(Request)), [id("api.index")]).
 
 %% Template functions.
 :- st_expr:st_set_function(url_for, 1,

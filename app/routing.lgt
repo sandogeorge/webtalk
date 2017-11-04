@@ -50,11 +50,11 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 
 % Static files.
 :- http_handler(static('.'),
-    [Request]>>(main::static(Request)), [id("static"), prefix]).
+    [Request]>>(static::static(Request)), [id("static"), prefix]).
 
 % Certbot.
 :- http_handler(well_known('.'),
-    [Request]>>(main::well_known(Request)), [id("well_known"), prefix]).
+    [Request]>>(wellknown::well_known(Request)), [id("well_known"), prefix]).
 
 % API endpoints.
 :- http_handler(api('.'),

@@ -33,6 +33,8 @@
         'config',
         'app/routing',
         'app/templating',
+        'app/static',
+        'app/wellknown',
         'app/auth',
         'app/main',
         'app/api'

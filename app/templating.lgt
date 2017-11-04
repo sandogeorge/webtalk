@@ -29,6 +29,9 @@
     :- private(default_data/1).
     :- dynamic(default_data/1).
 
+    :- private(hook_data/1).
+    :- dynamic(hook_data/1).
+
     :- private(default_styles/1).
     default_styles(['/static/css/style.css']).
 
@@ -43,7 +46,48 @@
         user:app_config(AppConfig),
         findall(X, (AppConfig::config_property(P, V), X =.. [P, V]), Xs),
         dict_create(DefaultData, _, Xs),
-        ::asserta(default_data(DefaultData)).
+        ::asserta(default_data(DefaultData)),
+        dict_create(HookData, _, []),
+        ::asserta(hook_data(HookData)).
+
+    :- private(data_hook/2).
+    :- dynamic(data_hook/2).
+    :- info(data_hook/2, [
+        comment is 'External goals to be called to supply additional scope data.'
+    ]).
+
+    :- public(assert_data_hook/2).
+    :- info(assert_data_hook/2, [
+        comment is 'Register template data hooks.'
+    ]).
+    assert_data_hook(Object, Predicate) :-
+        ((nonvar(Object), nonvar(Predicate)) ->
+            ::asserta(data_hook(Object, Predicate))
+        ; true).
+
+    :- public(retract_data_hook/2).
+    :- info(retract_data_hook/2, [
+        comment is 'Deregister template data hooks.'
+    ]).
+    retract_data_hook(Object, Predicate) :-
+        (nonvar(Object) ->
+            ::retract(data_hook(Object, Predicate))
+        ; true).
+
+    :- private(call_data_hooks/1).
+    :- info(call_data_hooks/1, [
+        comment is 'Request data from all hooks.'
+    ]).
+    call_data_hooks([]).
+    call_data_hooks([Hook|Hooks]) :-
+        lists:nth0(0, Hook, Object),
+        lists:nth0(1, Hook, Pred),
+        Callable =.. [Pred, HookData],
+        Object::Callable,
+        ::hook_data(CurrentData),
+        put_dict(CurrentData, HookData, UpdatedData),
+        ::asserta(hook_data(UpdatedData)),
+        call_data_hooks(Hooks).
 
     :- public(render_from_base/3).
     :- info(render_from_base/3, [
@@ -52,10 +96,16 @@
     ]).
     render_from_base(Template, Data, Render) :-
         ::default_data(DefaultData),
+        dict_create(Dict, _, []),
+        ::asserta(hook_data(Dict)),
+        findall(X, (data_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
+        ::call_data_hooks(Hooks),
+        ::hook_data(HookData),
+        put_dict(DefaultData, HookData, HookedData),
         %
         % Merge global data with content specific data and parse contnent
         % template.
-        put_dict(DefaultData, Data, ContentData),
+        put_dict(HookedData, Data, ContentData),
         ::parse_template(template(Template), ContentData, Content),
         dict_create(_Content, _, [page_content:Content]),
         put_dict(_Content, ContentData, BaseDataContent),
@@ -83,10 +133,16 @@
     ]).
     render_standalone(Template, Data, Render) :-
         ::default_data(DefaultData),
+        dict_create(Dict, _, []),
+        ::assert(hook_data(Dict)),
+        findall(X, (data_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
+        ::call_data_hooks(Hooks),
+        ::hook_data(HookData),
+        put_dict(DefaultData, HookData, HookedData),
         %
         % Merge global data with content specific data and parse contnent
         % template.
-        put_dict(DefaultData, Data, ContentData),
+        put_dict(HookedData, Data, ContentData),
         %
         % Merge default template styles with supplied page specific styles.
         ::default_styles(DefStyles),

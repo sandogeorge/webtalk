@@ -18,8 +18,6 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :- use_module(library(crypto)).
-:- st_expr:st_set_function(is_authenticated, 0,
-                            [Out]>>(auth::is_authenticated(Out))).
 
 :- object(auth).
 
@@ -34,7 +32,8 @@
     :- private(init/0).
     init :-
         routing::assert_expansion_hook(auth, validate_login_access),
-        routing::assert_expansion_hook(auth, validate_logout_access).
+        routing::assert_expansion_hook(auth, validate_logout_access),
+        templating::assert_data_hook(auth, inject_current_user).
 
     :- public(login/1).
     :- info(login/1, [
@@ -64,10 +63,14 @@
             login_pass(Pass, [atom])
         ]),
         user:get_model(user, User),
-        ((User::exec(current, [UoE, Hash, _, _])
-          ; User::exec(current, [_, Hash, UoE, _])) ->
+        ((User::exec(current, [UoE, Hash, Email, _])
+          ; User::exec(current, [Username, Hash, UoE, _])) ->
             crypto:crypto_password_hash(Pass, Hash),
-            http_session:http_session_assert(logged_in(true))
+            http_session:http_session_assert(logged_in(true)),
+            (var(Email) ->
+                http_session:http_session_assert(user_name(Username))
+            ;
+                http_session:http_session_assert(user_name(UoE)))
         ; false).
 
     :- public(logout/1).
@@ -110,5 +113,35 @@
         ((not(Bool), pcre:re_match("^/auth/logout[/]?", Path)) ->
             routing::redirect(root('.'), Path)
         ; true).
+
+    :- public(inject_current_user/1).
+    :- info(inject_current_user/1, [
+        comment is 'Get current user dict and make it available to templates.'
+    ]).
+    inject_current_user(CurrentUser) :-
+        var(CurrentUser),
+        ::current_user(CU),
+        dict_create(CurrentUser, _, [current_user: CU]).
+
+    :- private(current_user/1).
+    :- info(current_user/1, [
+        comment is 'Build current user dict.'
+    ]).
+    current_user(CurrentUser) :-
+        ((::is_authenticated(Bool), Bool) ->
+            user:get_model(user, User),
+            http_session:http_session_data(user_name(Username)),
+            User::exec(current, [Username, _, Email, Role]),
+            dict_create(CurrentUser, _, [
+                is_authenticated: true,
+                name: Username,
+                email: Email,
+                role: Role
+            ])
+        ;
+            dict_create(CurrentUser, _, [
+                is_authenticated: false,
+                name: anonymous
+            ])).
 
 :- end_object.

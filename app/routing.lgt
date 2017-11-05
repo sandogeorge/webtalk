@@ -43,7 +43,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 
 % Install page.
 :- http_handler(root('install'),
-    [Request]>>(main::install(Request)), [id("main.install")]).
+    [Request]>>(install::install(Request)), [id("install")]).
 
 % Authentication pages.
 :- http_handler(auth('login'),

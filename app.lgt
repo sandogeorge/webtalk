@@ -35,6 +35,7 @@
         'app/templating',
         'app/static',
         'app/wellknown',
+        'app/install',
         'app/auth',
         'app/main',
         'app/api'

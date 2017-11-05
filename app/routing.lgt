@@ -106,11 +106,34 @@ http:request_expansion(_RequestIn, _RequestOut) :-
         comment is 'Handle all request expansion checks'
     ]).
     handle_expansion(_Request) :-
+        ::verify_same_origin(_Request),
         ::check_protocol(_Request),
         ::check_not_installed(_Request),
         ::check_already_installed(_Request),
         findall(X, (expansion_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
         ::call_expansion_hooks(Hooks, _Request).
+
+    :- private(verify_same_origin/1).
+    :- info(verify_same_origin/1, [
+        comment is 'Check headers to verify the request is same origin.'
+    ]).
+    verify_same_origin(_Request) :-
+        ((lists:member(method(Method), _Request), Method == post) ->
+            lists:member(protocol(Protocol), _Request),
+            lists:member(host(Host), _Request),
+            atomic_list_concat(['^', Protocol, '://', Host], Target),
+            atom_string(Target, Regex),
+            (lists:member(origin(Origin), _Request) ->
+                (not(pcre:re_match(Regex, Origin)) ->
+                    throw(http_reply(forbidden(Origin)))
+                ; true)
+            ; true),
+            (lists:member(referer(Referer), _Request) ->
+                (not(pcre:re_match(Regex, Referer)) ->
+                    throw(http_reply(forbidden(Referer)))
+                ; true)
+            ; true)
+        ; true).
 
     :- private(check_protocol/1).
     :- info(check_protocol/1, [

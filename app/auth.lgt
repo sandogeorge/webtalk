@@ -18,11 +18,19 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :- use_module(library(crypto)).
+:- use_module(library(broadcast)).
+:- use_module(library(clpfd)).
+:- use_module(library(apply)).
 
+%% Session configuration.
+% Set general sessions options.
 :- http_session:http_set_session_options([
     cookie('session_id'),
     route('')
 ]).
+% Generate a CSRF token for each session.
+:- listen(http_session(begin(SessionId, _)),
+            auth::generate_csrf_token(SessionId)).
 
 :- object(auth).
 
@@ -31,6 +39,11 @@
         author is 'Sando George',
         date is 2017/11/03,
         comment is 'Defines handlers for authentication pages.'
+    ]).
+
+    :- use_module(clpfd, [
+        in/2, (#=)/2, (#\=)/2,
+        op(700, xfx, #=)
     ]).
 
     :- initialization(init).
@@ -160,5 +173,27 @@
                 is_authenticated: false,
                 name: anonymous
             ])).
+
+    :- public(generate_csrf_token/1).
+    :- info(generate_csrf_token/1, [
+        comment is 'Generate a new CSRF synchronizer token and add to session data.'
+    ]).
+    generate_csrf_token(SessionId) :-
+        (http_session:http_session_id(SessionId) ->
+            crypto:crypto_n_random_bytes(32, Bs),
+            ::bytes_integer(Bs, I),
+            http_session:http_session_assert(csrf(I))
+        ; true).
+
+    % Generate 256-bit integer from a list of random bytes.
+    % Source: http://www.swi-prolog.org/pldoc/man?section=crypto
+    :- private(bytes_integer/2).
+    bytes_integer(Bs, N) :-
+        apply:foldl(::pow, Bs, 0-0, N-_).
+    :- private(pow/3).
+    pow(B, N0-I0, N-I) :-
+        B in 0..255,
+        N #= N0 + B*256^I0,
+        I #= I0 + 1.
 
 :- end_object.

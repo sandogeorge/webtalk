@@ -48,6 +48,15 @@
         <h2>{{ page_header }}</h2>
         {% end %}
 
+        {% each messages, message, index, len %}
+        <div class="alert alert-{{ message.category }}">
+            {{ message.message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% end %}
+
         {% unescape page_content %}
     </div>
 

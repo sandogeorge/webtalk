@@ -20,9 +20,9 @@
 :- object(templating).
 
     :- info([
-        version is 1.1,
+        version is 1.2,
         author is 'Sando George',
-        date is 2017/10/23,
+        date is 2017/11/05,
         comment is 'Utility predicates for template handling.'
     ]).
 
@@ -48,7 +48,9 @@
         dict_create(DefaultData, _, Xs),
         ::asserta(default_data(DefaultData)),
         dict_create(HookData, _, []),
-        ::asserta(hook_data(HookData)).
+        ::asserta(hook_data(HookData)),
+        self(Self),
+        ::assert_data_hook(Self, inject_flashes).
 
     :- private(data_hook/2).
     :- dynamic(data_hook/2).
@@ -174,5 +176,28 @@
         memory_file:open_memory_file(Handle, read, In, [free_on_close(true)]),
         read_string(In, _, Content),
         close(In).
+
+    :- public(flash/2).
+    :- info(flash/2, [
+        comment is 'Register messages to she shown to the user.'
+    ]).
+    flash(Message, Category) :-
+        dict_create(Flash, _, [message: Message, category: Category]),
+        (http_session:http_session_data(flashes(Flashes)) ->
+            lists:append(Flashes, [Flash], Updated),
+            http_session:http_session_assert(flashes(Updated))
+        ;
+            http_session:http_session_assert(flashes([Flash]))).
+
+    :- public(inject_flashes/1).
+    :- info(inject_flashes/1, [
+        comment is 'Make flash messages available to templates.'
+    ]).
+    inject_flashes(Flashes) :-
+        var(Flashes),
+        (http_session:http_session_data(flashes(F)) ->
+            dict_create(Flashes, _, [messages: F]),
+            http_session:http_session_retract(flashes(_))
+        ; dict_create(Flashes, _, [messages: []])).
 
 :- end_object.

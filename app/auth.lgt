@@ -35,6 +35,15 @@
         routing::assert_expansion_hook(auth, validate_logout_access),
         templating::assert_data_hook(auth, inject_current_user).
 
+    :- private(new_session/0).
+    :- info(new_session/0, [
+        comment is 'Close current session and start a new one.'
+    ]).
+    new_session :-
+        http_session:http_session_id(Id),
+        http_session:http_close_session(Id),
+        http_session:http_open_session(_, [renew(true)]).
+
     :- public(login/1).
     :- info(login/1, [
         comment is 'Serve login page',
@@ -66,6 +75,7 @@
         ((User::exec(current, [UoE, Hash, Email, _])
           ; User::exec(current, [Username, Hash, UoE, _])) ->
             crypto:crypto_password_hash(Pass, Hash),
+            ::new_session,
             http_session:http_session_assert(logged_in(true)),
             (var(Email) ->
                 http_session:http_session_assert(user_name(Username))
@@ -79,9 +89,7 @@
         argnames is ['_Request']
     ]).
     logout(_Request) :-
-        ((::is_authenticated(Auth), Auth, http_session:http_session_id(Id)) ->
-            http_session:http_close_session(Id)
-        ; true),
+        ::new_session,
         lists:member(path(Base), _Request),
         routing::redirect(root('.'), Base).
 

@@ -52,6 +52,7 @@
     login(_Request) :-
         lists:member(method(Method), _Request),
         ((Method == 'post', handle_login(_Request)) ->
+            templating::flash('Login successful.', 'success'),
             lists:member(path(Base), _Request),
             routing::redirect(root('.'), Base)
         ;
@@ -90,6 +91,7 @@
     ]).
     logout(_Request) :-
         ::new_session,
+        templating::flash('Logout successful.', 'success'),
         lists:member(path(Base), _Request),
         routing::redirect(root('.'), Base).
 
@@ -108,6 +110,7 @@
         lists:member(path(Path), _Request),
         ::is_authenticated(Bool),
         ((Bool, pcre:re_match("^/auth/login[/]?", Path)) ->
+            templating::flash('User already logged in.', 'warning'),
             routing::redirect(root('.'), Path)
         ; true).
 
@@ -119,6 +122,7 @@
         lists:member(path(Path), _Request),
         ::is_authenticated(Bool),
         ((not(Bool), pcre:re_match("^/auth/logout[/]?", Path)) ->
+            templating::flash('User not logged in.', 'warning'),
             routing::redirect(root('.'), Path)
         ; true).
 

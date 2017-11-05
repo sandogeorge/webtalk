@@ -19,6 +19,11 @@
 
 :- use_module(library(crypto)).
 
+:- http_session:http_set_session_options([
+    cookie('session_id'),
+    route('')
+]).
+
 :- object(auth).
 
     :- info([

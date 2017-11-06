@@ -31,6 +31,7 @@
         'file_paths',
         'modules',
         'config',
+        'app/lib/forms',
         'app/routing',
         'app/templating',
         'app/static',

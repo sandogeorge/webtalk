@@ -21,12 +21,14 @@
 :- use_module(library(broadcast)).
 :- use_module(library(clpfd)).
 :- use_module(library(apply)).
+:- use_module(library(option)).
 
 %% Session configuration.
 % Set general sessions options.
 :- http_session:http_set_session_options([
     cookie('session_id'),
-    route('')
+    route(''),
+    gc(active)
 ]).
 % Generate a CSRF token for each session.
 :- listen(http_session(begin(SessionId, _)),
@@ -68,29 +70,29 @@
         argnames is ['_Request']
     ]).
     login(_Request) :-
-        lists:member(method(Method), _Request),
-        ((Method == 'post', handle_login(_Request)) ->
+        user:get_form(Form),
+        ((Form::validate(_Request, Data), handle_login(Data)) ->
             templating::flash('Login successful.', 'success'),
             lists:member(path(Base), _Request),
             routing::redirect(root('.'), Base)
         ;
+            Form::dict(FormDict),
             dict_create(Data, _, [
                 title: 'Login',
                 page_header: 'Login',
                 styles: [],
                 scripts: [],
-                body_classes: ['auth login']
+                body_classes: ['auth login'],
+                form: FormDict
             ]),
             templating::render_from_base(login, Data, Render),
             format(Render)
         ).
     :- private(handle_login/1).
-    handle_login(_Request) :-
-        http_parameters:http_parameters(_Request, [
-            login_uname_email(UoE, [atom]),
-            login_pass(Pass, [atom])
-        ]),
+    handle_login(Data) :-
         user:get_model(user, User),
+        swi_option:option(login_uname_email(UoE), Data),
+        swi_option:option(login_pass(Pass), Data),
         ((User::exec(current, [UoE, Hash, Email, _])
           ; User::exec(current, [Username, Hash, UoE, _])) ->
             crypto:crypto_password_hash(Pass, Hash),

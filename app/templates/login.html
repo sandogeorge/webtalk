@@ -1,5 +1,6 @@
 <div class="col-md-6">
     <form id="loginForm" method="post">
+        {% unescape form.csrf_token %}
         <div class="form-group">
             <label for="login-uname-email">Email or username</label>
             <input type="text" class="form-control" id="login-uname-email"

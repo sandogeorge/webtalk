@@ -20,14 +20,14 @@
 :- use_module(library(crypto)).
 :- use_module(library(base64)).
 
-% get_form(-Form)
+% get_form(+Spec, -Form)
 %
 % Return an object to interface the specified persistency model.
-get_form(Form) :-
+get_form(Spec, Form) :-
     create_object(Form,
         [extends(form)],
         [initialization(::init)],
-        []
+        [spec(Spec)]
     ).
 
 :- object(form).
@@ -48,8 +48,24 @@ get_form(Form) :-
             ::asserta(csrf_token(B64))
         ; true).
 
+    :- public(spec/1).
+    :- dynamic(spec/1).
+
     :- private(csrf_token/1).
     :- dynamic(csrf_token/1).
+
+    :- private(errors/1).
+    :- dynamic(errors/1).
+    errors([]).
+
+    :- public(assert_error/1).
+    :- info(assert_error/1, [
+        comment is 'Add the supplied error to the list to be rendered to the user'
+    ]).
+    assert_error(Message) :-
+        ::errors(Errors),
+        lists:append(Errors, [Message], NewErrors),
+        ::asserta(errors(NewErrors)).
 
     :- public(validate/2).
     :- info(validate/2, [
@@ -61,7 +77,10 @@ get_form(Form) :-
         http_parameters:http_parameters(Request, [
             csrf_token(CSRFToken, [atom])
         ], [form_data(Data)]),
-        ::validate_csrf_token(CSRFToken).
+        (not(::validate_csrf_token(CSRFToken)) ->
+            ::assert_error('Expired session. Please log in again.'),
+            false
+        ; true).
 
     :- private(validate_csrf_token/1).
     :- info(validate_csrf_token/1, [
@@ -83,8 +102,11 @@ get_form(Form) :-
         atomic_list_concat([
             '<input type="hidden" name="csrf_token" value="', CSRF, '">'
         ], FormCSRF),
+        ::errors(Errors),
         dict_create(Dict, _, [
-            csrf_token: FormCSRF
-        ]).
+            csrf_token: FormCSRF,
+            errors: Errors
+        ]),
+        ::asserta(errors([])).
 
 :- end_object.

@@ -1,4 +1,14 @@
 <div class="col-md-6">
+    {% if form.errors \= [] %}
+    <div class="alert alert-danger">
+        <ul>
+            {% each form.errors, error %}
+            <li>{{ error }}</li>
+            {% end %}
+        </ul>
+    </div>
+    {% end %}
+
     <form id="loginForm" method="post">
         {% unescape form.csrf_token %}
         <div class="form-group">

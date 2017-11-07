@@ -70,8 +70,21 @@
         argnames is ['_Request']
     ]).
     login(_Request) :-
-        user:get_form(Form),
-        ((Form::validate(_Request, Data), handle_login(Data)) ->
+        dict_create(Spec, _, [fields: [
+            login_uname_email: [
+                type: text,
+                label: 'Email or username'
+            ],
+            login_pass: [
+                type: password,
+                label: 'Password'
+            ],
+            submit: [
+                type: submit
+            ]
+        ]]),
+        user:get_form(Spec, Form),
+        ((Form::validate(_Request, Data), handle_login(Form, Data)) ->
             templating::flash('Login successful.', 'success'),
             lists:member(path(Base), _Request),
             routing::redirect(root('.'), Base)
@@ -88,21 +101,26 @@
             templating::render_from_base(login, Data, Render),
             format(Render)
         ).
-    :- private(handle_login/1).
-    handle_login(Data) :-
+    :- private(handle_login/2).
+    handle_login(Form, Data) :-
         user:get_model(user, User),
         swi_option:option(login_uname_email(UoE), Data),
         swi_option:option(login_pass(Pass), Data),
         ((User::exec(current, [UoE, Hash, Email, _])
           ; User::exec(current, [Username, Hash, UoE, _])) ->
-            crypto:crypto_password_hash(Pass, Hash),
+            (not(crypto:crypto_password_hash(Pass, Hash)) ->
+                Form::assert_error('Invalid email/username and password combination.'),
+                false
+            ; true),
             ::new_session,
             http_session:http_session_assert(logged_in(true)),
             (var(Email) ->
                 http_session:http_session_assert(user_name(Username))
             ;
                 http_session:http_session_assert(user_name(UoE)))
-        ; false).
+        ;
+            Form::assert_error('Invalid email/username and password combination.'),
+            false).
 
     :- public(logout/1).
     :- info(logout/1, [

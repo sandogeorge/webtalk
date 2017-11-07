@@ -33,29 +33,30 @@
         comment is 'Present for initial configuration'
     ]).
     install(_Request) :-
-        lists:member(method(Method), _Request),
-        ((Method == 'post', handle_install_post(_Request)) ->
+        dict_create(Spec, _, []),
+        user:get_form(Spec, Form),
+        ((Form::validate(_Request, Data), handle_install_post(Data)) ->
             lists:member(path(Base), _Request),
             routing::redirect(root('.'), Base)
         ;
+            Form::dict(FormDict),
             dict_create(Data, _, [
                 title: 'Install Webtalk',
                 page_header: 'Install Webtalk',
                 styles: [],
                 scripts: ['/static/js/install.js'],
-                body_classes: ['install']
+                body_classes: ['install'],
+                form: FormDict
             ]),
             templating::render_standalone(install, Data, Render),
             format(Render)
         ).
 
     :- private(handle_install_post/1).
-    handle_install_post(_Request) :-
-        http_parameters:http_parameters(_Request, [
-            admin_username(Username, [atom]),
-            admin_email(Email, [atom]),
-            admin_password(Password, [atom])
-        ]),
+    handle_install_post(Data) :-
+        swi_option:option(admin_username(Username), Data),
+        swi_option:option(admin_email(Email), Data),
+        swi_option:option(admin_password(Password), Data),
         pcre:re_match("^.+[@].+[.].{2,}$", Email),
         crypto:crypto_password_hash(Password, Hash),
         user:get_model(user, User),

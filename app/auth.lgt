@@ -21,7 +21,6 @@
 :- use_module(library(broadcast)).
 :- use_module(library(clpfd)).
 :- use_module(library(apply)).
-:- use_module(library(option)).
 
 %% Session configuration.
 % Set general sessions options.

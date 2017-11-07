@@ -12,8 +12,18 @@
 <body class="{% each body_classes, class %}{{ class }}{% end %}">
 <div class="container">
     <h2>{{ page_header }}</h2>
+    {% if form.errors \= [] %}
+    <div class="alert alert-danger">
+        <ul>
+            {% each form.errors, error %}
+            <li>{{ error }}</li>
+            {% end %}
+        </ul>
+    </div>
+    {% end %}
 
     <form id="installForm" method="post">
+        {% unescape form.csrf_token %}
         <div class="card">
             <div class="card-header"><span>Administrator</span></div>
             <div class="card-body">

@@ -37,3 +37,4 @@
 :- use_module(library(st/st_render)).
 :- use_module(library(st/st_expr)).
 :- use_module(library(pcre)).
+:- use_module(library(option)).

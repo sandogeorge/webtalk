@@ -17,6 +17,26 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- initialization(
-    logtalk_load([config, model(model)])
-).
+:- object(wellknown).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/04,
+        comment is 'Defines handlers for completing ACME challenges.'
+    ]).
+
+    :- public(well_known/1).
+    :- info(well_known/1, [
+        comment is 'Serve ACME challenges.',
+        argnames is ['_Request']
+    ]).
+    well_known(_Request) :-
+        lists:member(path(Path), _Request),
+        expand_file_search_path(app(Path), Expanded),
+        exists_file(Expanded),
+        http_files:http_reply_from_files(app('.well-known'), [], _Request).
+    well_known(_Request) :-
+        http_dispatch:http_404([], _Request).
+
+:- end_object.

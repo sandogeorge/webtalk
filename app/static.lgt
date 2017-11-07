@@ -17,6 +17,26 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- initialization(
-    logtalk_load([config, model(model)])
-).
+:- object(static).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/04,
+        comment is 'Defines handlers for static file requests.'
+    ]).
+
+    :- public(static/1).
+    :- info(static/1, [
+        comment is 'Serve files from the static directory.',
+        argnames is ['_Request']
+    ]).
+    static(_Request) :-
+        lists:member(path(Path), _Request),
+        expand_file_search_path(app(Path), Expanded),
+        exists_file(Expanded),
+        http_files:http_reply_from_files(app('./static'), [], _Request).
+    static(_Request) :-
+        http_dispatch:http_404([], _Request).
+
+:- end_object.

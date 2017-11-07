@@ -17,7 +17,7 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- object(frontend).
+:- object(main).
 
     :- info([
         version is 1.0,
@@ -40,31 +40,5 @@
         ]),
         templating::render_from_base(index, Data, Render),
         format(Render).
-
-    :- public(static/1).
-    :- info(static/1, [
-        comment is 'Serve files from the static directory.',
-        argnames is ['_Request']
-    ]).
-    static(_Request) :-
-        lists:member(path(Path), _Request),
-        expand_file_search_path(app(Path), Expanded),
-        exists_file(Expanded),
-        http_files:http_reply_from_files(app('./static'), [], _Request).
-    static(_Request) :-
-        http_dispatch:http_404([], _Request).
-
-    :- public(well_known/1).
-    :- info(well_known/1, [
-        comment is 'Serve ACME challenges.',
-        argnames is ['_Request']
-    ]).
-    well_known(_Request) :-
-        lists:member(path(Path), _Request),
-        expand_file_search_path(app(Path), Expanded),
-        exists_file(Expanded),
-        http_files:http_reply_from_files(app('.well-known'), [], _Request).
-    well_known(_Request) :-
-        http_dispatch:http_404([], _Request).
 
 :- end_object.

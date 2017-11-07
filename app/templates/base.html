@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/css/bootstrap.min.css" crossorigin="anonymous">
     {% each styles, style %}
     <link rel="stylesheet" type="text/css" href="{{ style }}" />
     {% end %}
@@ -12,21 +12,51 @@
 <body class="{% each body_classes, class %}{{ class }}{% end %}">
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" role="navigation">
         <div class="container">
-            <span class="navbar-brand mb-0">{{ site_name }}</span>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button"
+                        data-toggle="collapse" data-target="#navbarMain"
+                        aria-controls="navbarMain" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <span class="navbar-brand mb-0">{{ site_name }}</span>
+            </div>
 
             <div class="collapse navbar-collapse" id="navbarMain">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{{ url_for("main.index") }}">Home</a>
                     </li>
+                </ul>
+
+                <ul class="nav navbar-right" id="userNav">
+                    {% if \+ current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("auth.login") }}">Log in</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out</a>
+                    </li>
+                    {% end %}
                 </ul>
             </div>
         </div>
     </nav>
     <div class="container">
+        {% if page_header %}
+        <h2>{{ page_header }}</h2>
+        {% end %}
+
+        {% each messages, message, index, len %}
+        <div class="alert alert-{{ message.category }}">
+            {{ message.message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% end %}
+
         {% unescape page_content %}
     </div>
 

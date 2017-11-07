@@ -28,13 +28,20 @@
 % application.
 :- initialization((
     logtalk_load([
+        'file_paths',
         'modules',
         'config',
+        'app/lib/forms/forms',
+        'app/routing',
         'app/templating',
-        'app/frontend',
-        'app/api',
-        'app/handlers'
+        'app/static',
+        'app/wellknown',
+        'app/install',
+        'app/auth',
+        'app/main',
+        'app/api'
     ]),
+    logtalk_load('app/models/model'),
     user:app_prefix(AppPrefix),
     atom_concat(AppPrefix, 'CONFIG', Envar),
     (getenv(Envar, Config) -> true ; Config = 'development'),

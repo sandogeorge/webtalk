@@ -16,7 +16,3 @@
 % Webtalk. If not, see <http://www.gnu.org/licenses/>.
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-:- initialization(
-    logtalk_load([config, model(model)])
-).

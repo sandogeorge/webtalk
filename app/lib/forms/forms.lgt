@@ -78,7 +78,7 @@ get_form(Spec, Form) :-
             csrf_token(CSRFToken, [atom])
         ], [form_data(Data)]),
         (not(::validate_csrf_token(CSRFToken)) ->
-            ::assert_error('Expired session. Please log in again.'),
+            ::assert_error('Expired session. Please try again.'),
             false
         ; true).
 

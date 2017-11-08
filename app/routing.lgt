@@ -161,7 +161,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
           not(pcre:re_match("^/install[/]?$", Path))) ->
             lists:member(protocol(Proto), _Request),
             lists:member(host(Host), _Request),
-            lists:member(port(Port), _Request),
+            ::get_request_port(_Request, Port),
             http_dispatch:http_absolute_location(root('install'), Url, [relative_to(Path)]),
             atomic_list_concat([Proto, '://', Host, ':', Port, Url], To),
             throw(http_reply(moved_temporary(To)))
@@ -179,7 +179,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
           pcre:re_match("^/install[/]?$", Path)) ->
             lists:member(protocol(Proto), _Request),
             lists:member(host(Host), _Request),
-            lists:member(port(Port), _Request),
+            ::get_request_port(_Request, Port),
             http_dispatch:http_absolute_location(root('.'), Url, [relative_to(Path)]),
             atomic_list_concat([Proto, '://', Host, ':', Port, Url], To),
             throw(http_reply(moved_temporary(To)))
@@ -211,5 +211,9 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     ]).
     url_for(Id, Out) :-
         http_dispatch:http_location_by_id(Id, Out).
+
+    :- private(get_request_port/2).
+    get_request_port(Request, Port) :-
+        (not(lists:member(port(Port), Request)) -> Port = '80' ; true).
 
 :- end_object.

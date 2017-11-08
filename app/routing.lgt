@@ -65,7 +65,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     [Request]>>(api::index(Request)), [id("api.index")]).
 
 %% Template functions.
-:- st_expr:st_set_function(url_for, 1,
+:- st_set_function(url_for, 1,
     [Id, Out]>>(routing::url_for(Id, Out))).
 
 :- object(routing).

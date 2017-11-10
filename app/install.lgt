@@ -59,11 +59,11 @@
         swi_option:option(admin_password(Password), Data),
         pcre:re_match("^.+[@].+[.].{2,}$", Email),
         crypto:crypto_password_hash(Password, Hash),
-        user:get_model(user, User),
+        model::new(User, [name(user)]),
         not(User::exec(current, [Username, _, _, _])),
         not(User::exec(current, [_, _, Email, _])),
         User::exec(add, [Username, Hash, Email, administrator]),
-        user:get_model(flag, Flag),
+        model::new(Flag, [name(flag)]),
         Flag::exec(add, [installed, true]).
 
 :- end_object.

@@ -20,16 +20,6 @@
 :- use_module(model(flag_model)).
 :- use_module(model(user_model)).
 
-% get_model(+Name, -Model)
-%
-% Return an object to interface the specified persistency model.
-get_model(Name, Model) :-
-    create_object(Model,
-        [extends(model)],
-        [initialization(::init)],
-        [name(Name)]
-    ).
-
 :- object(model).
 
     :- info([
@@ -38,6 +28,12 @@ get_model(Name, Model) :-
         date is 2017/11/01,
         comment is 'Common object to access persistent models.'
     ]).
+
+    :- public(new/2).
+    new(Instance, Clauses) :-
+        self(Self),
+        create_object(Instance, [extends(Self)], [], Clauses),
+        Instance::init.
 
     :- public(name/1).
     :- dynamic(name/1).

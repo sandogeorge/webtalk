@@ -102,7 +102,7 @@
         ).
     :- private(handle_login/2).
     handle_login(Form, Data) :-
-        user:get_model(user, User),
+        model::new(User, [name(user)]),
         swi_option:option(login_uname_email(UoE), Data),
         swi_option:option(login_pass(Pass), Data),
         ((User::exec(current, [UoE, Hash, Email, _])
@@ -178,7 +178,7 @@
     ]).
     current_user(CurrentUser) :-
         ((::is_authenticated(Bool), Bool) ->
-            user:get_model(user, User),
+            model::new(User, [name(user)]),
             http_session:http_session_data(user_name(Username)),
             User::exec(current, [Username, _, Email, Role]),
             dict_create(CurrentUser, _, [

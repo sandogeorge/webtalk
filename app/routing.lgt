@@ -156,7 +156,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     ]).
     check_not_installed(_Request) :-
         lists:member(path(Path), _Request),
-        user:get_model(flag, Flag),
+        model::new(Flag, [name(flag)]),
         ((not(Flag::exec(current, [installed, _])),
           not(pcre:re_match("^/install[/]?$", Path))) ->
             lists:member(protocol(Proto), _Request),
@@ -173,7 +173,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     ]).
     check_already_installed(_Request) :-
         lists:member(path(Path), _Request),
-        user:get_model(flag, Flag),
+        model::new(Flag, [name(flag)]),
         ((Flag::exec(current, [installed, Installed]),
           Installed,
           pcre:re_match("^/install[/]?$", Path)) ->

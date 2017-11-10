@@ -82,7 +82,7 @@
                 type: submit
             ]
         ]]),
-        user:get_form(Spec, Form),
+        form::new(Form, [spec(Spec)]),
         ((Form::validate(_Request, Data), handle_login(Form, Data)) ->
             templating::flash('Login successful.', 'success'),
             lists:member(path(Base), _Request),

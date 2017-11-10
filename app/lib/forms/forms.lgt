@@ -20,16 +20,6 @@
 :- use_module(library(crypto)).
 :- use_module(library(base64)).
 
-% get_form(+Spec, -Form)
-%
-% Return an object to interface the specified persistency model.
-get_form(Spec, Form) :-
-    create_object(Form,
-        [extends(form)],
-        [initialization(::init)],
-        [spec(Spec)]
-    ).
-
 :- object(form).
 
     :- info([
@@ -38,6 +28,12 @@ get_form(Spec, Form) :-
         date is 2017/11/05,
         comment is 'Defines methods for working with HTML forms.'
     ]).
+
+    :- public(new/2).
+    new(Instance, Clauses) :-
+        self(Self),
+        create_object(Instance, [extends(Self)], [], Clauses),
+        Instance::init.
 
     :- public(init/0).
     init :-

@@ -34,7 +34,7 @@
     ]).
     install(_Request) :-
         dict_create(Spec, _, []),
-        user:get_form(Spec, Form),
+        form::new(Form, [spec(Spec)]),
         ((Form::validate(_Request, Data), handle_install_post(Data)) ->
             lists:member(path(Base), _Request),
             routing::redirect(root('.'), Base)

@@ -214,8 +214,8 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 
     :- private(get_request_port/2).
     get_request_port(Request, Port) :-
-        ((not(lists:member(port(Port), Request))) ->
+        (not(memberchk(port(_), Request)) ->
             (memberchk(protocol(http), Request) -> Port = '80' ; Port = '443')
-        ; true).
+        ; lists:member(port(Port), Request)).
 
 :- end_object.

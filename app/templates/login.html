@@ -12,15 +12,13 @@
     <form id="loginForm" method="post">
         {% unescape form.csrf_token %}
         <div class="form-group">
-            <label for="login-uname-email">Email or username</label>
-            <input type="text" class="form-control" id="login-uname-email"
-                    name="login_uname_email" required>
+            {% unescape form.login_uname_email.label %}
+            {% unescape form.login_uname_email.field %}
         </div>
         <div class="form-group">
-            <label for="login-pass">Password</label>
-            <input type="password" class="form-control" id="login-pass"
-                    name="login_pass" required>
+            {% unescape form.login_pass.label %}
+            {% unescape form.login_pass.field %}
         </div>
-        <button type="submit" class="btn btn-primary">Log in</button>
+        {% unescape form.submit.field %}
     </form>
 </div>

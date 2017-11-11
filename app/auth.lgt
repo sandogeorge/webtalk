@@ -69,19 +69,40 @@
         argnames is ['_Request']
     ]).
     login(_Request) :-
-        dict_create(Spec, _, [fields: [
-            login_uname_email: [
+        dict_create(Spec, _, [fields: _{
+            login_uname_email: _{
                 type: text,
-                label: 'Email or username'
-            ],
-            login_pass: [
+                attributes: _{
+                    name: login_uname_email,
+                    class: ['form-control'],
+                    required: []
+                },
+                label: _{
+                    content: 'Email or username',
+                    attributes: _{}
+                }
+            },
+            login_pass: _{
                 type: password,
-                label: 'Password'
-            ],
-            submit: [
-                type: submit
-            ]
-        ]]),
+                attributes: _{
+                    name: login_pass,
+                    class: ['form-control'],
+                    required: []
+                },
+                label: _{
+                    content: 'Password',
+                    attributes: _{}
+                }
+            },
+            submit: _{
+                type: buttonsubmit,
+                content: 'Submit',
+                attributes: _{
+                    name: submit,
+                    class: ['btn', 'btn-primary']
+                }
+            }
+        }]),
         form::new(Form, [spec(Spec)]),
         ((Form::validate(_Request, Data), handle_login(Form, Data)) ->
             templating::flash('Login successful.', 'success'),

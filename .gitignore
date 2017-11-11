@@ -6,6 +6,12 @@
 .idea/
 *.iml
 
+% Eclipse
+.project
+
+% Visual Studio
+.vscode/
+
 % Prolog and Logtalk
 .lgt_tmp/
 httpd.log

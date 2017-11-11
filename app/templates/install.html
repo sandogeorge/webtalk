@@ -32,25 +32,20 @@
                     account.
                 </p>
                 <div class="form-group">
-                    <label for="adminUsername">Username</label>
-                    <input type="text" class="form-control" id="adminUsername"
-                           name="admin_username" placeholder="superbad username" required>
+                    {% unescape form.admin_username.label %}
+                    {% unescape form.admin_username.field %}
                 </div>
                 <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <input type="password" class="form-control" id="adminPassword"
-                            name="admin_password" placeholder="strong password"
-                            required minlength="8">
+                    {% unescape form.admin_password.label %}
+                    {% unescape form.admin_password.field %}
                 </div>
                 <div class="form-group">
-                    <label for="adminEmail">Email address</label>
-                    <input type="email" class="form-control" id="adminEmail"
-                           name="admin_email" placeholder="working email"
-                           required>
+                    {% unescape form.admin_email.label %}
+                    {% unescape form.admin_email.field %}
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Install</button>
+        {% unescape form.submit.field %}
     </form>
 </div>
 

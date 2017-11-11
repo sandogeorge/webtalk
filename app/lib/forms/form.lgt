@@ -19,6 +19,8 @@
 
 :- use_module(library(crypto)).
 :- use_module(library(base64)).
+:- use_module(library(dicts)).
+:- use_module(library(pcre)).
 
 :- object(form).
 
@@ -26,7 +28,7 @@
         version is 1.0,
         author is 'Sando George',
         date is 2017/11/05,
-        comment is 'Defines methods for working with HTML forms.'
+        comment is 'Defines predicates for working with HTML forms.'
     ]).
 
     :- public(new/2).
@@ -41,11 +43,63 @@
             number_string(CSRF, CSRFString),
             crypto:crypto_data_hash(CSRFString, Token, [algorithm(sha512)]),
             base64:base64(Token, B64),
-            ::asserta(csrf_token(B64))
-        ; true).
+            ::retractall(csrf_token(_)),
+            ::assertz(csrf_token(B64))
+        ; true),
+        ::spec(Spec),
+        dicts:dict_keys(Spec.fields, Keys),
+        ::create_field(Keys, Spec.fields).
 
     :- public(spec/1).
     :- dynamic(spec/1).
+
+    :- protected(field/2).
+    :- dynamic(field/2).
+    :- info(field/2, [
+        comment is 'Get and set form fields.'
+    ]).
+
+    :- protected(create_field/2).
+    create_field([], _).
+    create_field([Field | Fields], Spec) :-
+        atom_concat(Spec.Field.type, '_field', Object),
+        ::ensure_field_id(Spec.Field, SpecId),
+        ::ensure_label_for(SpecId, SpecLabel),
+        Object::new(Instance, [spec(SpecLabel)]),
+        retractall(field(Field, _)),
+        assertz(field(Field, Instance)),
+        create_field(Fields, Spec).
+
+    :- protected(ensure_field_id/2).
+    ensure_field_id(SpecIn, SpecOut) :-
+        ((_{id: _} :< SpecIn.attributes) ->
+            SpecOut = SpecIn
+        ;
+            pcre:re_replace("_"/g, "-", SpecIn.attributes.name, Id),
+            atom_string(AtomId, Id),
+            put_dict(_{id: AtomId}, SpecIn.attributes, Attributes),
+            put_dict(_{attributes: Attributes}, SpecIn, SpecOut)).
+
+    :- protected(ensure_label_for/2).
+    ensure_label_for(SpecIn, SpecOut) :-
+        ((_{label: _} :< SpecIn) ->
+            ((_{attributes: _} :< SpecIn.label) ->
+                ((_{for: _} :< SpecIn.label.attributes) ->
+                    SpecOut = SpecIn
+                ;
+                    put_dict(
+                        _{for: SpecIn.attributes.id},
+                        SpecIn.label.attributes,
+                        Attributes
+                    ),
+                    put_dict(
+                        _{attributes: Attributes},
+                        SpecIn.label,
+                        Label
+                    ),
+                    put_dict(_{label: Label}, SpecIn, SpecOut))
+            ; SpecOut = SpecIn)
+       ; SpecOut = SpecIn).
 
     :- private(csrf_token/1).
     :- dynamic(csrf_token/1).
@@ -61,7 +115,8 @@
     assert_error(Message) :-
         ::errors(Errors),
         lists:append(Errors, [Message], NewErrors),
-        ::asserta(errors(NewErrors)).
+        ::retractall(errors(_)),
+        ::assertz(errors(NewErrors)).
 
     :- public(validate/2).
     :- info(validate/2, [
@@ -99,10 +154,23 @@
             '<input type="hidden" name="csrf_token" value="', CSRF, '">'
         ], FormCSRF),
         ::errors(Errors),
-        dict_create(Dict, _, [
+        dict_create(FormDict, _, [
             csrf_token: FormCSRF,
             errors: Errors
         ]),
-        ::asserta(errors([])).
+        findall(X, field(X, _), Xs),
+        ::field_dicts(Xs, Fields),
+        dict_create(FieldDicts, _, Fields),
+        put_dict(FormDict, FieldDicts, Dict),
+        ::retractall(errors(_)),
+        ::assertz(errors([])).
+
+    :- public(field_dicts/2).
+    field_dicts([], []).
+    field_dicts([Field | Fields], [Dict | Dicts]) :-
+        field(Field, Instance),
+        Instance::dict(FieldDict),
+        Dict = Field:FieldDict,
+        field_dicts(Fields, Dicts).
 
 :- end_object.

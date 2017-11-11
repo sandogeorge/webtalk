@@ -33,7 +33,57 @@
         comment is 'Present for initial configuration'
     ]).
     install(_Request) :-
-        dict_create(Spec, _, []),
+        dict_create(Spec, _, [
+            fields: _{
+                admin_username: _{
+                    type: text,
+                    attributes: _{
+                        name: admin_username,
+                        class: ['form-control'],
+                        placeholder: 'superbad username',
+                        required: []
+                    },
+                    label: _{
+                        content: 'Username',
+                        attributes: _{}
+                    }
+                },
+                admin_password: _{
+                    type: password,
+                    attributes: _{
+                        name: admin_password,
+                        class: ['form-control'],
+                        placeholder: 'strong password',
+                        required: []
+                    },
+                    label: _{
+                        content: 'Password',
+                        attributes: _{}
+                    }
+                },
+                admin_email: _{
+                    type: email,
+                    attributes: _{
+                        name: admin_email,
+                        class: ['form-control'],
+                        placeholder: 'working email',
+                        required: []
+                    },
+                    label: _{
+                        content: 'Email address',
+                        attributes: _{}
+                    }
+                },
+                submit: _{
+                    type: buttonsubmit,
+                    content: 'Install',
+                    attributes: _{
+                        name: submit,
+                        class: ['btn', 'btn-primary']
+                    }
+                }
+            }
+        ]),
         form::new(Form, [spec(Spec)]),
         ((Form::validate(_Request, Data), handle_install_post(Data)) ->
             lists:member(path(Base), _Request),

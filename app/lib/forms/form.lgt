@@ -37,7 +37,7 @@
         create_object(Instance, [extends(Self)], [], Clauses),
         Instance::init.
 
-    :- public(init/0).
+    :- private(init/0).
     init :-
         (http_session:http_session_data(csrf(CSRF)) ->
             number_string(CSRF, CSRFString),
@@ -50,27 +50,27 @@
         dicts:dict_keys(Spec.fields, Keys),
         ::create_field(Keys, Spec.fields).
 
-    :- public(spec/1).
+    :- private(spec/1).
     :- dynamic(spec/1).
 
-    :- protected(field/2).
+    :- private(field/2).
     :- dynamic(field/2).
     :- info(field/2, [
         comment is 'Get and set form fields.'
     ]).
 
-    :- protected(create_field/2).
+    :- private(create_field/2).
     create_field([], _).
     create_field([Field | Fields], Spec) :-
         atom_concat(Spec.Field.type, '_field', Object),
         ::ensure_field_id(Spec.Field, SpecId),
         ::ensure_label_for(SpecId, SpecLabel),
         Object::new(Instance, [spec(SpecLabel)]),
-        retractall(field(Field, _)),
-        assertz(field(Field, Instance)),
-        create_field(Fields, Spec).
+        ::retractall(field(Field, _)),
+        ::assertz(field(Field, Instance)),
+        ::create_field(Fields, Spec).
 
-    :- protected(ensure_field_id/2).
+    :- private(ensure_field_id/2).
     ensure_field_id(SpecIn, SpecOut) :-
         ((_{id: _} :< SpecIn.attributes) ->
             SpecOut = SpecIn
@@ -80,7 +80,7 @@
             put_dict(_{id: AtomId}, SpecIn.attributes, Attributes),
             put_dict(_{attributes: Attributes}, SpecIn, SpecOut)).
 
-    :- protected(ensure_label_for/2).
+    :- private(ensure_label_for/2).
     ensure_label_for(SpecIn, SpecOut) :-
         ((_{label: _} :< SpecIn) ->
             ((_{attributes: _} :< SpecIn.label) ->
@@ -158,19 +158,19 @@
             csrf_token: FormCSRF,
             errors: Errors
         ]),
-        findall(X, field(X, _), Xs),
+        findall(X, ::field(X, _), Xs),
         ::field_dicts(Xs, Fields),
         dict_create(FieldDicts, _, Fields),
         put_dict(FormDict, FieldDicts, Dict),
         ::retractall(errors(_)),
         ::assertz(errors([])).
 
-    :- public(field_dicts/2).
+    :- private(field_dicts/2).
     field_dicts([], []).
     field_dicts([Field | Fields], [Dict | Dicts]) :-
-        field(Field, Instance),
+        ::field(Field, Instance),
         Instance::dict(FieldDict),
         Dict = Field:FieldDict,
-        field_dicts(Fields, Dicts).
+        ::field_dicts(Fields, Dicts).
 
 :- end_object.

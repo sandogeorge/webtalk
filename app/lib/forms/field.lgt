@@ -40,7 +40,7 @@
     :- public(spec/1).
     :- dynamic(spec/1).
 
-    :- protected(init/0).
+    :- private(init/0).
     init :-
         ::spec(Spec),
         ((_{validators: Validators} :< Spec) ->
@@ -50,7 +50,7 @@
             ::asserta(validator_hooks(Hooks))
         ; true).
 
-    :- protected(errors/1).
+    :- private(errors/1).
     :- dynamic(errors/1).
     :- info(errors/1, [
         comment is 'Field validation errors.'
@@ -89,8 +89,6 @@
         ; Content = '').
 
 :- end_object.
-
-
 
 :- object(input_field,
     extends(field)).
@@ -440,6 +438,65 @@
 
 :- end_object.
 
+:- object(select_field,
+    extends(field)).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/09,
+        comment is 'Select field.'
+    ]).
+
+    :- private(get_options/2).
+    get_options(Spec, Options) :-
+        ::option_list(Spec.options, List),
+        atomic_list_concat(List, '~n', Options).
+
+    :- private(option_list/2).
+    option_list([], []).
+    option_list([Dict | Dicts], [Option | Options]) :-
+        ::option_markup(Dict, Option),
+        ::option_list(Dicts, Options).
+
+    :- private(option_markup/2).
+    option_markup(Dict, Markup) :-
+        form_option_widget::new(Widget, [
+            content(Dict.label),
+            attributes(_{value: Dict.value})
+        ]),
+        Widget::markup(Markup).
+
+    label_markup(Markup) :-
+        ::spec(Spec),
+        ::get_content(Spec.label, Content),
+        ::get_attributes(Spec.label, Attributes),
+        form_label_widget::new(Widget, [
+            content(Content),
+            attributes(Attributes)
+        ]),
+        Widget::markup(Markup).
+
+    field_markup(Markup) :-
+        ::spec(Spec),
+        ::get_options(Spec, Content),
+        ::get_attributes(Spec, Attributes),
+        form_select_widget::new(Widget, [
+            content(Content),
+            attributes(Attributes)
+        ]),
+        Widget::markup(Markup).
+
+    dict(Dict) :-
+        ::label_markup(Label),
+        ::field_markup(Field),
+        dict_create(Dict, _, [
+            label: Label,
+            field: Field
+        ]).
+
+:- end_object.
+
 :- object(buttonsubmit_field,
     extends(field)).
 
@@ -463,6 +520,46 @@
     dict(Dict) :-
         ::field_markup(Field),
         dict_create(Dict, _, [
+            field: Field
+        ]).
+
+:- end_object.
+
+:- object(textarea_field,
+    extends(field)).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/09,
+        comment is 'Textarea field.'
+    ]).
+
+    label_markup(Markup) :-
+        ::spec(Spec),
+        ::get_content(Spec.label, Content),
+        ::get_attributes(Spec.label, Attributes),
+        form_label_widget::new(Widget, [
+            content(Content),
+            attributes(Attributes)
+        ]),
+        Widget::markup(Markup).
+
+    field_markup(Markup) :-
+        ::spec(Spec),
+        ::get_content(Spec, Content),
+        ::get_attributes(Spec, Attributes),
+        form_textarea_widget::new(Widget, [
+            content(Content),
+            attributes(Attributes)
+        ]),
+        Widget::markup(Markup).
+
+    dict(Dict) :-
+        ::label_markup(Label),
+        ::field_markup(Field),
+        dict_create(Dict, _, [
+            label: Label,
             field: Field
         ]).
 

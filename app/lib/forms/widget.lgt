@@ -50,10 +50,10 @@
     attribute_list([], []).
     attribute_list([Attr | Attrs], [String | Strings]) :-
         ::attributes(Attributes),
-        (atom(Attributes.Attr) ->
-            Properties = Attributes.Attr
-        ;
+        (is_list(Attributes.Attr) ->
             atomic_list_concat(Attributes.Attr, ' ', Properties)
+        ;
+            Properties = Attributes.Attr
         ),
         format(atom(String), '~s="~s"', [Attr, Properties]),
         attribute_list(Attrs, Strings).
@@ -446,5 +446,65 @@
     ]).
 
     input_type(submit).
+
+:- end_object.
+
+:- object(form_option_widget,
+    extends(html_widget)).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/11,
+        comment is 'HTML <option> widget.'
+    ]).
+
+    markup(Markup) :-
+        ::attribute_string(Attributes),
+        ::content(Content),
+        format(atom(Markup), '<option ~s>~s</option>', [
+            Attributes,
+            Content
+        ]).
+
+:- end_object.
+
+:- object(form_select_widget,
+    extends(html_widget)).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/11,
+        comment is 'HTML <select> widget.'
+    ]).
+
+    markup(Markup) :-
+        ::content(Content),
+        ::attribute_string(Attributes),
+        format(atom(Markup), '<select ~s>~s</select>', [
+            Attributes,
+            Content
+        ]).
+
+:- end_object.
+
+:- object(form_textarea_widget,
+    extends(html_widget)).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/11,
+        comment is 'HTML <textarea> widget.'
+    ]).
+
+    markup(Markup) :-
+        ::attribute_string(Attributes),
+        ::content(Content),
+        format(atom(Markup), '<textarea ~s>~s</textarea>', [
+            Attributes,
+            Content
+        ]).
 
 :- end_object.

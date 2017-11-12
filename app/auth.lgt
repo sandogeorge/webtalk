@@ -66,9 +66,9 @@
     :- public(login/1).
     :- info(login/1, [
         comment is 'Serve login page',
-        argnames is ['_Request']
+        argnames is ['Request']
     ]).
-    login(_Request) :-
+    login(Request) :-
         dict_create(Spec, _, [fields: _{
             login_uname_email: _{
                 type: text,
@@ -104,9 +104,9 @@
             }
         }]),
         form::new(Form, [spec(Spec)]),
-        ((Form::validate(_Request, Data), handle_login(Form, Data)) ->
+        ((Form::validate(Request, Data), handle_login(Form, Data)) ->
             templating::flash('Login successful.', 'success'),
-            lists:member(path(Base), _Request),
+            lists:member(path(Base), Request),
             routing::redirect(root('.'), Base)
         ;
             Form::dict(FormDict),
@@ -145,12 +145,12 @@
     :- public(logout/1).
     :- info(logout/1, [
         comment is 'Log out authenticated user.',
-        argnames is ['_Request']
+        argnames is ['Request']
     ]).
-    logout(_Request) :-
+    logout(Request) :-
         ::new_session,
         templating::flash('Logout successful.', 'success'),
-        lists:member(path(Base), _Request),
+        lists:member(path(Base), Request),
         routing::redirect(root('.'), Base).
 
     :- public(is_authenticated/1).
@@ -164,8 +164,8 @@
     :- info(validate_login_access/1, [
         comment is 'Redirect to index if the user is already logged in.'
     ]).
-    validate_login_access(_Request) :-
-        lists:member(path(Path), _Request),
+    validate_login_access(Request) :-
+        lists:member(path(Path), Request),
         ::is_authenticated(Bool),
         ((Bool, pcre:re_match("^/auth/login[/]?", Path)) ->
             templating::flash('User already logged in.', 'warning'),
@@ -176,8 +176,8 @@
     :- info(validate_logout_access/1, [
         comment is 'Redirect to index if the user is not logged in.'
     ]).
-    validate_logout_access(_Request) :-
-        lists:member(path(Path), _Request),
+    validate_logout_access(Request) :-
+        lists:member(path(Path), Request),
         ::is_authenticated(Bool),
         ((\+(Bool), pcre:re_match("^/auth/logout[/]?", Path)) ->
             templating::flash('User not logged in.', 'warning'),

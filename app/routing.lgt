@@ -27,13 +27,13 @@ http:location(api, root('api'), []).
 
 %% Pre-handler goals.
 :- multifile http:request_expansion/2.
-http:request_expansion(_RequestIn, _RequestOut) :-
-    lists:member(path(Path), _RequestIn),
+http:request_expansion(RequestIn, RequestOut) :-
+    lists:member(path(Path), RequestIn),
     ((\+(pcre:re_match("^/static", Path)),
       \+(pcre:re_match("^/[.]well-known", Path))) ->
-        routing::handle_expansion(_RequestIn)
+        routing::handle_expansion(RequestIn)
     ; true),
-    _RequestOut = _RequestIn.
+    RequestOut = RequestIn.
 
 %% Declare handlers.
 
@@ -105,30 +105,30 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     :- info(handle_expansion/1, [
         comment is 'Handle all request expansion checks'
     ]).
-    handle_expansion(_Request) :-
-        ::verify_same_origin(_Request),
-        ::check_protocol(_Request),
-        ::check_not_installed(_Request),
-        ::check_already_installed(_Request),
+    handle_expansion(Request) :-
+        ::verify_same_origin(Request),
+        ::check_protocol(Request),
+        ::check_not_installed(Request),
+        ::check_already_installed(Request),
         findall(X, (expansion_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
-        ::call_expansion_hooks(Hooks, _Request).
+        ::call_expansion_hooks(Hooks, Request).
 
     :- private(verify_same_origin/1).
     :- info(verify_same_origin/1, [
         comment is 'Check headers to verify the request is same origin.'
     ]).
-    verify_same_origin(_Request) :-
-        ((lists:member(method(Method), _Request), Method == post) ->
-            lists:member(protocol(Protocol), _Request),
-            lists:member(host(Host), _Request),
+    verify_same_origin(Request) :-
+        ((lists:member(method(Method), Request), Method == post) ->
+            lists:member(protocol(Protocol), Request),
+            lists:member(host(Host), Request),
             atomic_list_concat(['^', Protocol, '://', Host], Target),
             atom_string(Target, Regex),
-            (lists:member(origin(Origin), _Request) ->
+            (lists:member(origin(Origin), Request) ->
                 (\+(pcre:re_match(Regex, Origin)) ->
                     throw(http_reply(forbidden(Origin)))
                 ; true)
             ; true),
-            (lists:member(referer(Referer), _Request) ->
+            (lists:member(referer(Referer), Request) ->
                 (\+(pcre:re_match(Regex, Referer)) ->
                     throw(http_reply(forbidden(Referer)))
                 ; true)
@@ -139,13 +139,13 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     :- info(check_protocol/1, [
         comment is 'Check if redirect is needed from HTTP to HTTPS'
     ]).
-    check_protocol(_Request) :-
-        lists:member(protocol(Proto), _Request),
+    check_protocol(Request) :-
+        lists:member(protocol(Proto), Request),
         user:app_config(AppConfig),
         AppConfig::https_only(Bool),
         ((Bool, Proto == 'http') ->
-            lists:member(host(Host), _Request),
-            lists:member(path(Path), _Request),
+            lists:member(host(Host), Request),
+            lists:member(path(Path), Request),
             atomic_list_concat(['https://', Host, Path], To),
             throw(http_reply(moved_temporary(To)))
         ; true).
@@ -154,14 +154,14 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     :- info(check_not_installed/1, [
         comment is 'Redirect to install page if the installed flag is not set.'
     ]).
-    check_not_installed(_Request) :-
-        lists:member(path(Path), _Request),
+    check_not_installed(Request) :-
+        lists:member(path(Path), Request),
         model::new(Flag, [name(flag)]),
         ((\+(Flag::exec(current, [installed, _])),
           \+(pcre:re_match("^/install[/]?$", Path))) ->
-            lists:member(protocol(Proto), _Request),
-            lists:member(host(Host), _Request),
-            ::get_request_port(_Request, Port),
+            lists:member(protocol(Proto), Request),
+            lists:member(host(Host), Request),
+            ::get_request_port(Request, Port),
             http_dispatch:http_absolute_location(root('install'), Url, [relative_to(Path)]),
             atomic_list_concat([Proto, '://', Host, ':', Port, Url], To),
             throw(http_reply(moved_temporary(To)))
@@ -171,15 +171,15 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     :- info(check_already_installed/1, [
         comment is 'Redirect to index page if the installed flag is set.'
     ]).
-    check_already_installed(_Request) :-
-        lists:member(path(Path), _Request),
+    check_already_installed(Request) :-
+        lists:member(path(Path), Request),
         model::new(Flag, [name(flag)]),
         ((Flag::exec(current, [installed, Installed]),
           Installed,
           pcre:re_match("^/install[/]?$", Path)) ->
-            lists:member(protocol(Proto), _Request),
-            lists:member(host(Host), _Request),
-            ::get_request_port(_Request, Port),
+            lists:member(protocol(Proto), Request),
+            lists:member(host(Host), Request),
+            ::get_request_port(Request, Port),
             http_dispatch:http_absolute_location(root('.'), Url, [relative_to(Path)]),
             atomic_list_concat([Proto, '://', Host, ':', Port, Url], To),
             throw(http_reply(moved_temporary(To)))
@@ -190,12 +190,12 @@ http:request_expansion(_RequestIn, _RequestOut) :-
         comment is 'Pass request to all expansion hooks for validation.'
     ]).
     call_expansion_hooks([], _).
-    call_expansion_hooks([Hook|Hooks], _Request) :-
+    call_expansion_hooks([Hook|Hooks], Request) :-
         lists:nth0(0, Hook, Object),
         lists:nth0(1, Hook, Pred),
-        Callable =.. [Pred, _Request],
+        Callable =.. [Pred, Request],
         Object::Callable,
-        call_expansion_hooks(Hooks, _Request).
+        call_expansion_hooks(Hooks, Request).
 
     :- public(redirect/2).
     :- info(redirect/2, [

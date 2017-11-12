@@ -29,14 +29,14 @@
     :- public(static/1).
     :- info(static/1, [
         comment is 'Serve files from the static directory.',
-        argnames is ['_Request']
+        argnames is ['Request']
     ]).
-    static(_Request) :-
-        lists:member(path(Path), _Request),
+    static(Request) :-
+        lists:member(path(Path), Request),
         expand_file_search_path(app(Path), Expanded),
         exists_file(Expanded),
-        http_files:http_reply_from_files(app('./static'), [], _Request).
-    static(_Request) :-
-        http_dispatch:http_404([], _Request).
+        http_files:http_reply_from_files(app('./static'), [], Request).
+    static(Request) :-
+        http_dispatch:http_404([], Request).
 
 :- end_object.

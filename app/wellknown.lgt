@@ -29,14 +29,14 @@
     :- public(well_known/1).
     :- info(well_known/1, [
         comment is 'Serve ACME challenges.',
-        argnames is ['_Request']
+        argnames is ['Request']
     ]).
-    well_known(_Request) :-
-        lists:member(path(Path), _Request),
+    well_known(Request) :-
+        lists:member(path(Path), Request),
         expand_file_search_path(app(Path), Expanded),
         exists_file(Expanded),
-        http_files:http_reply_from_files(app('.well-known'), [], _Request).
-    well_known(_Request) :-
-        http_dispatch:http_404([], _Request).
+        http_files:http_reply_from_files(app('.well-known'), [], Request).
+    well_known(Request) :-
+        http_dispatch:http_404([], Request).
 
 :- end_object.

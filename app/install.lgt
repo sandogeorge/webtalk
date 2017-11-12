@@ -32,7 +32,7 @@
     :- info(install/1, [
         comment is 'Present for initial configuration'
     ]).
-    install(_Request) :-
+    install(Request) :-
         dict_create(Spec, _, [
             fields: _{
                 admin_username: _{
@@ -85,8 +85,8 @@
             }
         ]),
         form::new(Form, [spec(Spec)]),
-        ((Form::validate(_Request, Data), handle_install_post(Data)) ->
-            lists:member(path(Base), _Request),
+        ((Form::validate(Request, Data), handle_install_post(Data)) ->
+            lists:member(path(Base), Request),
             routing::redirect(root('.'), Base)
         ;
             Form::dict(FormDict),

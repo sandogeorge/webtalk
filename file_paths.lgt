@@ -20,9 +20,9 @@
 %% Directory paths.
 :- prolog_load_context(directory, Dir),
     string_concat(Dir, "/..", BaseDir),
-    asserta(user:file_search_path(base, BaseDir)),
-    asserta(user:file_search_path(data, base('data'))),
-    asserta(user:file_search_path(app, base('app'))),
-    asserta(user:file_search_path(model, app('models'))),
-    asserta(user:file_search_path(static, app('static'))),
-    asserta(user:file_search_path(template, app('templates'))).
+    assertz(user:file_search_path(base, BaseDir)),
+    assertz(user:file_search_path(data, base('data'))),
+    assertz(user:file_search_path(app, base('app'))),
+    assertz(user:file_search_path(model, app('models'))),
+    assertz(user:file_search_path(static, app('static'))),
+    assertz(user:file_search_path(template, app('templates'))).

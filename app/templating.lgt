@@ -46,9 +46,9 @@
         user:app_config(AppConfig),
         findall(X, (AppConfig::config_property(P, V), X =.. [P, V]), Xs),
         dict_create(DefaultData, _, Xs),
-        ::asserta(default_data(DefaultData)),
+        ::assertz(default_data(DefaultData)),
         dict_create(HookData, _, []),
-        ::asserta(hook_data(HookData)),
+        ::assertz(hook_data(HookData)),
         self(Self),
         ::assert_data_hook(Self, inject_flashes).
 
@@ -64,7 +64,7 @@
     ]).
     assert_data_hook(Object, Predicate) :-
         ((nonvar(Object), nonvar(Predicate)) ->
-            ::asserta(data_hook(Object, Predicate))
+            ::assertz(data_hook(Object, Predicate))
         ; true).
 
     :- public(retract_data_hook/2).
@@ -88,7 +88,8 @@
         Object::Callable,
         ::hook_data(CurrentData),
         put_dict(CurrentData, HookData, UpdatedData),
-        ::asserta(hook_data(UpdatedData)),
+        ::retractall(hook_data(_)),
+        ::assertz(hook_data(UpdatedData)),
         call_data_hooks(Hooks).
 
     :- public(render_from_base/3).
@@ -99,7 +100,8 @@
     render_from_base(Template, Data, Render) :-
         ::default_data(DefaultData),
         dict_create(Dict, _, []),
-        ::asserta(hook_data(Dict)),
+        ::retractall(hook_data(_)),
+        ::assertz(hook_data(Dict)),
         findall(X, (data_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
         ::call_data_hooks(Hooks),
         ::hook_data(HookData),

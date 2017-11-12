@@ -101,22 +101,22 @@ app_prefix('WEBTALK_').
     ]).
     init_config_properties :-
         (get_env('SERVER_PORT', ServerPort) ->
-            ::asserta(config_property(server_port, ServerPort))
+            ::assertz(config_property(server_port, ServerPort))
         ; true),
         (get_env('SITE_NAME', SiteName) ->
-            ::asserta(config_property(site_name, SiteName))
+            ::assertz(config_property(site_name, SiteName))
         ; true),
         (get_env('JQUERY_VERSION', JQueryVersion) ->
-            ::asserta(config_property(jquery_version, JQueryVersion))
+            ::assertz(config_property(jquery_version, JQueryVersion))
         ; true),
         (get_env('JQUERY_VALIDATE_VERSION', JQueryValidateVersion) ->
-            ::asserta(config_property(jquery_validate_version, JQueryValidateVersion))
+            ::assertz(config_property(jquery_validate_version, JQueryValidateVersion))
         ; true),
         (get_env('POPPER_VERSION', PopperVersion) ->
-            ::asserta(config_property(popper_version, PopperVersion))
+            ::assertz(config_property(popper_version, PopperVersion))
         ; true),
         (get_env('BOOTSTRAP_VERSION', BootstrapVersion) ->
-            ::asserta(config_property(bootstrap_version, BootstrapVersion))
+            ::assertz(config_property(bootstrap_version, BootstrapVersion))
         ; true).
 
     :- private(init_daemon_options/0).
@@ -125,70 +125,70 @@ app_prefix('WEBTALK_').
     ]).
     init_daemon_options :-
         (get_env('DAEMONIZE', Daemonize) ->
-            ::asserta(daemonize(Daemonize))
+            ::assertz(daemonize(Daemonize))
         ; true),
         (get_env('DAEMON_HTTPS_ONLY', HttpsOnly) ->
-            ::asserta(https_only(HttpsOnly))
+            ::assertz(https_only(HttpsOnly))
         ; true),
         (get_env('DAEMON_PORT', Port) ->
-            ::asserta(daemon_option(port, Port))
+            ::assertz(daemon_option(port, Port))
         ; true),
         (get_env('DAEMON_IP', IP) ->
-            ::asserta(daemon_option(ip, IP))
+            ::assertz(daemon_option(ip, IP))
         ; true),
         (get_env('DAEMON_DEBUG', Debug) ->
-            ::asserta(daemon_option(debug, Debug))
+            ::assertz(daemon_option(debug, Debug))
         ; true),
         (get_env('DAEMON_SYSLOG', Syslog) ->
-            ::asserta(daemon_option(syslog, Syslog))
+            ::assertz(daemon_option(syslog, Syslog))
         ; true),
         (get_env('DAEMON_USER', User) ->
-            ::asserta(daemon_option(user, User))
+            ::assertz(daemon_option(user, User))
         ; true),
         (get_env('DAEMON_GROUP', Group) ->
-            ::asserta(daemon_option(group, Group))
+            ::assertz(daemon_option(group, Group))
         ; true),
         (get_env('DAEMON_PIDFILE', Pidfile) ->
-            ::asserta(daemon_option(pidfile, Pidfile))
+            ::assertz(daemon_option(pidfile, Pidfile))
         ; true),
         (get_env('DAEMON_OUTPUT', Output) ->
-            ::asserta(daemon_option(output, Output))
+            ::assertz(daemon_option(output, Output))
         ; true),
         (get_env('DAEMON_FORK', Fork) ->
-            ::asserta(daemon_option(fork, Fork))
+            ::assertz(daemon_option(fork, Fork))
         ; true),
         (get_env('DAEMON_HTTP', Http) ->
-            ::asserta(daemon_option(http, Http))
+            ::assertz(daemon_option(http, Http))
         ; true),
         (get_env('DAEMON_HTTPS', Https) ->
-            ::asserta(daemon_option(https, Https))
+            ::assertz(daemon_option(https, Https))
         ; true),
         (get_env('DAEMON_CERTFILE', Certfile) ->
-            ::asserta(daemon_option(certfile, Certfile))
+            ::assertz(daemon_option(certfile, Certfile))
         ; true),
         (get_env('DAEMON_KEYFILE', Keyfile) ->
-            ::asserta(daemon_option(keyfile, Keyfile))
+            ::assertz(daemon_option(keyfile, Keyfile))
         ; true),
         (get_env('DAEMON_PWFILE', Pwfile) ->
-            ::asserta(daemon_option(pwfile, Pwfile))
+            ::assertz(daemon_option(pwfile, Pwfile))
         ; true),
         (get_env('DAEMON_PASSWORD', Password) ->
-            ::asserta(daemon_option(password, Password))
+            ::assertz(daemon_option(password, Password))
         ; true),
         (get_env('DAEMON_CIPHERLIST', Cipherlist) ->
-            ::asserta(daemon_option(cipherlist, Cipherlist))
+            ::assertz(daemon_option(cipherlist, Cipherlist))
         ; true),
         (get_env('DAEMON_INTERACTIVE', Interactive) ->
-            ::asserta(daemon_option(interactive, Interactive))
+            ::assertz(daemon_option(interactive, Interactive))
         ; true),
         (get_env('DAEMON_GTRACE', Gtrace) ->
-            ::asserta(daemon_option(gtrace, Gtrace))
+            ::assertz(daemon_option(gtrace, Gtrace))
         ; true),
         (get_env('DAEMON_SIGHUP', Sighup) ->
-            ::asserta(daemon_option(sighup, Sighup))
+            ::assertz(daemon_option(sighup, Sighup))
         ; true),
         (get_env('DAEMON_WORKERS', Workers) ->
-            ::asserta(daemon_option(workers, Workers))
+            ::assertz(daemon_option(workers, Workers))
         ; true).
 
     :- private(get_env/2).

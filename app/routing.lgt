@@ -89,7 +89,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     ]).
     assert_expansion_hook(Object, Predicate) :-
         ((nonvar(Object), nonvar(Predicate)) ->
-            ::asserta(expansion_hook(Object, Predicate))
+            ::assertz(expansion_hook(Object, Predicate))
         ; true).
 
     :- public(retract_expansion_hook/2).

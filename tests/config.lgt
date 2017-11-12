@@ -35,7 +35,8 @@
         create_object(Config, [extends(config)], [], []),
         Config::config_property(server_port, Port),
         Port == 5000,
-        Config::asserta(config_property(server_port, 4000)),
+        Config::retractall(config_property(server_port, _)),
+        Config::assertz(config_property(server_port, 4000)),
         Config::config_property(server_port, NewPort),
         NewPort == 4000,
         abolish_object(Config).

@@ -49,7 +49,7 @@
     atom_concat(AppPrefix, 'CONFIG', Envar),
     (getenv(Envar, Config) -> true ; Config = 'development'),
     atom_concat(Config, '_config', AppConfig),
-    asserta(user:app_config(AppConfig)),
+    assertz(user:app_config(AppConfig)),
     templating::init,
     ((AppConfig::daemonize(Bool), Bool) ->
         findall(X, (AppConfig::daemon_option(O, V), X =.. [O, V]), Options),

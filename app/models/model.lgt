@@ -53,7 +53,7 @@
         atom_concat(Model, '.db', DbName),
         expand_file_search_path(data(DbName), File),
         ::attach_db(File),
-        ::asserta(file(File)).
+        ::assertz(file(File)).
 
     :- public(exec/2).
     :- info(exec/2, [

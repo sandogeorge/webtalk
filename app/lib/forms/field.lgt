@@ -44,10 +44,10 @@
     init :-
         ::spec(Spec),
         ((_{validators: Validators} :< Spec) ->
-            ::asserta(validators(Validators))
+            ::assertz(validators(Validators))
         ; true),
         ((_{validator_hooks: Hooks} :< Spec) ->
-            ::asserta(validator_hooks(Hooks))
+            ::assertz(validator_hooks(Hooks))
         ; true).
 
     :- private(errors/1).

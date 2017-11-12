@@ -28,7 +28,7 @@ current_flag(Name, Value) :-
 
 add_flag(Name, Value) :-
     findall(X, current_flag(X, _), Names),
-    not(member(Name, Names)),
+    \+(member(Name, Names)),
     assert_flag_record(Name, Value).
 
 update_flag(Name, Value) :-

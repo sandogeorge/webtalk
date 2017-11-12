@@ -128,7 +128,7 @@
         http_parameters:http_parameters(Request, [
             csrf_token(CSRFToken, [atom])
         ], [form_data(Data)]),
-        (not(::validate_csrf_token(CSRFToken)) ->
+        (\+(::validate_csrf_token(CSRFToken)) ->
             ::assert_error('Expired session. Please try again.'),
             false
         ; true).

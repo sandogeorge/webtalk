@@ -28,7 +28,7 @@ current_user(Name, Pass, Email, Role) :-
 
 add_user(Name, Pass, Email, Role) :-
     findall(X, current_user(X, _, _, _), Names),
-    not(member(Name, Names)),
+    \+(member(Name, Names)),
     assert_user_record(Name, Pass, Email, Role).
 
 update_user(Name, Pass, Email, Role) :-

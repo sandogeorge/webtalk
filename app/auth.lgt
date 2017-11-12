@@ -128,7 +128,7 @@
         swi_option:option(login_pass(Pass), Data),
         ((User::exec(current, [UoE, Hash, Email, _])
           ; User::exec(current, [Username, Hash, UoE, _])) ->
-            (not(crypto:crypto_password_hash(Pass, Hash)) ->
+            (\+(crypto:crypto_password_hash(Pass, Hash)) ->
                 Form::assert_error('Invalid email/username and password combination.'),
                 false
             ; true),
@@ -179,7 +179,7 @@
     validate_logout_access(_Request) :-
         lists:member(path(Path), _Request),
         ::is_authenticated(Bool),
-        ((not(Bool), pcre:re_match("^/auth/logout[/]?", Path)) ->
+        ((\+(Bool), pcre:re_match("^/auth/logout[/]?", Path)) ->
             templating::flash('User not logged in.', 'warning'),
             routing::redirect(root('.'), Path)
         ; true).

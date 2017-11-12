@@ -110,8 +110,8 @@
         pcre:re_match("^.+[@].+[.].{2,}$", Email),
         crypto:crypto_password_hash(Password, Hash),
         model::new(User, [name(user)]),
-        not(User::exec(current, [Username, _, _, _])),
-        not(User::exec(current, [_, _, Email, _])),
+        \+(User::exec(current, [Username, _, _, _])),
+        \+(User::exec(current, [_, _, Email, _])),
         User::exec(add, [Username, Hash, Email, administrator]),
         model::new(Flag, [name(flag)]),
         Flag::exec(add, [installed, true]).

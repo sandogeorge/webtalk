@@ -29,8 +29,8 @@ http:location(api, root('api'), []).
 :- multifile http:request_expansion/2.
 http:request_expansion(_RequestIn, _RequestOut) :-
     lists:member(path(Path), _RequestIn),
-    ((not(pcre:re_match("^/static", Path)),
-      not(pcre:re_match("^/[.]well-known", Path))) ->
+    ((\+(pcre:re_match("^/static", Path)),
+      \+(pcre:re_match("^/[.]well-known", Path))) ->
         routing::handle_expansion(_RequestIn)
     ; true),
     _RequestOut = _RequestIn.
@@ -124,12 +124,12 @@ http:request_expansion(_RequestIn, _RequestOut) :-
             atomic_list_concat(['^', Protocol, '://', Host], Target),
             atom_string(Target, Regex),
             (lists:member(origin(Origin), _Request) ->
-                (not(pcre:re_match(Regex, Origin)) ->
+                (\+(pcre:re_match(Regex, Origin)) ->
                     throw(http_reply(forbidden(Origin)))
                 ; true)
             ; true),
             (lists:member(referer(Referer), _Request) ->
-                (not(pcre:re_match(Regex, Referer)) ->
+                (\+(pcre:re_match(Regex, Referer)) ->
                     throw(http_reply(forbidden(Referer)))
                 ; true)
             ; true)
@@ -157,8 +157,8 @@ http:request_expansion(_RequestIn, _RequestOut) :-
     check_not_installed(_Request) :-
         lists:member(path(Path), _Request),
         model::new(Flag, [name(flag)]),
-        ((not(Flag::exec(current, [installed, _])),
-          not(pcre:re_match("^/install[/]?$", Path))) ->
+        ((\+(Flag::exec(current, [installed, _])),
+          \+(pcre:re_match("^/install[/]?$", Path))) ->
             lists:member(protocol(Proto), _Request),
             lists:member(host(Host), _Request),
             ::get_request_port(_Request, Port),
@@ -214,7 +214,7 @@ http:request_expansion(_RequestIn, _RequestOut) :-
 
     :- private(get_request_port/2).
     get_request_port(Request, Port) :-
-        (not(memberchk(port(_), Request)) ->
+        (\+(memberchk(port(_), Request)) ->
             (memberchk(protocol(http), Request) -> Port = '80' ; Port = '443')
         ; lists:member(port(Port), Request)).
 

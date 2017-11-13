@@ -105,7 +105,7 @@ http:request_expansion(RequestIn, RequestOut) :-
     ]).
     retract_expansion_hook(Object, Predicate) :-
         (nonvar(Object) ->
-            ::retract(expansion_hook(Object, Predicate))
+            ::retractall(expansion_hook(Object, Predicate))
         ; true).
 
     :- public(handle_expansion/1).

@@ -78,7 +78,7 @@
     ]).
     retract_data_hook(Object, Predicate) :-
         (nonvar(Object) ->
-            ::retract(data_hook(Object, Predicate))
+            ::retractall(data_hook(Object, Predicate))
         ; true).
 
     :- private(call_data_hooks/1).

@@ -36,12 +36,12 @@
         'core/models/model',
         'core/lib/routing/routing',
         'core/lib/templating/templating',
-        'core/static',
-        'core/wellknown',
-        'core/install',
-        'core/auth',
-        'core/main',
-        'core/api'
+        'core/blueprints/static/static',
+        'core/blueprints/wellknown/wellknown',
+        'core/blueprints/install/install',
+        'core/blueprints/auth/auth',
+        'core/blueprints/main/main',
+        'core/blueprints/api/api'
     ]),
     user:app_prefix(AppPrefix),
     atom_concat(AppPrefix, 'CONFIG', Envar),

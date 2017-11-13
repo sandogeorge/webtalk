@@ -42,35 +42,6 @@ http:request_expansion(RequestIn, RequestOut) :-
     ; true),
     RequestOut = RequestIn.
 
-%% Declare handlers.
-
-% Index page.
-:- http_handler(root('.'),
-    [Request]>>(main::index(Request)), [id("main.index")]).
-
-% Install page.
-:- http_handler(root('install'),
-    [Request]>>(install::install(Request)), [id("install")]).
-
-% Authentication pages.
-:- http_handler(auth('login'),
-    [Request]>>(auth::login(Request)), [id("auth.login")]).
-
-:- http_handler(auth('logout'),
-    [Request]>>(auth::logout(Request)), [id("auth.logout")]).
-
-% Static files.
-:- http_handler(static('.'),
-    [Request]>>(static::static(Request)), [id("static"), prefix]).
-
-% Certbot.
-:- http_handler(well_known('.'),
-    [Request]>>(wellknown::well_known(Request)), [id("well_known"), prefix]).
-
-% API endpoints.
-:- http_handler(api('.'),
-    [Request]>>(api::index(Request)), [id("api.index")]).
-
 %% Template functions.
 :- st_set_function(url_for, 1,
     [Id, Out]>>(routing::url_for(Id, Out))).

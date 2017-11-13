@@ -17,9 +17,16 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(apply_macros)).
 :- use_module(library(lists)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_files)).
+:- use_module(library(yall)).
+
+
+% Static endpoints.
+:- http_handler(static('.'),
+    [Request]>>(static::static(Request)), [id("static"), prefix]).
 
 :- object(static).
 

@@ -17,7 +17,13 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(apply_macros)).
 :- use_module(library(http/http_json)).
+:- use_module(library(yall)).
+
+%% API endpoints.
+:- http_handler(api('.'),
+    [Request]>>(api::index(Request)), [id("api.index")]).
 
 :- object(api).
 

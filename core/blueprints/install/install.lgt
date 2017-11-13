@@ -17,10 +17,16 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(apply_macros)).
 :- use_module(library(crypto)).
 :- use_module(library(lists)).
 :- use_module(library(option)).
 :- use_module(library(pcre)).
+:- use_module(library(yall)).
+
+% Installation endpoints.
+:- http_handler(root('install'),
+    [Request]>>(install::install(Request)), [id("install")]).
 
 :- object(install).
 

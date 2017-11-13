@@ -17,9 +17,15 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(apply_macros)).
 :- use_module(library(lists)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_files)).
+:- use_module(library(yall)).
+
+% Certbot endpoints.
+:- http_handler(well_known('.'),
+    [Request]>>(wellknown::well_known(Request)), [id("well_known"), prefix]).
 
 :- object(wellknown).
 

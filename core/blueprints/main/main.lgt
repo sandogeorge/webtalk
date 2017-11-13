@@ -17,6 +17,13 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(apply_macros)).
+:- use_module(library(yall)).
+
+% Main endpoints.
+:- http_handler(root('.'),
+    [Request]>>(main::index(Request)), [id("main.index")]).
+
 :- object(main).
 
     :- info([

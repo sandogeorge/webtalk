@@ -17,6 +17,7 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(apply_macros)).
 :- use_module(library(apply)).
 :- use_module(library(broadcast)).
 :- use_module(library(clpfd)).
@@ -25,6 +26,7 @@
 :- use_module(library(lists)).
 :- use_module(library(option)).
 :- use_module(library(pcre)).
+:- use_module(library(yall)).
 
 %% Session configuration.
 % Set general sessions options.
@@ -36,6 +38,13 @@
 % Generate a CSRF token for each session.
 :- listen(http_session(begin(SessionId, _)),
             auth::generate_csrf_token(SessionId)).
+
+%% Authentication endpoints.
+:- http_handler(auth('login'),
+    [Request]>>(auth::login(Request)), [id("auth.login")]).
+
+:- http_handler(auth('logout'),
+    [Request]>>(auth::logout(Request)), [id("auth.logout")]).
 
 :- object(auth).
 

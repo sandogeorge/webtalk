@@ -22,7 +22,7 @@
     string_concat(Dir, "/..", BaseDir),
     assertz(user:file_search_path(base, BaseDir)),
     assertz(user:file_search_path(data, base('data'))),
-    assertz(user:file_search_path(app, base('app'))),
-    assertz(user:file_search_path(model, app('models'))),
-    assertz(user:file_search_path(static, app('static'))),
-    assertz(user:file_search_path(template, app('templates'))).
+    assertz(user:file_search_path(core, base('core'))),
+    assertz(user:file_search_path(model, core('models'))),
+    assertz(user:file_search_path(static, core('static'))),
+    assertz(user:file_search_path(template, core('templates'))).

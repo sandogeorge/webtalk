@@ -17,12 +17,9 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- use_module(library(apply_macros)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(lists)).
 :- use_module(library(pcre)).
-:- use_module(library(st/st_expr)).
-:- use_module(library(yall)).
 
 %% Abstract paths.
 :- multifile http:location/3.
@@ -41,10 +38,6 @@ http:request_expansion(RequestIn, RequestOut) :-
         routing::handle_expansion(RequestIn)
     ; true),
     RequestOut = RequestIn.
-
-%% Template functions.
-:- st_set_function(url_for, 1,
-    [Id, Out]>>(routing::url_for(Id, Out))).
 
 :- object(routing).
 
@@ -182,13 +175,6 @@ http:request_expansion(RequestIn, RequestOut) :-
     redirect(Spec, Base) :-
         http_dispatch:http_absolute_location(Spec, Url, [relative_to(Base)]),
         throw(http_reply(moved_temporary(Url))).
-
-    :- public(url_for/2).
-    :- info(url_for/2, [
-        comment is 'Given a handler ID, return the url.'
-    ]).
-    url_for(Id, Out) :-
-        http_dispatch:http_location_by_id(Id, Out).
 
     :- private(get_request_port/2).
     get_request_port(Request, Port) :-

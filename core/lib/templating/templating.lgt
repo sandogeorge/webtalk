@@ -21,6 +21,11 @@
 :- use_module(library(lists)).
 :- use_module(library(memfile)).
 :- use_module(library(st/st_render)).
+:- use_module(library(st/st_expr)).
+
+%% Template functions.
+:- st_set_function(url_for, 1,
+    [Id, Out]>>(templating::url_for(Id, Out))).
 
 :- object(templating).
 
@@ -206,5 +211,12 @@
             dict_create(Flashes, _, [messages: F]),
             http_session:http_session_retract(flashes(_))
         ; dict_create(Flashes, _, [messages: []])).
+
+    :- public(url_for/2).
+    :- info(url_for/2, [
+        comment is 'Given a handler ID, return the url.'
+    ]).
+    url_for(Id, Out) :-
+        http_dispatch:http_location_by_id(Id, Out).
 
 :- end_object.

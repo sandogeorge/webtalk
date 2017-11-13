@@ -62,6 +62,12 @@ app_prefix('WEBTALK_').
         comment is 'Base configuration object.'
     ]).
 
+    :- public(new/2).
+    new(Instance, Clauses) :-
+        self(Self),
+        create_object(Instance, [extends(Self)], [], Clauses),
+        Instance::init.
+
     :- public(config_property/2).
     :- dynamic(config_property/2).
     :- info(config_property/2, [
@@ -96,7 +102,6 @@ app_prefix('WEBTALK_').
     ]).
     https_only(false).
 
-    :- initialization(init).
     :- private(init/0).
     :- info(init/0, [
         comment is 'Read common configs from env vars. Use defaults if empty.'

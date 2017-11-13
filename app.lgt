@@ -47,6 +47,7 @@
     atom_concat(AppPrefix, 'CONFIG', Envar),
     (getenv(Envar, Config) -> true ; Config = 'development'),
     atom_concat(Config, '_config', AppConfig),
+    AppConfig::new(_, []),
     assertz(user:app_config(AppConfig)),
     templating::init,
     ((AppConfig::daemonize(Bool), Bool) ->

@@ -20,7 +20,7 @@
 :- initialization((
     set_logtalk_flag(report, warnings),
     logtalk_load(lgtunit(loader)),
-    logtalk_load([config, 'app/models/model']),
+    logtalk_load([config, 'app/model/model']),
     use_module(model(user_model)),
     logtalk_load([
         'tests/config',

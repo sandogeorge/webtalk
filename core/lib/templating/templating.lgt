@@ -17,11 +17,13 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(apply_macros)).
 :- use_module(library(http/http_session)).
 :- use_module(library(lists)).
 :- use_module(library(memfile)).
 :- use_module(library(st/st_render)).
 :- use_module(library(st/st_expr)).
+:- use_module(library(yall)).
 
 %% Template functions.
 :- st_set_function(url_for, 1,

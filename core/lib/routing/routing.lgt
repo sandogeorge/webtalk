@@ -17,6 +17,13 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(apply_macros)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(lists)).
+:- use_module(library(pcre)).
+:- use_module(library(st/st_expr)).
+:- use_module(library(yall)).
+
 %% Abstract paths.
 :- multifile http:location/3.
 :- dynamic http:location/3.

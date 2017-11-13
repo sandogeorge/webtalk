@@ -17,9 +17,12 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- use_module(library(crypto)).
 :- use_module(library(base64)).
+:- use_module(library(crypto)).
 :- use_module(library(dicts)).
+:- use_module(library(http/http_parameters)).
+:- use_module(library(http/http_session)).
+:- use_module(library(lists)).
 :- use_module(library(pcre)).
 
 :- object(form).

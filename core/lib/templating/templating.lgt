@@ -17,6 +17,11 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(http/http_session)).
+:- use_module(library(lists)).
+:- use_module(library(memfile)).
+:- use_module(library(st/st_render)).
+
 :- object(templating).
 
     :- info([

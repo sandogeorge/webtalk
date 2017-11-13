@@ -29,7 +29,6 @@
 :- initialization((
     logtalk_load([
         'paths',
-        'modules',
         'config',
         'core/lib/forms/validator',
         'core/lib/forms/widget',
@@ -57,5 +56,7 @@
         http_daemon(Options)
     ;
         call(AppConfig::config_property(server_port, ServerPort)),
+        use_module(library(http/thread_httpd)),
+        use_module(library(http/http_dispatch)),
         threaded_ignore(http_server(http_dispatch, [port(ServerPort)])))
 )).

@@ -17,6 +17,10 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- use_module(library(lists)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_files)).
+
 :- object(wellknown).
 
     :- info([

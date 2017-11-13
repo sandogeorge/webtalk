@@ -17,10 +17,14 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- use_module(library(crypto)).
+:- use_module(library(apply)).
 :- use_module(library(broadcast)).
 :- use_module(library(clpfd)).
-:- use_module(library(apply)).
+:- use_module(library(crypto)).
+:- use_module(library(http/http_session)).
+:- use_module(library(lists)).
+:- use_module(library(option)).
+:- use_module(library(pcre)).
 
 %% Session configuration.
 % Set general sessions options.

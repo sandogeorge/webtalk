@@ -19,7 +19,6 @@
 
 :- initialization((
     set_logtalk_flag(report, warnings),
-    logtalk_load(paths),
     logtalk_load(lgtunit(loader)),
     logtalk_load([config, 'app/models/model']),
     use_module(model(user_model)),

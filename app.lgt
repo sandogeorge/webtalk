@@ -28,7 +28,6 @@
 % application.
 :- initialization((
     logtalk_load([
-        'paths',
         'config',
         'core/lib/forms/validator',
         'core/lib/forms/widget',

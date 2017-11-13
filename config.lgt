@@ -19,6 +19,16 @@
 
 %% Application configuration.
 
+% Directory paths.
+:- prolog_load_context(directory, Dir),
+    string_concat(Dir, "/..", BaseDir),
+    assertz(user:file_search_path(base, BaseDir)),
+    assertz(user:file_search_path(data, base('data'))),
+    assertz(user:file_search_path(core, base('core'))),
+    assertz(user:file_search_path(model, core('models'))),
+    assertz(user:file_search_path(static, core('static'))),
+    assertz(user:file_search_path(template, core('templates'))).
+
 % app_prefix(?Prefix)
 %
 % The application prefix is used when importing configuration values from

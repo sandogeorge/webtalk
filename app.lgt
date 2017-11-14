@@ -50,6 +50,9 @@
     AppConfig::new(Instance, []),
     assertz(user:app_config(Instance)),
     templating::init,
+    use_module(library(http/http_log)),
+    use_module(library(settings)),
+    set_setting(http:logfile, '/tmp/httpd.log'),
     ((Instance::daemonize(Bool), Bool) ->
         findall(X, (Instance::daemon_option(O, V), X =.. [O, V]), Options),
         use_module(library(http/http_unix_daemon)),

@@ -31,8 +31,10 @@
     assertz(user:file_search_path(extension, app('extension'))),
     %% Core directory.
     assertz(user:file_search_path(core, base('core'))),
+    assertz(user:file_search_path(blueprint, core('blueprint'))),
+    assertz(user:file_search_path(static, blueprint('static'))),
+    assertz(user:file_search_path(wellknown, blueprint('wellknown'))),
     assertz(user:file_search_path(model, core('model'))),
-    assertz(user:file_search_path(static, core('static'))),
     assertz(user:file_search_path(theme, core('theme'))),
     assertz(user:file_search_path(extension, core('extension'))).
 

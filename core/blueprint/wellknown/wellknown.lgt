@@ -24,7 +24,7 @@
 :- use_module(library(yall)).
 
 % Certbot endpoints.
-:- http_handler(well_known('.'),
+:- http_handler(well_known(.),
     [Request]>>(wellknown::well_known(Request)), [id("well_known"), prefix]).
 
 :- object(wellknown).
@@ -43,9 +43,9 @@
     ]).
     well_known(Request) :-
         lists:member(path(Path), Request),
-        expand_file_search_path(app(Path), Expanded),
+        expand_file_search_path(wellknown(Path), Expanded),
         exists_file(Expanded),
-        http_files:http_reply_from_files(app('.well-known'), [], Request).
+        http_files:http_reply_from_files(wellknown('.well-known'), [], Request).
     well_known(Request) :-
         http_dispatch:http_404([], Request).
 

@@ -25,7 +25,7 @@
 
 
 % Static endpoints.
-:- http_handler(static('.'),
+:- http_handler(static(.),
     [Request]>>(static::static(Request)), [id("static"), prefix]).
 
 :- object(static).
@@ -44,9 +44,9 @@
     ]).
     static(Request) :-
         lists:member(path(Path), Request),
-        expand_file_search_path(app(Path), Expanded),
+        expand_file_search_path(static(Path), Expanded),
         exists_file(Expanded),
-        http_files:http_reply_from_files(app('./static'), [], Request).
+        http_files:http_reply_from_files(static('static'), [], Request).
     static(Request) :-
         http_dispatch:http_404([], Request).
 

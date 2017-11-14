@@ -23,8 +23,12 @@
 :- use_module(library(http/http_files)).
 :- use_module(library(yall)).
 
+%% Abstract paths.
+:- multifile http:location/3.
+:- dynamic http:location/3.
+http:location(static, root('static'), []).
 
-% Static endpoints.
+%% Static endpoints.
 :- http_handler(static(.),
     [Request]>>(static::static(Request)), [id("static"), prefix]).
 

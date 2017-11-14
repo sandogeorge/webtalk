@@ -21,6 +21,11 @@
 :- use_module(library(http/http_json)).
 :- use_module(library(yall)).
 
+%% Abstract paths.
+:- multifile http:location/3.
+:- dynamic http:location/3.
+http:location(api, root('api'), []).
+
 %% API endpoints.
 :- http_handler(api('.'),
     [Request]>>(api::index(Request)), [id("api.index")]).

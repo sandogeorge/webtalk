@@ -21,14 +21,6 @@
 :- use_module(library(lists)).
 :- use_module(library(pcre)).
 
-%% Abstract paths.
-:- multifile http:location/3.
-:- dynamic http:location/3.
-http:location(static, root('static'), []).
-http:location(well_known, root('.well-known'), []).
-http:location(auth, root('auth'), []).
-http:location(api, root('api'), []).
-
 %% Pre-handler goals.
 :- multifile http:request_expansion/2.
 http:request_expansion(RequestIn, RequestOut) :-

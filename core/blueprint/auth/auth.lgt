@@ -39,6 +39,11 @@
 :- listen(http_session(begin(SessionId, _)),
             auth::generate_csrf_token(SessionId)).
 
+%% Abstract paths.
+:- multifile http:location/3.
+:- dynamic http:location/3.
+http:location(auth, root('auth'), []).
+
 %% Authentication endpoints.
 :- http_handler(auth('login'),
     [Request]>>(auth::login(Request)), [id("auth.login")]).

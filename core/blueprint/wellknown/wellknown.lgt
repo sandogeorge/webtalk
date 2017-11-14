@@ -23,7 +23,12 @@
 :- use_module(library(http/http_files)).
 :- use_module(library(yall)).
 
-% Certbot endpoints.
+%% Abstract paths.
+:- multifile http:location/3.
+:- dynamic http:location/3.
+http:location(well_known, root('.well-known'), []).
+
+%% Certbot endpoints.
 :- http_handler(well_known(.),
     [Request]>>(wellknown::well_known(Request)), [id("well_known"), prefix]).
 

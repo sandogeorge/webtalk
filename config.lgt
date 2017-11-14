@@ -23,11 +23,19 @@
 :- prolog_load_context(directory, Dir),
     string_concat(Dir, "/..", BaseDir),
     assertz(user:file_search_path(base, BaseDir)),
+    %% Data directory.
     assertz(user:file_search_path(data, base('data'))),
+    %% App directory.
+    assertz(user:file_search_path(app, base('app'))),
+    assertz(user:file_search_path(app_theme, app('theme'))),
+    assertz(user:file_search_path(app_extension, app('extension'))),
+    %% Core directory.
     assertz(user:file_search_path(core, base('core'))),
     assertz(user:file_search_path(model, core('model'))),
     assertz(user:file_search_path(static, core('static'))),
-    assertz(user:file_search_path(template, core('template'))).
+    assertz(user:file_search_path(template, core('template'))),
+    assertz(user:file_search_path(core_theme, core('theme'))),
+    assertz(user:file_search_path(core_extension, core('extension'))).
 
 % app_prefix(?Prefix)
 %

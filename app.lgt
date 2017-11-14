@@ -47,15 +47,15 @@
     atom_concat(AppPrefix, 'CONFIG', Envar),
     (getenv(Envar, Config) -> true ; Config = 'development'),
     atom_concat(Config, '_config', AppConfig),
-    AppConfig::new(_, []),
-    assertz(user:app_config(AppConfig)),
+    AppConfig::new(Instance, []),
+    assertz(user:app_config(Instance)),
     templating::init,
-    ((AppConfig::daemonize(Bool), Bool) ->
-        findall(X, (AppConfig::daemon_option(O, V), X =.. [O, V]), Options),
+    ((Instance::daemonize(Bool), Bool) ->
+        findall(X, (Instance::daemon_option(O, V), X =.. [O, V]), Options),
         use_module(library(http/http_unix_daemon)),
         http_daemon(Options)
     ;
-        call(AppConfig::config_property(server_port, ServerPort)),
+        call(Instance::config_property(server_port, ServerPort)),
         use_module(library(http/thread_httpd)),
         use_module(library(http/http_dispatch)),
         threaded_ignore(http_server(http_dispatch, [port(ServerPort)])))

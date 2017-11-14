@@ -21,6 +21,7 @@
 :- use_module(library(http/http_session)).
 :- use_module(library(lists)).
 :- use_module(library(memfile)).
+:- use_module(library(pcre)).
 :- use_module(library(st/st_render)).
 :- use_module(library(st/st_expr)).
 :- use_module(library(yall)).
@@ -122,7 +123,8 @@
         % Merge global data with content specific data and parse contnent
         % template.
         put_dict(HookedData, Data, ContentData),
-        ::parse_template(template(Template), ContentData, Content),
+        ::find_theme_template(Template, ContentTemplate),
+        ::parse_template(ContentTemplate, ContentData, Content),
         dict_create(_Content, _, [page_content:Content]),
         put_dict(_Content, ContentData, BaseDataContent),
         %
@@ -139,7 +141,8 @@
         put_dict(_Scripts, BaseDataStyles, BaseDataAll),
         %
         % Parse base template and render final content.
-        ::parse_template(template(base), BaseDataAll, Base),
+        ::find_theme_template(base, BaseTemplate),
+        ::parse_template(BaseTemplate, BaseDataAll, Base),
         string_concat('Content-type: text/html~n~n', Base, Render).
 
     :- public(render_standalone/3).
@@ -172,8 +175,9 @@
         dict_create(_Scripts, _, [scripts:Scripts]),
         put_dict(_Scripts, BaseDataStyles, BaseDataAll),
         %
-        % Parse base template and render final content.
-        ::parse_template(template(Template), BaseDataAll, Base),
+        % Parse template and render final content.
+        ::find_theme_template(Template, ThemeTemplate),
+        ::parse_template(ThemeTemplate, BaseDataAll, Base),
         string_concat('Content-type: text/html~n~n', Base, Render).
 
     :- private(parse_template/3).
@@ -190,6 +194,26 @@
         memory_file:open_memory_file(Handle, read, In, [free_on_close(true)]),
         read_string(In, _, Content),
         close(In).
+
+    :- private(find_theme_template/2).
+    find_theme_template(Search, Template) :-
+        user:app_config(AppConfig),
+        AppConfig::config_property(theme, Theme),
+        atomic_list_concat([Theme, '/', Search], ThemeSearch),
+        findall(X,
+            (
+                absolute_file_name(theme(ThemeSearch), X, [
+                    extensions([html]),
+                    solutions(all)
+                ]),
+                exists_file(X)
+            ),
+        Xs),
+        (Xs \== [] ->
+            lists:nth0(0, Xs, First),
+            pcre:re_replace("[.]html$", "", First, Template)
+        ;
+            throw(error(template_not_found(ThemeSearch)))).
 
     :- public(flash/2).
     :- info(flash/2, [

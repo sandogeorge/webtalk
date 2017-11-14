@@ -27,15 +27,14 @@
     assertz(user:file_search_path(data, base('data'))),
     %% App directory.
     assertz(user:file_search_path(app, base('app'))),
-    assertz(user:file_search_path(app_theme, app('theme'))),
-    assertz(user:file_search_path(app_extension, app('extension'))),
+    assertz(user:file_search_path(theme, app('theme'))),
+    assertz(user:file_search_path(extension, app('extension'))),
     %% Core directory.
     assertz(user:file_search_path(core, base('core'))),
     assertz(user:file_search_path(model, core('model'))),
     assertz(user:file_search_path(static, core('static'))),
-    assertz(user:file_search_path(template, core('template'))),
-    assertz(user:file_search_path(core_theme, core('theme'))),
-    assertz(user:file_search_path(core_extension, core('extension'))).
+    assertz(user:file_search_path(theme, core('theme'))),
+    assertz(user:file_search_path(extension, core('extension'))).
 
 % app_prefix(?Prefix)
 %
@@ -87,6 +86,7 @@ app_prefix('WEBTALK_').
     config_property(jquery_validate_version, '1.17.0').
     config_property(popper_version, '1.11.0').
     config_property(bootstrap_version, '4.0.0-beta').
+    config_property(theme, 'base').
 
     :- public(daemon_option/2).
     :- dynamic(daemon_option/2).

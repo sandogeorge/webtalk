@@ -47,9 +47,13 @@ http:location(auth, root('auth'), []).
 %% Authentication endpoints.
 :- http_handler(auth('login'),
     [Request]>>(auth::login(Request)), [id("auth.login")]).
+:- http_location_by_id("auth.login", Loc),
+    ext_menu::add_menu_item(user, 'Log in', Loc, 0).
 
 :- http_handler(auth('logout'),
     [Request]>>(auth::logout(Request)), [id("auth.logout")]).
+:- http_location_by_id("auth.logout", Loc),
+    ext_menu::add_menu_item(user, 'Log out', Loc, 0).
 
 :- object(auth).
 

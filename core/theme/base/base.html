@@ -24,19 +24,17 @@
 
             <div class="collapse navbar-collapse" id="navbarMain">
                 <ul class="navbar-nav mr-auto">
+                    {% each menus.main.items, item %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for("main.index") }}">Home</a>
+                        <a class="nav-link" href="{{ item.path }}">{{ item.title }}</a>
                     </li>
+                    {% end %}
                 </ul>
 
                 <ul class="nav navbar-right" id="userNav">
-                    {% if \+ current_user.is_authenticated %}
+                    {% each menus.user.items, item %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for("auth.login") }}">Log in</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out</a>
+                        <a class="nav-link" href="{{ item.path }}">{{ item.title }}</a>
                     </li>
                     {% end %}
                 </ul>

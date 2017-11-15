@@ -29,13 +29,20 @@
 :- initialization((
     logtalk_load([
         'config',
+        'core/lib/extend/extend',
+        'core/lib/extend/extension',
+        'core/lib/extend/extension_manager',
+        'core/lib/extend/theme',
         'core/lib/form/validator',
         'core/lib/form/widget',
         'core/lib/form/field',
         'core/lib/form/form',
         'core/model/model',
         'core/lib/routing/routing',
-        'core/lib/templating/templating',
+        'core/lib/templating/templating'
+    ]),
+    extension_manager::install_default_extensions,
+    logtalk_load([
         'core/blueprint/static/static',
         'core/blueprint/wellknown/wellknown',
         'core/blueprint/install/install',

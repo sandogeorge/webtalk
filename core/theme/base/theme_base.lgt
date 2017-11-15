@@ -17,38 +17,23 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- use_module(library(apply_macros)).
-:- use_module(library(http/http_dispatch)).
-:- use_module(library(yall)).
-
-% Main endpoints.
-:- http_handler(root(.),
-    [Request]>>(main::index(Request)), [id("main.index")]).
-:- http_location_by_id("main.index", Loc),
-    ext_menu::add_menu_item(main, 'Home', Loc, 0).
-
-:- object(main).
+:- object(theme_base,
+    extends(theme)).
 
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/10/19,
-        comment is 'Defines handlers for HTML pages.'
+        date is 2017/11/14,
+        comment is 'Default theme predicates.'
     ]).
 
-    :- public(index/1).
-    :- info(index/1, [
-        comment is 'Index page (/).',
-        argnames is ['_Request']
-    ]).
-    index(_Request) :-
-        dict_create(Data, _, [
-            title: 'Home',
-            styles: [],
-            scripts: [],
-            body_classes: ['index']
-        ]),
-        templating::render_from_base(index, Data, Render),
-        format(Render).
+    install :-
+        true.
+
+    template_data(Data) :-
+        Data = _{}.
+
+    uninstall :-
+        true.
 
 :- end_object.

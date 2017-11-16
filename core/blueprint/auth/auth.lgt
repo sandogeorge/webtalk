@@ -48,12 +48,14 @@ http:location(auth, root('auth'), []).
 :- http_handler(auth('login'),
     [Request]>>(auth::login(Request)), [id("auth.login")]).
 :- http_location_by_id("auth.login", Loc),
-    ext_menu::add_menu_item(user, 'Log in', Loc, 0).
+    ext_menu::add_menu_item(user, 'Log in', Loc, 0),
+    ext_permission::set_path_permissions(Loc, [[auth, is_authenticated, false]]).
 
 :- http_handler(auth('logout'),
     [Request]>>(auth::logout(Request)), [id("auth.logout")]).
 :- http_location_by_id("auth.logout", Loc),
-    ext_menu::add_menu_item(user, 'Log out', Loc, 0).
+    ext_menu::add_menu_item(user, 'Log out', Loc, 0),
+    ext_permission::set_path_permissions(Loc, [[auth, is_authenticated]]).
 
 :- object(auth).
 
@@ -72,8 +74,6 @@ http:location(auth, root('auth'), []).
     :- initialization(init).
     :- private(init/0).
     init :-
-        routing::assert_expansion_hook(auth, validate_login_access),
-        routing::assert_expansion_hook(auth, validate_logout_access),
         templating::assert_data_hook(auth, inject_current_user).
 
     :- private(new_session/0).
@@ -175,36 +175,16 @@ http:location(auth, root('auth'), []).
         lists:member(path(Base), Request),
         routing::redirect(root('.'), Base).
 
+    :- public(is_authenticated/0).
+    is_authenticated :-
+        http_session:http_session_data(logged_in(_)).
+
     :- public(is_authenticated/1).
     is_authenticated(Out) :-
-        (http_session:http_session_data(logged_in(_)) ->
+        (::is_authenticated ->
             Out = true
         ;
             Out = false).
-
-    :- public(validate_login_access/1).
-    :- info(validate_login_access/1, [
-        comment is 'Redirect to index if the user is already logged in.'
-    ]).
-    validate_login_access(Request) :-
-        lists:member(path(Path), Request),
-        ::is_authenticated(Bool),
-        ((Bool, pcre:re_match("^/auth/login[/]?", Path)) ->
-            templating::flash('User already logged in.', 'warning'),
-            routing::redirect(root('.'), Path)
-        ; true).
-
-    :- public(validate_logout_access/1).
-    :- info(validate_logout_access/1, [
-        comment is 'Redirect to index if the user is not logged in.'
-    ]).
-    validate_logout_access(Request) :-
-        lists:member(path(Path), Request),
-        ::is_authenticated(Bool),
-        ((\+(Bool), pcre:re_match("^/auth/logout[/]?", Path)) ->
-            templating::flash('User not logged in.', 'warning'),
-            routing::redirect(root('.'), Path)
-        ; true).
 
     :- public(inject_current_user/1).
     :- info(inject_current_user/1, [

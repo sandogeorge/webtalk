@@ -29,7 +29,7 @@
     ]).
 
     :- private(default_extensions/1).
-    default_extensions(['menu']).
+    default_extensions(['permission', 'menu']).
 
     :- public(install_default_extensions/0).
     install_default_extensions :-

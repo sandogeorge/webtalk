@@ -69,6 +69,7 @@ http:request_expansion(RequestIn, RequestOut) :-
         comment is 'Handle all request expansion checks'
     ]).
     handle_expansion(Request) :-
+        ::check_path_access(Request),
         ::verify_same_origin(Request),
         ::check_protocol(Request),
         ::check_not_installed(Request),
@@ -140,6 +141,21 @@ http:request_expansion(RequestIn, RequestOut) :-
         ((Flag::exec(current, [installed, Installed]),
           Installed,
           pcre:re_match("^/install[/]?$", Path)) ->
+            lists:member(protocol(Proto), Request),
+            lists:member(host(Host), Request),
+            ::get_request_port(Request, Port),
+            http_dispatch:http_absolute_location(root('.'), Url, [relative_to(Path)]),
+            atomic_list_concat([Proto, '://', Host, ':', Port, Url], To),
+            throw(http_reply(moved_temporary(To)))
+        ; true).
+
+    :- private(check_path_access/1).
+    :- info(check_path_access/1, [
+        comment is 'Verify that access to the requested path is permitted.'
+    ]).
+    check_path_access(Request) :-
+        lists:member(path(Path), Request),
+        (\+(ext_permission::check_path_permissions(Path)) ->
             lists:member(protocol(Proto), Request),
             lists:member(host(Host), Request),
             ::get_request_port(Request, Port),

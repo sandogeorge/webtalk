@@ -91,7 +91,10 @@
     get_menu_item_dicts(Menu, Items) :-
         findall(
             Weight-_{title: Title, path: Path},
-            ::menu_item(Menu, Title, Path, Weight),
+            (
+                ::menu_item(Menu, Title, Path, Weight),
+                ext_permission::check_path_permissions(Path)
+            ),
             ItemList
         ),
         keysort(ItemList, Pairs),

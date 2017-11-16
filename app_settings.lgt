@@ -47,7 +47,7 @@
 :- dynamic user:app_prefix/1.
 app_prefix('WEBTALK_').
 
-% app_config(?Config).
+% app_settings(?Settings).
 %
 % The application configuration is a value representing the deployment
 % environment of the application. It should be one of `development`, `testing`
@@ -55,14 +55,14 @@ app_prefix('WEBTALK_').
 % declared in this file. The use of deployment specific configuration objects
 % contributes to a smooth integration and deployment workflows from development
 % machines, to production servers. This value is set during loading.
-:- multifile user:app_config/1.
-:- dynamic user:app_config/1.
+:- multifile user:app_settings/1.
+:- dynamic user:app_settings/1.
 
 % Configuration objects.
 %
 % The values defined in the `config` object are overriden, if necessary, in the
 % deployment specific configuration objects.
-:- object(config).
+:- object(app_settings).
 
     :- info([
         version is 3.1,
@@ -228,8 +228,8 @@ app_prefix('WEBTALK_').
 
 :- end_object.
 
-:- object(development_config,
-    extends(config)).
+:- object(development_settings,
+    extends(app_settings)).
 
     :- info([
         version is 1.0,
@@ -240,8 +240,8 @@ app_prefix('WEBTALK_').
 
 :- end_object.
 
-:- object(testing_config,
-    extends(config)).
+:- object(testing_settings,
+    extends(app_settings)).
 
     :- info([
         version is 1.0,
@@ -252,8 +252,8 @@ app_prefix('WEBTALK_').
 
 :- end_object.
 
-:- object(production_config,
-    extends(config)).
+:- object(production_settings,
+    extends(app_settings)).
 
     :- info([
         version is 1.0,

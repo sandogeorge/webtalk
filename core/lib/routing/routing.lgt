@@ -105,8 +105,8 @@ http:request_expansion(RequestIn, RequestOut) :-
     ]).
     check_protocol(Request) :-
         lists:member(protocol(Proto), Request),
-        user:app_config(AppConfig),
-        AppConfig::https_only(Bool),
+        user:app_settings(AppSettings),
+        AppSettings::https_only(Bool),
         ((Bool, Proto == 'http') ->
             lists:member(host(Host), Request),
             lists:member(path(Path), Request),

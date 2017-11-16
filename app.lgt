@@ -28,7 +28,7 @@
 % application.
 :- initialization((
     logtalk_load([
-        'config',
+        'app_settings',
         'core/lib/extend/extend',
         'core/lib/extend/extension',
         'core/lib/extend/extension_manager',
@@ -51,11 +51,11 @@
         'core/blueprint/api/api'
     ]),
     user:app_prefix(AppPrefix),
-    atom_concat(AppPrefix, 'CONFIG', Envar),
-    (getenv(Envar, Config) -> true ; Config = 'development'),
-    atom_concat(Config, '_config', AppConfig),
-    AppConfig::new(Instance, []),
-    assertz(user:app_config(Instance)),
+    atom_concat(AppPrefix, 'SETTINGS', Envar),
+    (getenv(Envar, Settings) -> true ; Settings = 'development'),
+    atom_concat(Settings, '_settings', AppSettings),
+    AppSettings::new(Instance, []),
+    assertz(user:app_settings(Instance)),
     templating::init,
     use_module(library(http/http_log)),
     use_module(library(settings)),

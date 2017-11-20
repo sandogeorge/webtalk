@@ -33,19 +33,21 @@ http:location(config, root('config'), []).
 :- http_handler(config(.),
     [Request]>>(config::index(Request)), [id("config")]).
 :- http_location_by_id("config", Loc),
-    ext_menu::add_menu_item(user, 'Configuration', Loc, 50),
+    ext_menu::add_menu_item(user, 'Configuration', Loc, 50, ''),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 
 :- http_handler(config('appearance'),
     [Request]>>(config::appearance(Request)), [id("config.appearance")]).
 :- http_location_by_id("config.appearance", Loc),
-    ext_menu::add_menu_item(config_core, 'Appearance', Loc, 0),
+    ext_menu::add_menu_item(config_core, 'Appearance', Loc, 0, 'Adjust look \c
+    and feel.'),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 
 :- http_handler(config('extensions'),
     [Request]>>(config::extensions(Request)), [id("config.extensions")]).
 :- http_location_by_id("config.extensions", Loc),
-    ext_menu::add_menu_item(config_core, 'Extensions', Loc, 1),
+    ext_menu::add_menu_item(config_core, 'Extensions', Loc, 1, 'Manage web \c
+    extensions.'),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 
 :- object(config).

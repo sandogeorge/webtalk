@@ -48,13 +48,13 @@ http:location(auth, root('auth'), []).
 :- http_handler(auth('login'),
     [Request]>>(auth::login(Request)), [id("auth.login")]).
 :- http_location_by_id("auth.login", Loc),
-    ext_menu::add_menu_item(user, 'Log in', Loc, 99),
+    ext_menu::add_menu_item(user, 'Log in', Loc, 99, ''),
     ext_permission::set_path_permissions(Loc, [[auth, is_authenticated, false]]).
 
 :- http_handler(auth('logout'),
     [Request]>>(auth::logout(Request)), [id("auth.logout")]).
 :- http_location_by_id("auth.logout", Loc),
-    ext_menu::add_menu_item(user, 'Log out', Loc, 99),
+    ext_menu::add_menu_item(user, 'Log out', Loc, 99, ''),
     ext_permission::set_path_permissions(Loc, [[auth, is_authenticated]]).
 
 :- object(auth).

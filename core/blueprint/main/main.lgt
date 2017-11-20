@@ -25,7 +25,7 @@
 :- http_handler(root(.),
     [Request]>>(main::index(Request)), [id("main.index")]).
 :- http_location_by_id("main.index", Loc),
-    ext_menu::add_menu_item(main, 'Home', Loc, 0).
+    ext_menu::add_menu_item(main, 'Home', Loc, 0, '').
 
 :- object(main).
 

@@ -32,10 +32,10 @@
     :- private(menu/1).
     :- dynamic(menu/1).
 
-    :- private(menu_item/4).
-    :- dynamic(menu_item/4).
-    :- info(menu_item/4, [
-        argnames is ['Menu', 'Title', 'Path', 'Weight']
+    :- private(menu_item/5).
+    :- dynamic(menu_item/5).
+    :- info(menu_item/5, [
+        argnames is ['Menu', 'Title', 'Path', 'Weight', 'Description']
     ]).
 
     :- public(register_menu/1).
@@ -55,21 +55,21 @@
         ::retractall(menu_item(Menu, _, _)),
         ::retractall(menu(Menu)).
 
-    :- public(add_menu_item/4).
-    :- info(add_menu_item/4, [
+    :- public(add_menu_item/5).
+    :- info(add_menu_item/5, [
         comment is 'Add a new item to a registered menu.'
     ]).
-    add_menu_item(Menu, Title, Path, Weight) :-
-        \+(::menu_item(Menu, Title, _, _)),
-        ::assertz(menu_item(Menu, Title, Path, Weight)).
+    add_menu_item(Menu, Title, Path, Weight, Description) :-
+        \+(::menu_item(Menu, Title, _, _, _)),
+        ::assertz(menu_item(Menu, Title, Path, Weight, Description)).
 
     :- public(remove_menu_item/2).
     :- info(remove_menu_item/2, [
         comment is 'Remove a menu item from a registered menu.'
     ]).
     remove_menu_item(Menu, Title) :-
-        ::menu_item(Menu, Title, _, _),
-        ::retractall(menu_item(Menu, Title, _, _)).
+        ::menu_item(Menu, Title, _, _, _),
+        ::retractall(menu_item(Menu, Title, _, _, _)).
 
     :- public(get_menu_items/2).
     :- info(get_menu_items/2, [
@@ -77,8 +77,8 @@
     ]).
     get_menu_items(Menu, Items) :-
         findall(
-            Weight-[title(Title), path(Path)],
-            ::menu_item(Menu, Title, Path, Weight),
+            Weight-[title(Title), path(Path), description(Description)],
+            ::menu_item(Menu, Title, Path, Weight, Description),
             ItemList
         ),
         keysort(ItemList, Pairs),
@@ -90,9 +90,9 @@
     ]).
     get_menu_item_dicts(Menu, Items) :-
         findall(
-            Weight-_{title: Title, path: Path},
+            Weight-_{title: Title, path: Path, description: Description},
             (
-                ::menu_item(Menu, Title, Path, Weight),
+                ::menu_item(Menu, Title, Path, Weight, Description),
                 ext_permission::check_path_permissions(Path)
             ),
             ItemList
@@ -105,8 +105,8 @@
         comment is 'Get a specific menu item from a registered menu.'
     ]).
     get_menu_item(Menu, Title, Item) :-
-        ::menu_item(Menu, Title, Path, Weight),
-        Item = [title(Title), path(Path), weight(Weight)].
+        ::menu_item(Menu, Title, Path, Weight, Description),
+        Item = [title(Title), path(Path), weight(Weight), description(Description)].
 
     :- public(inject_menus/1).
     :- info(inject_menus/1, [

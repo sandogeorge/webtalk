@@ -42,6 +42,8 @@
         </div>
     </nav>
 
+    {% if \+ config %}
+
     {% if page_header %}
     <div class="container page_header">
         <h2>{{ page_header }}</h2>
@@ -60,6 +62,63 @@
     {% end %}
 
     {% unescape page_content %}
+
+    {% else %}
+    <div id="wrapper" class="toggled">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" class="bg-dark">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <span>
+                        <a href="{{ url_for("config") }}">Core</a>
+                    </span>
+                </li>
+                {% each menus.config_core.items, item %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ item.path }}">{{ item.title }}</a>
+                </li>
+                {% end %}
+                <li class="sidebar-brand">
+                    <span>
+                        Third Party
+                    </span>
+                </li>
+                {% each menus.config_third_party.items, item %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ item.path }}">{{ item.title }}</a>
+                </li>
+                {% end %}
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+
+            {% if page_header %}
+            <div class="container config-page_header">
+                <h2>{{ page_header }}</h2>
+            </div>
+            {% end %}
+
+            {% each messages, message, index, len %}
+            <div class="container alert-messages">
+                <div class="alert alert-{{ message.category }}">
+                    {{ message.message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            {% end %}
+
+            {% unescape page_content %}
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+    {% end %}
 
     <script src="https://code.jquery.com/jquery-{{ jquery_version }}.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/{{ popper_version }}/umd/popper.min.js" crossorigin="anonymous"></script>

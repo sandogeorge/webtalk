@@ -64,10 +64,12 @@ http:location(config, root('config'), []).
     ]).
     index(_Request) :-
         dict_create(Data, _, [
+            config: true,
             title: 'Configuration',
             styles: ['/static/css/simple-sidebar.css'],
             scripts: [],
-            body_classes: ['config']
+            body_classes: ['config'],
+            page_header: 'Core configuration'
         ]),
         templating::render_from_base('config/index', Data, Render),
         format(Render).
@@ -79,10 +81,12 @@ http:location(config, root('config'), []).
     ]).
     appearance(_Request) :-
         dict_create(Data, _, [
+            config: true,
             title: 'Appearance',
             styles: ['/static/css/simple-sidebar.css'],
             scripts: [],
-            body_classes: ['config.appearance']
+            body_classes: ['config.appearance'],
+            page_header: 'Appearance'
         ]),
         templating::render_from_base('config/appearance', Data, Render),
         format(Render).
@@ -94,10 +98,12 @@ http:location(config, root('config'), []).
     ]).
     extensions(_Request) :-
         dict_create(Data, _, [
+            config: true,
             title: 'Extensions',
             styles: ['/static/css/simple-sidebar.css'],
             scripts: [],
-            body_classes: ['config.extensions']
+            body_classes: ['config.extensions'],
+            page_header: 'Extensions'
         ]),
         templating::render_from_base('config/extensions', Data, Render),
         format(Render).

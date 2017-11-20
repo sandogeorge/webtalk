@@ -46,7 +46,7 @@ http:location(config, root('config'), []).
 :- http_handler(config('extensions'),
     [Request]>>(config::extensions(Request)), [id("config.extensions")]).
 :- http_location_by_id("config.extensions", Loc),
-    ext_menu::add_menu_item(config_core, 'Extensions', Loc, 1, 'Manage web \c
+    ext_menu::add_menu_item(config_core, 'Extensions', Loc, 1, 'Manage \c
     extensions.'),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 

@@ -67,7 +67,7 @@
     :- info(remove_menu_item/2, [
         comment is 'Remove a menu item from a registered menu.'
     ]).
-    add_menu_item(Menu, Title) :-
+    remove_menu_item(Menu, Title) :-
         ::menu_item(Menu, Title, _, _),
         ::retractall(menu_item(Menu, Title, _, _)).
 

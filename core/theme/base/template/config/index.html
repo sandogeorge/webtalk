@@ -1,0 +1,14 @@
+<div class="row">
+{% each menus.config_core.items, item %}
+<div class="col-md-4 config-card">
+    <div class="card">
+        <div class="card-header">
+            {{ item.title }}
+        </div>
+        <div class="card-body">
+            <a class="btn btn-primary" href="{{ item.path }}">Configure</a>
+        </div>
+    </div>
+</div>
+{% end %}
+</div>

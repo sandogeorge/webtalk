@@ -14,3 +14,8 @@ body {
 .page_header h2 {
     padding-left: 15px;
 }
+
+.config-card {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

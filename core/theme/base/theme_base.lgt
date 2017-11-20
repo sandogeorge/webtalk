@@ -28,12 +28,12 @@
     ]).
 
     install :-
-        true.
+        {assertz(user:file_search_path(static, core(theme/base)))}.
 
     template_data(Data) :-
         Data = _{}.
 
     uninstall :-
-        true.
+        {retractall(user:file_search_path(static, core(theme/base)))}.
 
 :- end_object.

@@ -48,13 +48,13 @@ http:location(auth, root('auth'), []).
 :- http_handler(auth('login'),
     [Request]>>(auth::login(Request)), [id("auth.login")]).
 :- http_location_by_id("auth.login", Loc),
-    ext_menu::add_menu_item(user, 'Log in', Loc, 0),
+    ext_menu::add_menu_item(user, 'Log in', Loc, 99),
     ext_permission::set_path_permissions(Loc, [[auth, is_authenticated, false]]).
 
 :- http_handler(auth('logout'),
     [Request]>>(auth::logout(Request)), [id("auth.logout")]).
 :- http_location_by_id("auth.logout", Loc),
-    ext_menu::add_menu_item(user, 'Log out', Loc, 0),
+    ext_menu::add_menu_item(user, 'Log out', Loc, 99),
     ext_permission::set_path_permissions(Loc, [[auth, is_authenticated]]).
 
 :- object(auth).
@@ -185,6 +185,14 @@ http:location(auth, root('auth'), []).
             Out = true
         ;
             Out = false).
+
+    :- public(is_admin/0).
+    is_admin :-
+        ::is_authenticated,
+        model::new(User, [name(user)]),
+        http_session:http_session_data(user_name(Username)),
+        User::exec(current, [Username, _, _, Role]),
+        Role == 'administrator'.
 
     :- public(inject_current_user/1).
     :- info(inject_current_user/1, [

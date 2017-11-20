@@ -47,6 +47,7 @@
         'core/blueprint/wellknown/wellknown',
         'core/blueprint/install/install',
         'core/blueprint/auth/auth',
+        'core/blueprint/config/config',
         'core/blueprint/main/main',
         'core/blueprint/api/api'
     ]),

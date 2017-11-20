@@ -41,22 +41,25 @@
             </div>
         </div>
     </nav>
-    <div class="container">
-        {% if page_header %}
-        <h2>{{ page_header }}</h2>
-        {% end %}
 
-        {% each messages, message, index, len %}
+    {% if page_header %}
+    <div class="container">
+        <h2>{{ page_header }}</h2>
+    </div>
+    {% end %}
+
+    {% each messages, message, index, len %}
+    <div class="container">
         <div class="alert alert-{{ message.category }}">
             {{ message.message }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        {% end %}
-
-        {% unescape page_content %}
     </div>
+    {% end %}
+
+    {% unescape page_content %}
 
     <script src="https://code.jquery.com/jquery-{{ jquery_version }}.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/{{ popper_version }}/umd/popper.min.js" crossorigin="anonymous"></script>

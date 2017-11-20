@@ -199,7 +199,7 @@
     find_theme_template(Search, Template) :-
         user:app_settings(AppSettings),
         AppSettings::config_property(theme, Theme),
-        atomic_list_concat([Theme, '/', Search], ThemeSearch),
+        atomic_list_concat([Theme, '/template/', Search], ThemeSearch),
         findall(X,
             (
                 absolute_file_name(theme(ThemeSearch), X, [

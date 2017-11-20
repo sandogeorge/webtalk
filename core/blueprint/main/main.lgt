@@ -48,7 +48,7 @@
             scripts: [],
             body_classes: ['index']
         ]),
-        templating::render_from_base(index, Data, Render),
+        templating::render_from_base('main/index', Data, Render),
         format(Render).
 
 :- end_object.

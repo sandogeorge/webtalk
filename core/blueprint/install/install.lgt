@@ -107,7 +107,7 @@
                 body_classes: ['install'],
                 form: FormDict
             ]),
-            templating::render_standalone(install, Data, Render),
+            templating::render_standalone('install/index', Data, Render),
             format(Render)
         ).
 

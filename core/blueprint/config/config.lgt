@@ -69,7 +69,7 @@ http:location(config, root('config'), []).
             scripts: [],
             body_classes: ['config']
         ]),
-        templating::render_from_base(config, Data, Render),
+        templating::render_from_base('config/index', Data, Render),
         format(Render).
 
     :- public(appearance/1).
@@ -84,7 +84,7 @@ http:location(config, root('config'), []).
             scripts: [],
             body_classes: ['config.appearance']
         ]),
-        templating::render_from_base(appearance, Data, Render),
+        templating::render_from_base('config/appearance', Data, Render),
         format(Render).
 
     :- public(extensions/1).
@@ -99,7 +99,7 @@ http:location(config, root('config'), []).
             scripts: [],
             body_classes: ['config.extensions']
         ]),
-        templating::render_from_base(extensions, Data, Render),
+        templating::render_from_base('config/extensions', Data, Render),
         format(Render).
 
 :- end_object.

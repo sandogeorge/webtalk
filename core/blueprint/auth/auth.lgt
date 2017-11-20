@@ -140,7 +140,7 @@ http:location(auth, root('auth'), []).
                 body_classes: ['auth login'],
                 form: FormDict
             ]),
-            templating::render_from_base(login, Data, Render),
+            templating::render_from_base('auth/login', Data, Render),
             format(Render)
         ).
     :- private(handle_login/2).

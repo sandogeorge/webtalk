@@ -38,11 +38,11 @@
         'core/lib/form/field',
         'core/lib/form/form',
         'core/model/model',
-        'core/lib/routing/routing',
         'core/lib/templating/templating'
     ]),
     extension_manager::install_default_extensions,
     logtalk_load([
+        'core/lib/routing/routing',
         'core/blueprint/static/static',
         'core/blueprint/wellknown/wellknown',
         'core/blueprint/install/install',

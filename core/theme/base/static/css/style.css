@@ -6,3 +6,11 @@ html {
 body {
     padding-top: 56px;
 }
+
+.alert-messages {
+    padding-top: 15px;
+}
+
+.page_header h2 {
+    padding-left: 15px;
+}

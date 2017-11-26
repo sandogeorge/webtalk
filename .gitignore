@@ -1,4 +1,10 @@
 % Webtalk
+/app/extension/*
+!/app/extension/.gitkeep
+
+/app/theme/*
+!/app/theme/.gitkeep
+
 /data/*
 !/data/.gitkeep
 

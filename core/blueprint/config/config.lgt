@@ -19,6 +19,8 @@
 
 :- use_module(library(apply_macros)).
 :- use_module(library(apply)).
+:- use_module(library(http/http_parameters)).
+:- use_module(library(option)).
 :- use_module(library(yall)).
 
 %% Abstract paths.
@@ -79,19 +81,45 @@ http:location(config, root('config'), []).
     :- public(appearance/1).
     :- info(appearance/1, [
         comment is 'Configure themes.',
-        argnames is ['_Request']
+        argnames is ['Request']
     ]).
-    appearance(_Request) :-
-        dict_create(Data, _, [
-            config: true,
-            title: 'Appearance',
-            styles: ['/static/css/simple-sidebar.css'],
-            scripts: [],
-            body_classes: ['config.appearance'],
-            page_header: 'Appearance'
-        ]),
-        templating::render_from_base('config/appearance', Data, Render),
-        format(Render).
+    :- meta_predicate(http_parameters:http_parameters(*, *, *)).
+    appearance(Request) :-
+        list::member(method(Method), Request),
+        (Method == 'post' ->
+            model::new(ThemeDb, [name(theme)]),
+            theme_manager::get_themes(Themes),
+            http_parameters:http_parameters(Request, [], [form_data(Data)]),
+            meta::map([X]>>(
+                atom_concat(X, '_theme', ThemeField),
+                Member =.. [ThemeField, Enabled],
+                ((swi_option:option(Member, Data, off)) ->
+                    ((Enabled == 'on', \+ ThemeDb::exec(current, [X, _])) ->
+                        theme_manager::install_theme(X)
+                    ; true),
+                    ((Enabled == 'off', ThemeDb::exec(current, [X, IsDefault]), \+ IsDefault) ->
+                        theme_manager::uninstall_theme(X)
+                    ; true)
+                ; true)
+            ), Themes),
+            swi_option:option(default_theme(Default), Data),
+            theme_manager::set_default(Default),
+            templating::flash('Changes saved.', 'success'),
+            lists:member(path(Base), Request),
+            routing::redirect(config('appearance'), Base)
+        ;
+            theme_manager::get_themes_dict(Themes),
+            dict_create(Data, _, [
+                config: true,
+                title: 'Appearance',
+                styles: ['/static/css/simple-sidebar.css'],
+                scripts: [],
+                body_classes: ['config.appearance'],
+                page_header: 'Appearance',
+                themes: Themes
+            ]),
+            templating::render_from_base('config/appearance', Data, Render),
+            format(Render)).
 
     :- public(extensions/1).
     :- info(extensions/1, [

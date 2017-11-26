@@ -27,8 +27,10 @@
 % 4. Makes the correct configuration object available to the rest of the
 % application.
 :- initialization((
+    logtalk_load(library(all_loader)),
     logtalk_load([
         'app_settings',
+        'core/model/model',
         'core/lib/extend/extend',
         'core/lib/extend/extension',
         'core/lib/extend/extension_manager',
@@ -38,7 +40,6 @@
         'core/lib/form/widget',
         'core/lib/form/field',
         'core/lib/form/form',
-        'core/model/model',
         'core/lib/templating/templating'
     ]),
     extension_manager::install_default_extensions,

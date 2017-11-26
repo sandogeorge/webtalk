@@ -2,10 +2,10 @@
         [   attach_theme_db/1,   % +File
             detach_theme_db/0,   % -
             sync_theme_db/1,     % +What
-            current_theme/2,     % ?User, ?Email, ?Role
-            add_theme/2,         % +User, +Email, +Role
-            update_theme/2,      % +User, +Email, +Role
-            delete_theme/1       % +User
+            current_theme/2,     % ?Theme, ?IsDefault
+            add_theme/2,         % +Theme, +IsDefault
+            update_theme/2,      % +Theme, +IsDefault
+            delete_theme/1       % +Theme
         ]).
 
 :- use_module(library(persistency)).

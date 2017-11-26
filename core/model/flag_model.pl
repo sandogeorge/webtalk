@@ -2,10 +2,10 @@
         [   attach_flag_db/1,   % +File
             detach_flag_db/0,   % -
             sync_flag_db/1,     % +What
-            current_flag/2,     % ?User, ?Email, ?Role
-            add_flag/2,         % +User, +Email, +Role
-            update_flag/2,      % +User, +Email, +Role
-            delete_flag/1       % +User
+            current_flag/2,     % ?Flag, ?Value
+            add_flag/2,         % +Flag, +Value
+            update_flag/2,      % +Flag, +Value
+            delete_flag/1       % +Flag
         ]).
 
 :- use_module(library(persistency)).

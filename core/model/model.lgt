@@ -18,6 +18,7 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :- use_module(library(lists)).
+:- use_module(model(extension_model)).
 :- use_module(model(flag_model)).
 :- use_module(model(theme_model)).
 :- use_module(model(user_model)).

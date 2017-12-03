@@ -1,7 +1,8 @@
 {
   "name": "permission",
   "title": "Permission",
-  "Description": "Provides a configurable permission system.",
+  "description": "Provides a configurable permission system.",
   "Author": "Sando George",
-  "version": 1.0
+  "version": 1.0,
+  "required": true
 }

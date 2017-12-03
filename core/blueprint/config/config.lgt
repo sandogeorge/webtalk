@@ -105,7 +105,7 @@ http:location(config, root('config'), []).
             swi_option:option(default_theme(Default), Data),
             theme_manager::set_default(Default),
             templating::flash('Changes saved.', 'success'),
-            lists:member(path(Base), Request),
+            list::member(path(Base), Request),
             routing::redirect(config('appearance'), Base)
         ;
             theme_manager::get_themes_dict(Themes),
@@ -124,18 +124,41 @@ http:location(config, root('config'), []).
     :- public(extensions/1).
     :- info(extensions/1, [
         comment is 'Configure extensions.',
-        argnames is ['_Request']
+        argnames is ['Request']
     ]).
-    extensions(_Request) :-
-        dict_create(Data, _, [
-            config: true,
-            title: 'Extensions',
-            styles: ['/static/css/simple-sidebar.css'],
-            scripts: [],
-            body_classes: ['config.extensions'],
-            page_header: 'Extensions'
-        ]),
-        templating::render_from_base('config/extensions', Data, Render),
-        format(Render).
+    extensions(Request) :-
+        list::member(method(Method), Request),
+        (Method == 'post' ->
+            model::new(ExtDb, [name(extension)]),
+            extension_manager::get_extensions(Extensions),
+            http_parameters:http_parameters(Request, [], [form_data(Data)]),
+            meta::map([X]>>(
+                atom_concat(X, '_ext', ExtField),
+                Member =.. [ExtField, Enabled],
+                ((swi_option:option(Member, Data, off)) ->
+                    ((Enabled == 'on', \+ ExtDb::exec(current, [X, _])) ->
+                        extension_manager::install_extension(X)
+                    ; true),
+                    ((Enabled == 'off', ExtDb::exec(current, [X, Required]), Required \== 'true') ->
+                        extension_manager::uninstall_extension(X)
+                    ; true)
+                ; true)
+            ), Extensions),
+            templating::flash('Changes saved.', 'success'),
+            list::member(path(Base), Request),
+            routing::redirect(config('extensions'), Base)
+        ;
+            extension_manager::get_extensions_dict(Exts),
+            dict_create(Data, _, [
+                config: true,
+                title: 'Extensions',
+                styles: ['/static/css/simple-sidebar.css'],
+                scripts: [],
+                body_classes: ['config.extensions'],
+                page_header: 'Extensions',
+                extensions: Exts
+            ]),
+            templating::render_from_base('config/extensions', Data, Render),
+            format(Render)).
 
 :- end_object.

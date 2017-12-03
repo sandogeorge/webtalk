@@ -87,7 +87,7 @@ app_prefix('WEBTALK_').
     config_property(jquery_version, '3.2.1').
     config_property(jquery_validate_version, '1.17.0').
     config_property(popper_version, '1.11.0').
-    config_property(bootstrap_version, '4.0.0-beta').
+    config_property(bootstrap_version, '4.0.0-beta.2').
 
     :- public(daemon_option/2).
     :- dynamic(daemon_option/2).

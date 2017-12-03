@@ -1,0 +1,8 @@
+{
+  "name": "menu",
+  "title": "Menu",
+  "description": "Provides a hookable menu system.",
+  "Author": "Sando George",
+  "version": 1.0,
+  "required": true
+}

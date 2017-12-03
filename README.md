@@ -99,13 +99,8 @@ $ WEBTALK_DAEMONIZE=true sudo -E bash -c 'swilgt -s app.lgt'
 For an example on how to run Webtalk as a systemd service, see the [service template file](https://github.com/sandogeorge/webtalk-ops/blob/master/chef/site-cookbooks/webtalk/templates/default/webtalk.erb) of the [webtalk-ops](https://github.com/sandogeorge/webtalk-ops) repository.
 
 ## Development
-- Modules used throughtout the application are declared in `modules.lgt`.
 
-- All path handlers are declared in `app/routing.lgt`.
-
-- Handlers for frontend HTML pages are defined in `app/main.lgt`.
-
-- Handlers for API endpoints are defined in `app/api.lgt`.
+- All path handlers are declared in their respective blueprint objects in `core/blueprint/`.
 
 ## Copyright
 Copyright (c) 2017 [Sando George](https://github.com/sandogeorge).

@@ -17,17 +17,15 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- initialization((
-    set_logtalk_flag(report, warnings),
-    logtalk_load(lgtunit(loader)),
-    logtalk_load([config, 'app/model/model']),
-    use_module(model(user_model)),
-    logtalk_load([
-        'tests/config',
-        'tests/user_model',
-        'tests/model'
-    ], [hook(lgtunit)]),
-    config_tests::run,
-    user_model_tests::run,
-    model_tests::run
-)).
+:- protocol(extend).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/14,
+        comment is 'Features common to both themes and extensions.'
+    ]).
+
+    :- public([install/0, uninstall/0]).
+
+:- end_protocol.

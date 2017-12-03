@@ -17,28 +17,45 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- object(config_tests,
-    extends(lgtunit)).
+:- use_module(library(apply_macros)).
+:- use_module(library(http/http_json)).
+:- use_module(library(yall)).
+
+%% Abstract paths.
+:- multifile http:location/3.
+:- dynamic http:location/3.
+http:location(api, root('api'), []).
+
+%% API endpoints.
+:- http_handler(api('.'),
+    [Request]>>(api::index(Request)), [id("api.index")]).
+
+:- object(api).
 
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/10/22,
-        comment is 'Test configuration object.'
+        date is 2017/10/19,
+        comment is 'Defines handlers for RESTful API endpoints.'
     ]).
 
-    succeeds(extend_config) :-
-        create_object(Config, [extends(config)], [], []),
-        abolish_object(Config).
+    :- public(index/1).
+    :- info(index/1, [
+        comment is 'Index page (/).',
+        argnames is ['_Request']
+    ]).
+    index(_Request) :-
+        dict_create(Data, _, [status: 'OK']),
+        ::write_json(Data).
 
-    succeeds(override_property) :-
-        create_object(Config, [extends(config)], [], []),
-        Config::config_property(server_port, Port),
-        Port == 5000,
-        Config::retractall(config_property(server_port, _)),
-        Config::assertz(config_property(server_port, 4000)),
-        Config::config_property(server_port, NewPort),
-        NewPort == 4000,
-        abolish_object(Config).
+    :- private(write_json/1).
+    :- info(write_json/1, [
+        comment is 'Utility function for outputting JSON formatted data.',
+        argnames is ['Data']
+    ]).
+    write_json(Data) :-
+        format('Content-type: application/json~n~n'),
+        current_output(Out),
+        http_json:json_write(Out, Data).
 
 :- end_object.

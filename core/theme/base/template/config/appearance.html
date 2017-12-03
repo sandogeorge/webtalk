@@ -1,0 +1,35 @@
+<form id="form-appearance" method="post">
+    <div class="row">
+        {% each themes, theme %}
+        <div class="col-md-4 config-card">
+            <div class="card">
+                <img class="card-img-top" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPoAAAD6CAQAAAAi5ZK2AAABcklEQVR42u3RAQ0AAAgDIN+/mK20hptQgfQUz0S6dKQjHelIRzrSkY50pCMd6UhHOtKRjnTpSEc60pGOdKQjHelIRzrSkY50pCMd6dKRjnSkIx3pSEc60pGOdKQjHelIRzrSpSMd6UhHOtKRjnSkIx3pSEc60pGOdKRLRzrSkY50pCMd6UhHOtKRjnSkIx3pSJcuXTrSkY50pCMd6UhHOtKRjnSkIx3pSEe6dKQjHelIRzrSkY50pCMd6UhHOtKRjnTpSEc60pGOdKQjHelIRzrSkY50pCMd6dKRjnSkIx3pSEc60pGOdKQjHelIRzrSpSMd6UhHOtKRjnSkIx3pSEc60pGOdKRLly4d6UhHOtKRjnSkIx3pSEc60pGOdKQjXTrSkY50pCMd6UhHOtKRjnSkIx3pSEe6dKQjHelIRzrSkY50pCMd6UhHOtKRjnTpSEc60pGOdKQjHelIRzrSkY50pCMd6dKRjnSkIx3pSEc6NyxL6r1gG1UqGwAAAABJRU5ErkJggg==" alt="Card image" />
+                <div class="card-body">
+                    <h4 class="card-title">{{ theme.title }}</h4>
+                    <p class="card-text">
+                        {{ theme.description }}
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox"
+                                    value="on" name="{{ theme.name }}_theme"
+                                    {% if theme.installed %}checked{% end %}
+                                    {% if theme.default %}disabled{% end %} />
+                                Enabled
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio"
+                                    name="default_theme"
+                                    value="{{ theme.name }}"
+                                    {% if theme.default %}checked{% end %}
+                                    {% if \+ theme.installed %}disabled{% end %} />
+                                Default
+                            </label>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% end %}
+    </div>
+    <button class="btn btn-primary" type="submit">Submit changes</button>
+</form>

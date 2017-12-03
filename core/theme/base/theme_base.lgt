@@ -17,17 +17,23 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- initialization((
-    set_logtalk_flag(report, warnings),
-    logtalk_load(lgtunit(loader)),
-    logtalk_load([config, 'app/model/model']),
-    use_module(model(user_model)),
-    logtalk_load([
-        'tests/config',
-        'tests/user_model',
-        'tests/model'
-    ], [hook(lgtunit)]),
-    config_tests::run,
-    user_model_tests::run,
-    model_tests::run
-)).
+:- object(theme_base,
+    extends(theme)).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/11/14,
+        comment is 'Default theme predicates.'
+    ]).
+
+    install :-
+        {assertz(user:file_search_path(static, core(theme/base)))}.
+
+    template_data(Data) :-
+        Data = _{}.
+
+    uninstall :-
+        {retractall(user:file_search_path(static, core(theme/base)))}.
+
+:- end_object.

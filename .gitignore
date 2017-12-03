@@ -1,10 +1,22 @@
 % Webtalk
+/app/extension/*
+!/app/extension/.gitkeep
+
+/app/theme/*
+!/app/theme/.gitkeep
+
 /data/*
 !/data/.gitkeep
 
 % Intellij
 .idea/
 *.iml
+
+% Eclipse
+.project
+
+% Visual Studio
+.vscode/
 
 % Prolog and Logtalk
 .lgt_tmp/

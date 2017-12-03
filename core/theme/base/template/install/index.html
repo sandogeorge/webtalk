@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    {% each styles, style %}
+    <link rel="stylesheet" type="text/css" href="{{ style }}" />
+    {% end %}
+</head>
+<body class="{% each body_classes, class %}{{ class }}{% end %}">
+<div class="container">
+    <h2>{{ page_header }}</h2>
+    {% if form.errors \= [] %}
+    <div class="alert alert-danger">
+        <ul>
+            {% each form.errors, error %}
+            <li>{{ error }}</li>
+            {% end %}
+        </ul>
+    </div>
+    {% end %}
+
+    <form id="installForm" method="post">
+        {% unescape form.csrf_token %}
+        <div class="card">
+            <div class="card-header"><span>Administrator</span></div>
+            <div class="card-body">
+                <p class="form-text text-muted">
+                    Please enter the details to be used for the super user
+                    account.
+                </p>
+                <div class="form-group">
+                    {% unescape form.admin_username.label %}
+                    {% unescape form.admin_username.field %}
+                </div>
+                <div class="form-group">
+                    {% unescape form.admin_password.label %}
+                    {% unescape form.admin_password.field %}
+                </div>
+                <div class="form-group">
+                    {% unescape form.admin_email.label %}
+                    {% unescape form.admin_email.field %}
+                </div>
+            </div>
+        </div>
+        {% unescape form.submit.field %}
+    </form>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-{{ jquery_version }}.slim.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/{{ jquery_validate_version }}/jquery.validate.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/{{ popper_version }}/umd/popper.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js" crossorigin="anonymous"></script>
+{% each scripts, script %}
+<script type="text/javascript" src="{{ script }}"></script>
+{% end %}
+</body>
+</html>

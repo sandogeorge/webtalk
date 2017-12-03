@@ -17,17 +17,38 @@
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- initialization((
-    set_logtalk_flag(report, warnings),
-    logtalk_load(lgtunit(loader)),
-    logtalk_load([config, 'app/model/model']),
-    use_module(model(user_model)),
-    logtalk_load([
-        'tests/config',
-        'tests/user_model',
-        'tests/model'
-    ], [hook(lgtunit)]),
-    config_tests::run,
-    user_model_tests::run,
-    model_tests::run
-)).
+:- use_module(library(apply_macros)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(yall)).
+
+% Main endpoints.
+:- http_handler(root(.),
+    [Request]>>(main::index(Request)), [id("main.index")]).
+:- http_location_by_id("main.index", Loc),
+    ext_menu::add_menu_item(main, 'Home', Loc, 0, '').
+
+:- object(main).
+
+    :- info([
+        version is 1.0,
+        author is 'Sando George',
+        date is 2017/10/19,
+        comment is 'Defines handlers for HTML pages.'
+    ]).
+
+    :- public(index/1).
+    :- info(index/1, [
+        comment is 'Index page (/).',
+        argnames is ['_Request']
+    ]).
+    index(_Request) :-
+        dict_create(Data, _, [
+            title: 'Home',
+            styles: [],
+            scripts: [],
+            body_classes: ['index']
+        ]),
+        templating::render_from_base('main/index', Data, Render),
+        format(Render).
+
+:- end_object.

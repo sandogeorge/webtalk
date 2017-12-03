@@ -27,32 +27,50 @@
 % 4. Makes the correct configuration object available to the rest of the
 % application.
 :- initialization((
+    logtalk_load(library(all_loader)),
     logtalk_load([
-        'file_paths',
-        'modules',
-        'config',
-        'app/lib/forms/forms',
-        'app/routing',
-        'app/templating',
-        'app/static',
-        'app/wellknown',
-        'app/install',
-        'app/auth',
-        'app/main',
-        'app/api'
+        'app_settings',
+        'core/model/model',
+        'core/lib/extend/extend',
+        'core/lib/extend/extension',
+        'core/lib/extend/extension_manager',
+        'core/lib/extend/theme',
+        'core/lib/extend/theme_manager',
+        'core/lib/form/validator',
+        'core/lib/form/widget',
+        'core/lib/form/field',
+        'core/lib/form/form',
+        'core/lib/templating/templating'
     ]),
-    logtalk_load('app/models/model'),
+    extension_manager::install_default_extensions,
+    logtalk_load([
+        'core/lib/routing/routing',
+        'core/blueprint/static/static',
+        'core/blueprint/wellknown/wellknown',
+        'core/blueprint/install/install',
+        'core/blueprint/auth/auth',
+        'core/blueprint/config/config',
+        'core/blueprint/main/main',
+        'core/blueprint/api/api'
+    ]),
     user:app_prefix(AppPrefix),
-    atom_concat(AppPrefix, 'CONFIG', Envar),
-    (getenv(Envar, Config) -> true ; Config = 'development'),
-    atom_concat(Config, '_config', AppConfig),
-    asserta(user:app_config(AppConfig)),
+    atom_concat(AppPrefix, 'SETTINGS', Envar),
+    (getenv(Envar, Settings) -> true ; Settings = 'development'),
+    atom_concat(Settings, '_settings', AppSettings),
+    AppSettings::new(Instance, []),
+    assertz(user:app_settings(Instance)),
+    theme_manager::install_default_themes,
     templating::init,
-    ((AppConfig::daemonize(Bool), Bool) ->
-        findall(X, (AppConfig::daemon_option(O, V), X =.. [O, V]), Options),
+    use_module(library(http/http_log)),
+    use_module(library(settings)),
+    set_setting(http:logfile, '/tmp/httpd.log'),
+    ((Instance::daemonize(Bool), Bool) ->
+        findall(X, (Instance::daemon_option(O, V), X =.. [O, V]), Options),
         use_module(library(http/http_unix_daemon)),
         http_daemon(Options)
     ;
-        call(AppConfig::config_property(server_port, ServerPort)),
+        call(Instance::config_property(server_port, ServerPort)),
+        use_module(library(http/thread_httpd)),
+        use_module(library(http/http_dispatch)),
         threaded_ignore(http_server(http_dispatch, [port(ServerPort)])))
 )).

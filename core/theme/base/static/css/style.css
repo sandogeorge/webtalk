@@ -1,0 +1,21 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    padding-top: 56px;
+}
+
+.alert-messages {
+    padding-top: 15px;
+}
+
+.page_header h2 {
+    padding-left: 15px;
+}
+
+.config-card {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

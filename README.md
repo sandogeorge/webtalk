@@ -100,7 +100,109 @@ For an example on how to run Webtalk as a systemd service, see the [service temp
 
 ## Development
 
-- All path handlers are declared in their respective blueprint objects in `core/blueprint/`.
+Webtalk supports customisation via pluggable themes and extensions. The best practice when developing a custom application is to avoid hacking the core at all costs and perform customizations via themes and extensions placed in the `app/theme` and `app/extension` directories respectively.
+
+### Themes
+
+Each custom theme must be placed in its own subdirectory of the `app/theme` directory. The name of the subdirectory must correspond to the name of the theme and must contain, at least, a JSON theme info file, `theme.json`, and a Logtalk theme file, `theme_{{theme_name}}.lgt`. In addition to these, the theme directory must also contain a `static` subdirectory, that is used for serving static files such as CSS, JS and image files, and a `template` subdirectory that contains the HTML templates for the views that are rendered for the user. The directory tree below shows the structure of the default `base` theme that is bundled with Webtalk.
+
+```
+base
+├── static
+│   ├── css
+│   │   ├── simple-sidebar.css
+│   │   └── style.css
+│   └── js
+│       ├── install.js
+│       └── script.js
+├── template
+│   ├── auth
+│   │   └── login.html
+│   ├── base.html
+│   ├── config
+│   │   ├── appearance.html
+│   │   ├── extensions.html
+│   │   ├── index.html
+│   │   └── vendor.html
+│   ├── install
+│   │   └── index.html
+│   └── main
+│       └── index.html
+├── theme_base.lgt
+└── theme.json
+```
+
+The expected values for the JSON info file are:
+- `name` - The name of the theme, which must match the name of the theme directory.
+- `title` - The title of the theme that is displayed in configuration pages.
+- `description` - A brief description of the theme that is displayed in configuration pages.
+- `version` - The version number of the theme.
+
+The `theme_{{theme_name}}.lgt` file is expected to contain an object called `theme_{{theme_name}}`, which extends the `theme` prototype provided by the core library. This object must define, at least, the `install/0` and `uninstall/0` predicates that handle setting up and tearing down theme data on installing and uninstalling the theme respectively. The example below is the theme object of the default `base` theme.
+
+```logtalk
+:- object(theme_base,
+    extends(theme)).
+
+    install :-
+        {assertz(user:file_search_path(static, core(theme/base)))}.
+
+    uninstall :-
+        {retractall(user:file_search_path(static, core(theme/base)))}.
+
+:- end_object.
+```
+
+### Extensions
+
+Each custom extension must be placed in its own subdirectory of the `app/extension` directory. The name of the subdirectory must correspond to the name of the extension and must contain, at least, a JSON extension info file, `extension.json`, and a Logtalk extension file, `ext_{{extension_name}}.lgt`. The directory tree below shows the structure of the `menu` extension that is bundled with Webtalk.
+
+```
+menu
+├── extension.json
+└── ext_menu.lgt
+```
+
+The expected values for the JSON info file are:
+- `name` - The name of the extension, which must match the name of the theme directory.
+- `title` - The title of the extension that is displayed in configuration pages.
+- `description` - A brief description of the extension that is displayed in configuration pages.
+- `version` - The version number of the extension.
+
+The `ext_{{extension_name}}.lgt` file is expected to contain an object called `ext_{{extension_name}}`, which extends the `extension` prototype provided by the core library. This object must define, at least, the `install/0` and `uninstall/0` predicates that handle setting up and tearing down extension data on installing and uninstalling the extension respectively. The example below is a snippet from the extension object of the core `menu` extension.
+
+```logtalk
+:- object(ext_menu,
+    extends(extension)).
+
+    ...
+
+    install :-
+        ::register_menu(main),
+        ::register_menu(user),
+        templating::assert_data_hook(ext_menu, inject_menus).
+
+    uninstall :-
+        true.
+
+    ...
+
+:- end_object.
+```
+
+### Menus
+
+Webtalk supports dynamic menus via the core `menu` extension, the functions of which are accessed via the `ext_menu` object.
+
+- To register a new menu, the `register_menu/1` predicate can be used. Two menus, `main` and `user`, are registered by default.
+
+- Any menu created in this way can also be removed using the `deregister_menu/1` predicate.
+
+- To add an item to a registered menu, the `add_menu_item/5` predicate can be used. The signature of this predicate is `add_menu_item(Menu, Title, Path, Weight, Description)`. The weight is an integer that affects the ascending sort order of the menu items.
+
+- Menu items may be removed using the `remove_menu_item/2` predicate, the signature of which is `remove_menu_item(Menu, Title)`.
+
+- All registered menus are made available to all template files via the `menus` dictionary. For example, to access the items of the `main` menu in a template file, one may use the `menus.main.items` list.
 
 ## Copyright
 Copyright (c) 2017 [Sando George](https://github.com/sandogeorge).

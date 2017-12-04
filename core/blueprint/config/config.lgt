@@ -30,7 +30,7 @@ http:location(config, root('config'), []).
 
 %% Configuration endpoints.
 :- ext_menu::register_menu(config_core).
-:- ext_menu::register_menu(config_third_party).
+:- ext_menu::register_menu(config_vendor).
 
 :- http_handler(config(.),
     [Request]>>(config::index(Request)), [id("config")]).
@@ -50,6 +50,11 @@ http:location(config, root('config'), []).
 :- http_location_by_id("config.extensions", Loc),
     ext_menu::add_menu_item(config_core, 'Extensions', Loc, 1, 'Manage \c
     extensions.'),
+    ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
+
+:- http_handler(config('vendor'),
+    [Request]>>(config::vendor(Request)), [id("config.vendor")]).
+:- http_location_by_id("config.vendor", Loc),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 
 :- object(config).
@@ -76,6 +81,23 @@ http:location(config, root('config'), []).
             page_header: 'Core configuration'
         ]),
         templating::render_from_base('config/index', Data, Render),
+        format(Render).
+
+    :- public(vendor/1).
+    :- info(vendor/1, [
+        comment is 'Configuration UI vendor page.',
+        argnames is ['_Request']
+    ]).
+    vendor(_Request) :-
+        dict_create(Data, _, [
+            config: true,
+            title: 'Vendor',
+            styles: ['/static/css/simple-sidebar.css'],
+            scripts: [],
+            body_classes: ['config', 'vendor'],
+            page_header: 'Vendor configuration'
+        ]),
+        templating::render_from_base('config/vendor', Data, Render),
         format(Render).
 
     :- public(appearance/1).

@@ -80,10 +80,10 @@
                 {% end %}
                 <li class="sidebar-brand">
                     <span>
-                        Third Party
+                        <a href="{{ url_for("config.vendor") }}">Vendor</a>
                     </span>
                 </li>
-                {% each menus.config_third_party.items, item %}
+                {% each menus.config_vendor.items, item %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ item.path }}">{{ item.title }}</a>
                 </li>

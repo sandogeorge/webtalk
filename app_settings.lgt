@@ -27,6 +27,7 @@
     assertz(user:file_search_path(data, base('data'))),
     %% App directory.
     assertz(user:file_search_path(app, base('app'))),
+    assertz(user:file_search_path(blueprint, app('blueprint'))),
     assertz(user:file_search_path(theme, app('theme'))),
     assertz(user:file_search_path(extension, app('extension'))),
     %% Core directory.

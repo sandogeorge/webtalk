@@ -102,6 +102,17 @@ For an example on how to run Webtalk as a systemd service, see the [service temp
 
 Webtalk supports customisation via pluggable themes and extensions. The best practice when developing a custom application is to avoid hacking the core at all costs and perform customizations via themes and extensions placed in the `app/theme` and `app/extension` directories respectively.
 
+### Blueprints
+
+Custom pages can be added to an application by way of custom blueprints. As a best practice, each custom blueprint should be placed in its own subdirectory of the `app/blueprint` directory, and should contain a .lgt file with the same name as the directory. For example, to create a blueprint that defines all the first level pages in your website's content structure, you could create a blueprint called `first_level` at `app/blueprint/first_level/first_level.lgt`.
+
+To have such a blueprint overwrite core's `main` blueprint, one would just have to reassign the HTTP handlers for the endpoints in `main` to the `first_level` class. For example:
+
+```logtalk
+:- http_handler(root(.),
+    [Request]>>(first_level::index(Request)), [id("first_level.index")])
+```
+
 ### Themes
 
 Each custom theme must be placed in its own subdirectory of the `app/theme` directory. The name of the subdirectory must correspond to the name of the theme and must contain, at least, a JSON theme info file, `theme.json`, and a Logtalk theme file, `theme_{{theme_name}}.lgt`. In addition to these, the theme directory must also contain a `static` subdirectory, that is used for serving static files such as CSS, JS and image files, and a `template` subdirectory that contains the HTML templates for the views that are rendered for the user. The directory tree below shows the structure of the default `base` theme that is bundled with Webtalk.

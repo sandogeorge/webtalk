@@ -40,7 +40,8 @@
         'core/lib/form/widget',
         'core/lib/form/field',
         'core/lib/form/form',
-        'core/lib/templating/templating'
+        'core/lib/templating/templating',
+        'core/lib/blueprint/blueprint'
     ]),
     extension_manager::install_default_extensions,
     logtalk_load([
@@ -53,6 +54,7 @@
         'core/blueprint/main/main',
         'core/blueprint/api/api'
     ]),
+    blueprint::autoload_custom_blueprints,
     user:app_prefix(AppPrefix),
     atom_concat(AppPrefix, 'SETTINGS', Envar),
     (getenv(Envar, Settings) -> true ; Settings = 'development'),

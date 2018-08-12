@@ -1,4 +1,7 @@
 % Webtalk
+/app/blueprint/*
+!/app/blueprintc/.gitkeep
+
 /app/extension/*
 !/app/extension/.gitkeep
 

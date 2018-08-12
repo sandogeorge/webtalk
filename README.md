@@ -205,7 +205,7 @@ Webtalk supports dynamic menus via the core `menu` extension, the functions of w
 - All registered menus are made available to all template files via the `menus` dictionary. For example, to access the items of the `main` menu in a template file, one may use the `menus.main.items` list.
 
 ## Copyright
-Copyright (c) 2017 [Sando George](https://github.com/sandogeorge).
+Copyright (c) 2017 - 2018 [Sando George](https://github.com/sandogeorge).
 
 ## License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.

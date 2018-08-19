@@ -66,9 +66,9 @@ app_prefix('WEBTALK_').
 :- object(app_settings).
 
     :- info([
-        version is 3.1,
+        version is 4.0,
         author is 'Sando George',
-        date is 2017/10/26,
+        date is 2018/08/19,
         comment is 'Base configuration object.'
     ]).
 
@@ -83,40 +83,40 @@ app_prefix('WEBTALK_').
     :- info(config_property/2, [
         comment is 'Set application wide configuration porperty.'
     ]).
-    config_property(server_port, 5000).
-    config_property(site_name, 'Webtalk').
-    config_property(jquery_version, '3.2.1').
-    config_property(jquery_validate_version, '1.17.0').
-    config_property(popper_version, '1.11.0').
-    config_property(bootstrap_version, '4.0.0-beta.2').
 
     :- public(daemon_option/2).
     :- dynamic(daemon_option/2).
     :- info(daemon_option/2, [
         comment is 'Set option to be passed to http_daemon.'
     ]).
-    daemon_option(pidfile, '/var/run/webtalk').
-    daemon_option(output, '/var/log/webtalk.log').
 
     :- public(daemonize/1).
     :- dynamic(daemonize/1).
     :- info(daemonize/1, [
         comment is 'Whether or not the app shoud use http_unix_daemon.'
     ]).
-    daemonize(false).
 
     :- public(https_only/1).
     :- dynamic(https_only/1).
     :- info(https_only/1, [
         comment is 'Force use of HTTPS pages.'
     ]).
-    https_only(false).
 
     :- private(init/0).
     :- info(init/0, [
         comment is 'Read common configs from env vars. Use defaults if empty.'
     ]).
     init :-
+        ::assertz(config_property(server_port, 5000)),
+        ::assertz(config_property(site_name, 'Webtalk')),
+        ::assertz(config_property(jquery_version, '3.2.1')),
+        ::assertz(config_property(jquery_validate_version, '1.17.0')),
+        ::assertz(config_property(popper_version, '1.11.0')),
+        ::assertz(config_property(bootstrap_version, '4.0.0-beta.2')),
+        ::assertz(daemonize(false)),
+        ::assertz(https_only(false)),
+        ::assertz(daemon_option(pidfile, '/var/run/webtalk')),
+        ::assertz(daemon_option(output, '/var/log/webtalk.log')),
         init_config_properties,
         init_daemon_options.
 
@@ -125,22 +125,29 @@ app_prefix('WEBTALK_').
         comment is 'Initialize config vars from env vars or use defaults.'
     ]).
     init_config_properties :-
-        (get_env('SERVER_PORT', ServerPort) ->
+        (get_env('SERVER_PORT', ServerPortAtom) ->
+            ::retractall(config_property(server_port, _)),
+            atom_number(ServerPortAtom, ServerPort),
             ::assertz(config_property(server_port, ServerPort))
         ; true),
         (get_env('SITE_NAME', SiteName) ->
+            ::retractall(config_property(site_name, _)),
             ::assertz(config_property(site_name, SiteName))
         ; true),
         (get_env('JQUERY_VERSION', JQueryVersion) ->
+            ::retractall(config_property(jquery_version, _)),
             ::assertz(config_property(jquery_version, JQueryVersion))
         ; true),
         (get_env('JQUERY_VALIDATE_VERSION', JQueryValidateVersion) ->
+            ::retractall(config_property(jquery_validate_version, _)),
             ::assertz(config_property(jquery_validate_version, JQueryValidateVersion))
         ; true),
         (get_env('POPPER_VERSION', PopperVersion) ->
+            ::retractall(config_property(popper_version, _)),
             ::assertz(config_property(popper_version, PopperVersion))
         ; true),
         (get_env('BOOTSTRAP_VERSION', BootstrapVersion) ->
+            ::retractall(config_property(bootstrap_version, _)),
             ::assertz(config_property(bootstrap_version, BootstrapVersion))
         ; true).
 
@@ -150,9 +157,11 @@ app_prefix('WEBTALK_').
     ]).
     init_daemon_options :-
         (get_env('DAEMONIZE', Daemonize) ->
+            ::retractall(daemonize(_)),
             ::assertz(daemonize(Daemonize))
         ; true),
         (get_env('DAEMON_HTTPS_ONLY', HttpsOnly) ->
+            ::retractall(https_only(_)),
             ::assertz(https_only(HttpsOnly))
         ; true),
         (get_env('DAEMON_PORT', Port) ->
@@ -174,9 +183,11 @@ app_prefix('WEBTALK_').
             ::assertz(daemon_option(group, Group))
         ; true),
         (get_env('DAEMON_PIDFILE', Pidfile) ->
+            ::retractall(daemon_option(pidfile,_)),
             ::assertz(daemon_option(pidfile, Pidfile))
         ; true),
         (get_env('DAEMON_OUTPUT', Output) ->
+            ::retractall(daemon_option(output,_)),
             ::assertz(daemon_option(output, Output))
         ; true),
         (get_env('DAEMON_FORK', Fork) ->

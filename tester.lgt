@@ -19,15 +19,16 @@
 
 :- initialization((
     set_logtalk_flag(report, warnings),
+    logtalk_load(debugger(loader)),
     logtalk_load(lgtunit(loader)),
-    logtalk_load([config, 'app/model/model']),
+    logtalk_load([app_settings, 'core/model/model']),
     use_module(model(user_model)),
     logtalk_load([
         'tests/config',
-        'tests/user_model',
-        'tests/model'
+        'tests/model',
+        'tests/user_model'
     ], [hook(lgtunit)]),
     config_tests::run,
-    user_model_tests::run,
-    model_tests::run
+    model_tests::run,
+    user_model_tests::run
 )).

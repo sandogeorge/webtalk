@@ -21,9 +21,9 @@
     extends(lgtunit)).
 
     :- info([
-        version is 1.0,
+        version is 1.1,
         author is 'Sando George',
-        date is 2017/10/31,
+        date is 2018/12/24,
         comment is 'Test database models for user objects.'
     ]).
 
@@ -32,35 +32,35 @@
         user_model:attach_user_db(File).
 
     succeeds(add_user) :-
-        user_model:add_user(sando, 'sando@example.com', user).
+        user_model:add_user(sando, 'passw', 'sando@example.com', user).
 
     fails(add_same_user) :-
-        user_model:add_user(sando, 'sando@example.com', administrator).
+        user_model:add_user(sando, 'passw', 'sando@example.com', administrator).
 
     succeeds(add_different_user) :-
-        user_model:add_user(george, 'george@example.com', administrator).
+        user_model:add_user(george, 'passw', 'george@example.com', administrator).
 
     succeeds(get_user_role) :-
-        user_model:current_user(sando, _, Role),
+        user_model:current_user(sando, _, _, Role),
         Role == user.
 
     succeeds(change_user_role) :-
-        user_model:current_user(sando, Email, _),
-        user_model:update_user(sando, Email, administrator).
+        user_model:current_user(sando, Pass, Email, _),
+        user_model:update_user(sando, Pass, Email, administrator).
 
     succeeds(check_new_role) :-
-        user_model:current_user(sando, _, Role),
+        user_model:current_user(sando, _, _, Role),
         Role == administrator.
 
     succeeds(get_email) :-
-        user_model:current_user(sando, Email, _),
+        user_model:current_user(sando, _, Email, _),
         nonvar(Email).
 
     succeeds(delete_user) :-
         user_model:delete_user(sando).
 
     fails(check_user_deleted) :-
-        user_model:current_user(sando, _, _).
+        user_model:current_user(sando, _, _, _).
 
     cleanup :-
         user_model:detach_user_db,

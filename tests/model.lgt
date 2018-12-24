@@ -21,64 +21,86 @@
     extends(lgtunit)).
 
     :- info([
-        version is 1.0,
+        version is 1.1,
         author is 'Sando George',
-        date is 2017/11/01,
-        comment is 'Test configuration object.'
+        date is 2018/12/24,
+        comment is 'Test database model object.'
     ]).
 
     succeeds(create_model_check_name_file) :-
         create_object(Model,
             [extends(model)],
             [initialization(::init)],
-            [name(user)]
+            [name(user), db_name('test.db')]
         ),
         Model::name(Name),
         Name == user,
         Model::file(File),
-        expand_file_search_path(data('user_model.db'), FileCheck),
-        File == FileCheck.
+        expand_file_search_path(data('test.db'), FileCheck),
+        File == FileCheck,
+        Model::detach,
+        abolish_object(Model).
 
     succeeds(add_record_to_db) :-
        create_object(Model,
            [extends(model)],
            [initialization(::init)],
-           [name(user)]
+           [name(user), db_name('test.db')]
        ),
-       Model::exec(add, [sando, 'sando@example.com', user]).
+       Model::exec(add, [sando, 'passw', 'sando@example.com', user]),
+       Model::detach,
+       abolish_object(Model).
 
     succeeds(update_record_in_db) :-
         create_object(Model,
             [extends(model)],
             [initialization(::init)],
-            [name(user)]
+            [name(user), db_name('test.db')]
         ),
-        Model::exec(update, [sando, 'sando@example.com', administrator]).
+        Model::exec(update, [sando, 'passw', 'sando@example.com', administrator]),
+        Model::detach,
+        abolish_object(Model).
 
     succeeds(get_current_record_from_db) :-
         create_object(Model,
             [extends(model)],
             [initialization(::init)],
-            [name(user)]
+            [name(user), db_name('test.db')]
         ),
-        Model::exec(current, [sando, Email, Role]),
+        Model::exec(current, [sando, Pass, Email, Role]),
+        nonvar(Pass),
         nonvar(Email),
-        nonvar(Role).
+        nonvar(Role),
+        Model::detach,
+        abolish_object(Model).
 
     succeeds(delete_record_from_db) :-
         create_object(Model,
             [extends(model)],
             [initialization(::init)],
-            [name(user)]
+            [name(user), db_name('test.db')]
         ),
-        Model::exec(delete, [sando]).
+        Model::exec(delete, [sando]),
+        Model::detach,
+        abolish_object(Model).
 
     fails(check_record_deleted_from_db) :-
         create_object(Model,
             [extends(model)],
             [initialization(::init)],
-            [name(user)]
+            [name(user), db_name('test.db')]
         ),
-        Model::exec(current, [sando, _, _]).
+        Model::exec(current, [sando, _, _, _]).
+
+    cleanup :-
+        create_object(Model,
+            [extends(model)],
+            [initialization(::init)],
+            [name(user), db_name('test.db')]
+        ),
+        Model::detach,
+        Model::file(File),
+        abolish_object(Model),
+        delete_file(File).
 
 :- end_object.

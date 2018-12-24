@@ -24,9 +24,9 @@
     extends(extension)).
 
     :- info([
-        version is 1.0,
+        version is 1.1,
         author is 'Sando George',
-        date is 2017/11/15,
+        date is 2018/12/24,
         comment is 'Permission system predicates.'
     ]).
 
@@ -76,7 +76,7 @@
                 \+(Object::Callable)
             ; Object::Callable)
         ; Object::Callable),
-        ::validate_permissions(Perms).
+        validate_permissions(Perms).
 
     install :-
         true.

@@ -153,7 +153,7 @@
     render_standalone(Template, Data, Render) :-
         ::default_data(DefaultData),
         dict_create(Dict, _, []),
-        ::assert(hook_data(Dict)),
+        ::assertz(hook_data(Dict)),
         findall(X, (data_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
         ::call_data_hooks(Hooks),
         ::hook_data(HookData),

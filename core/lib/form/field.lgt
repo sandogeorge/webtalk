@@ -442,9 +442,9 @@
     extends(field)).
 
     :- info([
-        version is 1.0,
+        version is 1.1,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2018/12/24,
         comment is 'Select field.'
     ]).
 
@@ -457,7 +457,7 @@
     option_list([], []).
     option_list([Dict | Dicts], [Option | Options]) :-
         ::option_markup(Dict, Option),
-        ::option_list(Dicts, Options).
+        option_list(Dicts, Options).
 
     :- private(option_markup/2).
     option_markup(Dict, Markup) :-

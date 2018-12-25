@@ -33,9 +33,9 @@
 :- object(templating).
 
     :- info([
-        version is 1.2,
+        version is 1.3,
         author is 'Sando George',
-        date is 2017/11/05,
+        date is 2018/12/24,
         comment is 'Utility predicates for template handling.'
     ]).
 
@@ -153,7 +153,7 @@
     render_standalone(Template, Data, Render) :-
         ::default_data(DefaultData),
         dict_create(Dict, _, []),
-        ::assert(hook_data(Dict)),
+        ::assertz(hook_data(Dict)),
         findall(X, (data_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
         ::call_data_hooks(Hooks),
         ::hook_data(HookData),

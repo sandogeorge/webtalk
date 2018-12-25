@@ -24,9 +24,9 @@
 :- object(extension_manager).
 
     :- info([
-        version is 1.0,
+        version is 1.1,
         author is 'Sando George',
-        date is 2017/11/15,
+        date is 2018/12/24,
         comment is 'Predicates used for managing extensions.'
     ]).
 
@@ -45,7 +45,7 @@
     install_extensions([]).
     install_extensions([Ext | Exts]) :-
         (::install_extension(Ext) -> true ; true),
-        ::install_extensions(Exts).
+        install_extensions(Exts).
 
     :- public(install_extension/1).
     :- info(install_extension/1, [

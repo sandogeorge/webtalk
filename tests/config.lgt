@@ -21,18 +21,19 @@
     extends(lgtunit)).
 
     :- info([
-        version is 1.0,
+        version is 1.1,
         author is 'Sando George',
-        date is 2017/10/22,
+        date is 2018/12/24,
         comment is 'Test configuration object.'
     ]).
 
     succeeds(extend_config) :-
-        create_object(Config, [extends(config)], [], []),
+        app_settings::new(Config, []),
+        assertz(user:app_settings(Config)),
         abolish_object(Config).
 
     succeeds(override_property) :-
-        create_object(Config, [extends(config)], [], []),
+        app_settings::new(Config, []),
         Config::config_property(server_port, Port),
         Port == 5000,
         Config::retractall(config_property(server_port, _)),

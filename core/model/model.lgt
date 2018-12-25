@@ -26,9 +26,9 @@
 :- object(model).
 
     :- info([
-        version is 1.0,
+        version is 1.1,
         author is 'Sando George',
-        date is 2017/11/01,
+        date is 2018/12/24,
         comment is 'Common object to access persistent models.'
     ]).
 
@@ -44,6 +44,12 @@
         comment is 'Name of model to be used.'
     ]).
 
+    :- public(db_name/1).
+    :- dynamic(db_name/1).
+    :- info(db_name/1, [
+        comment is 'Name of database to be used.'
+    ]).
+
     :- public(file/1).
     :- dynamic(file/1).
     :- info(file/1, [
@@ -52,11 +58,15 @@
 
     :- public(init/0).
     init :-
-        get_model(Model),
-        atom_concat(Model, '.db', DbName),
+        ::get_model(Model),
+        (::db_name(DbName) -> true ; atom_concat(Model, '.db', DbName)),
         expand_file_search_path(data(DbName), File),
         ::attach_db(File),
         ::assertz(file(File)).
+
+    :- public(detach/0).
+    detach :-
+        ::detach_db.
 
     :- public(exec/2).
     :- info(exec/2, [
@@ -80,6 +90,17 @@
         atomic_list_concat(['attach_', Name, '_db'], Pred),
         Attach =.. [Pred, File],
         Model:Attach.
+
+    :- private(detach_db/0).
+    :- info(detach_db/0, [
+        comment is 'Detach database file.'
+    ]).
+    detach_db :-
+        ::name(Name),
+        ::get_model(Model),
+        atomic_list_concat(['detach_', Name, '_db'], Pred),
+        Detach =.. [Pred],
+        Model:Detach.
 
     :- private(get_model/1).
     :- info(get_model/1, [

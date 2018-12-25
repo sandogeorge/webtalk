@@ -28,9 +28,9 @@
 :- object(form).
 
     :- info([
-        version is 1.0,
+        version is 1.1,
         author is 'Sando George',
-        date is 2017/11/05,
+        date is 2017/12/24,
         comment is 'Defines predicates for working with HTML forms.'
     ]).
 
@@ -71,7 +71,7 @@
         Object::new(Instance, [spec(SpecLabel)]),
         ::retractall(field(Field, _)),
         ::assertz(field(Field, Instance)),
-        ::create_field(Fields, Spec).
+        create_field(Fields, Spec).
 
     :- private(ensure_field_id/2).
     ensure_field_id(SpecIn, SpecOut) :-
@@ -174,6 +174,6 @@
         ::field(Field, Instance),
         Instance::dict(FieldDict),
         Dict = Field:FieldDict,
-        ::field_dicts(Fields, Dicts).
+        field_dicts(Fields, Dicts).
 
 :- end_object.

@@ -231,7 +231,7 @@ http:location(auth, root('auth'), []).
     generate_csrf_token(SessionId) :-
         (http_session:http_session_id(SessionId) ->
             crypto:crypto_n_random_bytes(32, Bs),
-            ::bytes_integer(Bs, I),
+            bytes_integer(Bs, I),
             http_session:http_session_assert(csrf(I))
         ; true).
 

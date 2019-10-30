@@ -95,8 +95,7 @@
     ]).
     call_data_hooks([]).
     call_data_hooks([Hook|Hooks]) :-
-        lists:nth0(0, Hook, Object),
-        lists:nth0(1, Hook, Pred),
+        Hook = [Object, Pred|_],
         Callable =.. [Pred, HookData],
         Object::Callable,
         ::hook_data(CurrentData),

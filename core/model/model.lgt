@@ -32,10 +32,10 @@
         comment is 'Common object to access persistent models.'
     ]).
 
-    :- public(new/2).
+    :- protected(new/2).
     new(Instance, Clauses) :-
         self(Self),
-        create_object(Instance, [extends(Self)], [], Clauses),
+        create_object(Instance, [extends(Self)], [initialization(::init)], Clauses),
         Instance::init.
 
     :- public(name/1).

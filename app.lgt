@@ -66,7 +66,7 @@
     use_module(library(http/http_log)),
     use_module(library(settings)),
     set_setting(http:logfile, '/tmp/httpd.log'),
-    ((Instance::daemonize(Bool), Bool) ->
+    ( Instance::daemonize(true) ->
         findall(X, (Instance::daemon_option(O, V), X =.. [O, V]), Options),
         use_module(library(http/http_unix_daemon)),
         http_daemon(Options)

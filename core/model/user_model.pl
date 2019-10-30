@@ -27,8 +27,7 @@ current_user(Name, Pass, Email, Role) :-
     with_mutex(user_model, user_record(Name, Pass, Email, Role)).
 
 add_user(Name, Pass, Email, Role) :-
-    findall(X, current_user(X, _, _, _), Names),
-    \+(member(Name, Names)),
+    \+ current_user(Name, _, _, _),
     assert_user_record(Name, Pass, Email, Role).
 
 update_user(Name, Pass, Email, Role) :-

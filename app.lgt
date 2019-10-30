@@ -27,7 +27,7 @@
 % 4. Makes the correct configuration object available to the rest of the
 % application.
 :- initialization((
-    logtalk_load(library(all_loader)),
+    logtalk_load([basic_types(loader), meta(loader)]),
     logtalk_load([
         'app_settings',
         'core/model/model',

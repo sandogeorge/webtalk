@@ -26,7 +26,7 @@
 
 % Installation endpoints.
 :- http_handler(root('install'),
-    [Request]>>(install::install(Request)), [id("install")]).
+    [Request]>>(install::install(Request)), [id('install')]).
 
 :- object(install).
 

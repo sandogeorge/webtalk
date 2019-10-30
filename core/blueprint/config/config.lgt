@@ -33,28 +33,28 @@ http:location(config, root('config'), []).
 :- ext_menu::register_menu(config_vendor).
 
 :- http_handler(config(.),
-    [Request]>>(config::index(Request)), [id("config")]).
-:- http_location_by_id("config", Loc),
+    [Request]>>(config::index(Request)), [id('config')]).
+:- http_location_by_id('config', Loc),
     ext_menu::add_menu_item(user, 'Configuration', Loc, 50, ''),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 
 :- http_handler(config('appearance'),
-    [Request]>>(config::appearance(Request)), [id("config.appearance")]).
-:- http_location_by_id("config.appearance", Loc),
+    [Request]>>(config::appearance(Request)), [id('config.appearance')]).
+:- http_location_by_id('config.appearance', Loc),
     ext_menu::add_menu_item(config_core, 'Appearance', Loc, 0, 'Adjust look \c
     and feel.'),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 
 :- http_handler(config('extensions'),
-    [Request]>>(config::extensions(Request)), [id("config.extensions")]).
-:- http_location_by_id("config.extensions", Loc),
+    [Request]>>(config::extensions(Request)), [id('config.extensions')]).
+:- http_location_by_id('config.extensions', Loc),
     ext_menu::add_menu_item(config_core, 'Extensions', Loc, 1, 'Manage \c
     extensions.'),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 
 :- http_handler(config('vendor'),
-    [Request]>>(config::vendor(Request)), [id("config.vendor")]).
-:- http_location_by_id("config.vendor", Loc),
+    [Request]>>(config::vendor(Request)), [id('config.vendor')]).
+:- http_location_by_id('config.vendor', Loc),
     ext_permission::set_path_permissions(Loc, [[auth, is_admin]]).
 
 :- object(config).

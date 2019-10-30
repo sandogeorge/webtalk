@@ -114,7 +114,7 @@
         dict_create(Dict, _, []),
         ::retractall(hook_data(_)),
         ::assertz(hook_data(Dict)),
-        findall(X, (data_hook(Obj, Pred), X = [Obj, Pred]), Hooks),
+        findall([Obj, Pred], data_hook(Obj, Pred), Hooks),
         ::call_data_hooks(Hooks),
         ::hook_data(HookData),
         put_dict(DefaultData, HookData, HookedData),

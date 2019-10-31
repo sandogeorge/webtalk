@@ -46,14 +46,14 @@ http:location(auth, root('auth'), []).
 
 %% Authentication endpoints.
 :- http_handler(auth('login'),
-    [Request]>>(auth::login(Request)), [id("auth.login")]).
-:- http_location_by_id("auth.login", Loc),
+    [Request]>>(auth::login(Request)), [id('auth.login')]).
+:- http_location_by_id('auth.login', Loc),
     ext_menu::add_menu_item(user, 'Log in', Loc, 99, ''),
     ext_permission::set_path_permissions(Loc, [[auth, is_authenticated, false]]).
 
 :- http_handler(auth('logout'),
-    [Request]>>(auth::logout(Request)), [id("auth.logout")]).
-:- http_location_by_id("auth.logout", Loc),
+    [Request]>>(auth::logout(Request)), [id('auth.logout')]).
+:- http_location_by_id('auth.logout', Loc),
     ext_menu::add_menu_item(user, 'Log out', Loc, 99, ''),
     ext_permission::set_path_permissions(Loc, [[auth, is_authenticated]]).
 
@@ -208,7 +208,7 @@ http:location(auth, root('auth'), []).
         comment is 'Build current user dict.'
     ]).
     current_user(CurrentUser) :-
-        ((::is_authenticated(Bool), Bool) ->
+        (::is_authenticated(true) ->
             model::new(User, [name(user)]),
             http_session:http_session_data(user_name(Username)),
             User::exec(current, [Username, _, Email, Role]),
@@ -231,7 +231,7 @@ http:location(auth, root('auth'), []).
     generate_csrf_token(SessionId) :-
         (http_session:http_session_id(SessionId) ->
             crypto:crypto_n_random_bytes(32, Bs),
-            ::bytes_integer(Bs, I),
+            bytes_integer(Bs, I),
             http_session:http_session_assert(csrf(I))
         ; true).
 

@@ -27,7 +27,7 @@
 % 4. Makes the correct configuration object available to the rest of the
 % application.
 :- initialization((
-    logtalk_load(library(all_loader)),
+    logtalk_load([basic_types(loader), meta(loader)]),
     logtalk_load([
         'app_settings',
         'core/model/model',
@@ -66,12 +66,12 @@
     use_module(library(http/http_log)),
     use_module(library(settings)),
     set_setting(http:logfile, '/tmp/httpd.log'),
-    ((Instance::daemonize(Bool), Bool) ->
+    ( Instance::daemonize(true) ->
         findall(X, (Instance::daemon_option(O, V), X =.. [O, V]), Options),
         use_module(library(http/http_unix_daemon)),
         http_daemon(Options)
     ;
-        call(Instance::config_property(server_port, ServerPort)),
+        Instance::config_property(server_port, ServerPort),
         use_module(library(http/thread_httpd)),
         use_module(library(http/http_dispatch)),
         threaded_ignore(http_server(http_dispatch, [port(ServerPort)])))

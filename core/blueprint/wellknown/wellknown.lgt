@@ -30,7 +30,7 @@ http:location(well_known, root('.well-known'), []).
 
 %% Certbot endpoints.
 :- http_handler(well_known(.),
-    [Request]>>(wellknown::well_known(Request)), [id("well_known"), prefix]).
+    [Request]>>(wellknown::well_known(Request)), [id('well_known'), prefix]).
 
 :- object(wellknown).
 

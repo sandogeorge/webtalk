@@ -170,8 +170,7 @@ http:request_expansion(RequestIn, RequestOut) :-
     ]).
     call_expansion_hooks([], _).
     call_expansion_hooks([Hook|Hooks], Request) :-
-        lists:nth0(0, Hook, Object),
-        lists:nth0(1, Hook, Pred),
+        Hook = [Object, Pred|_],
         Callable =.. [Pred, Request],
         Object::Callable,
         call_expansion_hooks(Hooks, Request).

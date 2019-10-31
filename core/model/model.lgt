@@ -75,8 +75,7 @@
     exec(Op, Args) :-
         ::name(Name),
         atomic_list_concat([Op, '_', Name], Call),
-        lists:append([Call], Args, CallList),
-        Callable =.. CallList,
+        Callable =.. [Call|Args],
         get_model(Model),
         Model:Callable.
 

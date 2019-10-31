@@ -28,7 +28,7 @@ http:location(api, root('api'), []).
 
 %% API endpoints.
 :- http_handler(api('.'),
-    [Request]>>(api::index(Request)), [id("api.index")]).
+    [Request]>>(api::index(Request)), [id('api.index')]).
 
 :- object(api).
 

@@ -208,7 +208,7 @@ http:location(auth, root('auth'), []).
         comment is 'Build current user dict.'
     ]).
     current_user(CurrentUser) :-
-        (::is_authenticated(Bool) ->
+        (::is_authenticated(true) ->
             model::new(User, [name(user)]),
             http_session:http_session_data(user_name(Username)),
             User::exec(current, [Username, _, Email, Role]),

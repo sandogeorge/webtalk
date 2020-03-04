@@ -60,9 +60,9 @@ http:location(config, root('config'), []).
 :- object(config).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
-        date is 2017/11/03,
+        date is 2017-11-03,
         comment is 'Defines handlers for authentication pages.'
     ]).
 

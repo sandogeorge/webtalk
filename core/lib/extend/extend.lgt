@@ -20,9 +20,9 @@
 :- protocol(extend).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
-        date is 2017/11/14,
+        date is 2017-11-14,
         comment is 'Features common to both themes and extensions.'
     ]).
 

@@ -23,9 +23,9 @@
 :- object(theme_manager).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
-        date is 2017/11/20,
+        date is 2017-11-20,
         comment is 'Predicates used for managing themes.'
     ]).
 

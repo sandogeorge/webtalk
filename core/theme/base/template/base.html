@@ -70,7 +70,7 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <span>
-                        <a href="{{ url_for("config") }}">Core</a>
+                        <a href="{{ url_for('config') }}">Core</a>
                     </span>
                 </li>
                 {% each menus.config_core.items, item %}
@@ -80,7 +80,7 @@
                 {% end %}
                 <li class="sidebar-brand">
                     <span>
-                        <a href="{{ url_for("config.vendor") }}">Vendor</a>
+                        <a href="{{ url_for('config.vendor') }}">Vendor</a>
                     </span>
                 </li>
                 {% each menus.config_vendor.items, item %}

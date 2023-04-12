@@ -156,10 +156,10 @@ The `theme_{{theme_name}}.lgt` file is expected to contain an object called `the
     extends(theme)).
 
     install :-
-        {assertz(user:file_search_path(static, core(theme/base)))}.
+        {assertz(file_search_path(static, core(theme/base)))}.
 
     uninstall :-
-        {retractall(user:file_search_path(static, core(theme/base)))}.
+        {retractall(file_search_path(static, core(theme/base)))}.
 
 :- end_object.
 ```

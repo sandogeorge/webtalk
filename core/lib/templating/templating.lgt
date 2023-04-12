@@ -243,6 +243,6 @@
         comment is 'Given a handler ID, return the url.'
     ]).
     url_for(Id, Out) :-
-        http_dispatch:http_location_by_id(Id, Out).
+        user::http_location_by_id(Id, Out).
 
 :- end_object.

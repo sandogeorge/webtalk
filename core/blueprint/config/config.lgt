@@ -29,8 +29,8 @@
 http:location(config, root('config'), []).
 
 %% Configuration endpoints.
-:- ext_menu::register_menu(config_core).
-:- ext_menu::register_menu(config_vendor).
+:- user:ext_menu::register_menu(config_core).
+:- user:ext_menu::register_menu(config_vendor).
 
 :- http_handler(config(.),
     [Request]>>(config::index(Request)), [id('config')]).
@@ -60,9 +60,9 @@ http:location(config, root('config'), []).
 :- object(config).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
-        date is 2017/11/03,
+        date is 2017-11-3,
         comment is 'Defines handlers for authentication pages.'
     ]).
 

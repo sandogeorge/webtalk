@@ -34,9 +34,9 @@ http:request_expansion(RequestIn, RequestOut) :-
 :- object(routing).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
-        date is 2017/11/03,
+        date is 2017-11-03,
         comment is 'Defines common routing functions.'
     ]).
 
@@ -47,7 +47,7 @@ http:request_expansion(RequestIn, RequestOut) :-
     ]).
 
     :- public(assert_expansion_hook/2).
-    :- info(assert_expansioin_hook/2, [
+    :- info(assert_expansion_hook/2, [
         comment is 'Register expansion hooks.'
     ]).
     assert_expansion_hook(Object, Predicate) :-
@@ -56,7 +56,7 @@ http:request_expansion(RequestIn, RequestOut) :-
         ; true).
 
     :- public(retract_expansion_hook/2).
-    :- info(retract_expansioin_hook/2, [
+    :- info(retract_expansion_hook/2, [
         comment is 'Deregister expansion hooks.'
     ]).
     retract_expansion_hook(Object, Predicate) :-

@@ -33,9 +33,9 @@
 :- object(templating).
 
     :- info([
-        version is 1.3,
+        version is 1:3:0,
         author is 'Sando George',
-        date is 2018/12/24,
+        date is 2018-12-24,
         comment is 'Utility predicates for template handling.'
     ]).
 
@@ -145,7 +145,7 @@
         string_concat('Content-type: text/html~n~n', Base, Render).
 
     :- public(render_standalone/3).
-    :- info(render_standlaone/3, [
+    :- info(render_standalone/3, [
         comment is 'Render the supplied template as a standalone page.',
         argnames is ['Template', 'Data', 'Render']
     ]).
@@ -242,6 +242,7 @@
         comment is 'Given a handler ID, return the url.'
     ]).
     url_for(Id, Out) :-
-        http_dispatch:http_location_by_id(Id, Out).
+        atom_string(IdAtom, Id),
+        user:http_location_by_id(IdAtom, Out).
 
 :- end_object.

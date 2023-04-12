@@ -60,9 +60,9 @@ http:location(auth, root('auth'), []).
 :- object(auth).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
-        date is 2017/11/03,
+        date is 2017-11-3,
         comment is 'Defines handlers for authentication pages.'
     ]).
 

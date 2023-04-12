@@ -29,7 +29,7 @@
     implements(html_markup)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'Base HTML widget.'
@@ -71,7 +71,7 @@
     extends(html_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <label> widget.'
@@ -88,7 +88,7 @@
     extends(html_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input> widget.'
@@ -107,7 +107,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="button"> widget.'
@@ -121,7 +121,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="checkbox"> widget.'
@@ -135,7 +135,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="color"> widget.'
@@ -149,7 +149,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="date"> widget.'
@@ -163,7 +163,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="date"> widget.'
@@ -177,7 +177,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="email"> widget.'
@@ -191,7 +191,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="file"> widget.'
@@ -205,7 +205,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="hidden"> widget.'
@@ -219,7 +219,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="image"> widget.'
@@ -233,7 +233,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="month"> widget.'
@@ -247,7 +247,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="number"> widget.'
@@ -261,7 +261,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="password"> widget.'
@@ -275,7 +275,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="radio"> widget.'
@@ -289,7 +289,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="range"> widget.'
@@ -303,7 +303,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="reset"> widget.'
@@ -317,7 +317,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="search"> widget.'
@@ -331,7 +331,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="submit"> widget.'
@@ -345,7 +345,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="tel"> widget.'
@@ -359,7 +359,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="text"> widget.'
@@ -373,7 +373,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="time"> widget.'
@@ -387,7 +387,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="url"> widget.'
@@ -401,7 +401,7 @@
     extends(form_input_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <input type="week"> widget.'
@@ -415,7 +415,7 @@
     extends(html_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <button> widget.'
@@ -439,7 +439,7 @@
     extends(form_button_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <button type="submit"> widget.'
@@ -453,7 +453,7 @@
     extends(html_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <option> widget.'
@@ -473,7 +473,7 @@
     extends(html_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <select> widget.'
@@ -493,7 +493,7 @@
     extends(html_widget)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-11,
         comment is 'HTML <textarea> widget.'

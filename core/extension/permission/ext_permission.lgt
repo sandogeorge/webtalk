@@ -24,7 +24,7 @@
     extends(extension)).
 
     :- info([
-        version is 1.1,
+        version is 1:1:0,
         author is 'Sando George',
         date is 2018-12-24,
         comment is 'Permission system predicates.'

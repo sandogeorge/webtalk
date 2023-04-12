@@ -33,7 +33,7 @@
 :- object(templating).
 
     :- info([
-        version is 1.3,
+        version is 1:3:0,
         author is 'Sando George',
         date is 2018-12-24,
         comment is 'Utility predicates for template handling.'

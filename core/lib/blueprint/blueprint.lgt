@@ -23,7 +23,7 @@
 :- object(blueprint).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2018-8-12,
         comment is 'Utility predicates for blueprint handling.'

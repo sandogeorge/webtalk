@@ -66,7 +66,7 @@ app_prefix('WEBTALK_').
 :- object(app_settings).
 
     :- info([
-        version is 4.0,
+        version is 4:0:0,
         author is 'Sando George',
         date is 2018-8-19,
         comment is 'Base configuration object.'
@@ -243,7 +243,7 @@ app_prefix('WEBTALK_').
     extends(app_settings)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-10-19,
         comment is 'Development environment specific configuration object.'
@@ -255,7 +255,7 @@ app_prefix('WEBTALK_').
     extends(app_settings)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-10-19,
         comment is 'Testing environment specific configuration object.'
@@ -267,7 +267,7 @@ app_prefix('WEBTALK_').
     extends(app_settings)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-10-19,
         comment is 'Production environment specific configuration object.'

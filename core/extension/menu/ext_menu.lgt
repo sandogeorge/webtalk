@@ -23,7 +23,7 @@
     extends(extension)).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-15,
         comment is 'Menu extension predicates.'

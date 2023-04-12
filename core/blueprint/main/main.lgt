@@ -30,7 +30,7 @@
 :- object(main).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-10-19,
         comment is 'Defines handlers for HTML pages.'

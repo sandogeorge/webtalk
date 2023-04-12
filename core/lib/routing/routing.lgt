@@ -34,7 +34,7 @@ http:request_expansion(RequestIn, RequestOut) :-
 :- object(routing).
 
     :- info([
-        version is 1.0,
+        version is 1:0:0,
         author is 'Sando George',
         date is 2017-11-03,
         comment is 'Defines common routing functions.'

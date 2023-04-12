@@ -29,8 +29,8 @@
 http:location(config, root('config'), []).
 
 %% Configuration endpoints.
-:- ext_menu::register_menu(config_core).
-:- ext_menu::register_menu(config_vendor).
+:- user:ext_menu::register_menu(config_core).
+:- user:ext_menu::register_menu(config_vendor).
 
 :- http_handler(config(.),
     [Request]>>(config::index(Request)), [id('config')]).

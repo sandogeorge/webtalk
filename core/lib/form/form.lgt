@@ -30,7 +30,7 @@
     :- info([
         version is 1.1,
         author is 'Sando George',
-        date is 2017/12/24,
+        date is 2017-12-24,
         comment is 'Defines predicates for working with HTML forms.'
     ]).
 

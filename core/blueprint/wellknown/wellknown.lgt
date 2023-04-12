@@ -37,7 +37,7 @@ http:location(well_known, root('.well-known'), []).
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/04,
+        date is 2017-11-4,
         comment is 'Defines handlers for completing ACME challenges.'
     ]).
 

@@ -35,7 +35,7 @@
     :- info([
         version is 1.3,
         author is 'Sando George',
-        date is 2018/12/24,
+        date is 2018-12-24,
         comment is 'Utility predicates for template handling.'
     ]).
 

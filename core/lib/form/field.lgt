@@ -27,7 +27,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Base object for all fields.'
     ]).
 
@@ -96,7 +96,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Base input field.'
     ]).
 
@@ -136,7 +136,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Button input field.'
     ]).
 
@@ -150,7 +150,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Checkbox input field.'
     ]).
 
@@ -164,7 +164,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Color input field.'
     ]).
 
@@ -178,7 +178,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Date input field.'
     ]).
 
@@ -192,7 +192,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Datetime input field.'
     ]).
 
@@ -206,7 +206,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Email input field.'
     ]).
 
@@ -220,7 +220,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'File input field.'
     ]).
 
@@ -234,7 +234,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Hidden input field.'
     ]).
 
@@ -248,7 +248,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Image input field.'
     ]).
 
@@ -262,7 +262,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Month input field.'
     ]).
 
@@ -276,7 +276,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Number input field.'
     ]).
 
@@ -290,7 +290,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Password input field.'
     ]).
 
@@ -304,7 +304,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Radio input field.'
     ]).
 
@@ -318,7 +318,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Range input field.'
     ]).
 
@@ -332,7 +332,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Reset input field.'
     ]).
 
@@ -346,7 +346,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Search input field.'
     ]).
 
@@ -360,7 +360,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Submit input field.'
     ]).
 
@@ -374,7 +374,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Tel input field.'
     ]).
 
@@ -388,7 +388,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Text input field.'
     ]).
 
@@ -402,7 +402,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Time input field.'
     ]).
 
@@ -416,7 +416,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Url input field.'
     ]).
 
@@ -430,7 +430,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Week input field.'
     ]).
 
@@ -444,7 +444,7 @@
     :- info([
         version is 1.1,
         author is 'Sando George',
-        date is 2018/12/24,
+        date is 2018-12-24,
         comment is 'Select field.'
     ]).
 
@@ -503,7 +503,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Submit field.'
     ]).
 
@@ -531,7 +531,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/09,
+        date is 2017-11-9,
         comment is 'Textarea field.'
     ]).
 

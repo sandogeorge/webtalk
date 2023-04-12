@@ -31,7 +31,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'Base HTML widget.'
     ]).
 
@@ -73,7 +73,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <label> widget.'
     ]).
 
@@ -90,7 +90,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input> widget.'
     ]).
 
@@ -109,7 +109,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="button"> widget.'
     ]).
 
@@ -123,7 +123,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="checkbox"> widget.'
     ]).
 
@@ -137,7 +137,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="color"> widget.'
     ]).
 
@@ -151,7 +151,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="date"> widget.'
     ]).
 
@@ -165,7 +165,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="date"> widget.'
     ]).
 
@@ -179,7 +179,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="email"> widget.'
     ]).
 
@@ -193,7 +193,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="file"> widget.'
     ]).
 
@@ -207,7 +207,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="hidden"> widget.'
     ]).
 
@@ -221,7 +221,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="image"> widget.'
     ]).
 
@@ -235,7 +235,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="month"> widget.'
     ]).
 
@@ -249,7 +249,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="number"> widget.'
     ]).
 
@@ -263,7 +263,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="password"> widget.'
     ]).
 
@@ -277,7 +277,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="radio"> widget.'
     ]).
 
@@ -291,7 +291,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="range"> widget.'
     ]).
 
@@ -305,7 +305,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="reset"> widget.'
     ]).
 
@@ -319,7 +319,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="search"> widget.'
     ]).
 
@@ -333,7 +333,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="submit"> widget.'
     ]).
 
@@ -347,7 +347,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="tel"> widget.'
     ]).
 
@@ -361,7 +361,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="text"> widget.'
     ]).
 
@@ -375,7 +375,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="time"> widget.'
     ]).
 
@@ -389,7 +389,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="url"> widget.'
     ]).
 
@@ -403,7 +403,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <input type="week"> widget.'
     ]).
 
@@ -417,7 +417,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <button> widget.'
     ]).
 
@@ -441,7 +441,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <button type="submit"> widget.'
     ]).
 
@@ -455,7 +455,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <option> widget.'
     ]).
 
@@ -475,7 +475,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <select> widget.'
     ]).
 
@@ -495,7 +495,7 @@
     :- info([
         version is 1.0,
         author is 'Sando George',
-        date is 2017/11/11,
+        date is 2017-11-11,
         comment is 'HTML <textarea> widget.'
     ]).
 

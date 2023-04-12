@@ -146,7 +146,7 @@
         string_concat('Content-type: text/html~n~n', Base, Render).
 
     :- public(render_standalone/3).
-    :- info(render_standlaone/3, [
+    :- info(render_standalone/3, [
         comment is 'Render the supplied template as a standalone page.',
         argnames is ['Template', 'Data', 'Render']
     ]).

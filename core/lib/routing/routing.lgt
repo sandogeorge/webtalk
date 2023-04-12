@@ -47,7 +47,7 @@ http:request_expansion(RequestIn, RequestOut) :-
     ]).
 
     :- public(assert_expansion_hook/2).
-    :- info(assert_expansioin_hook/2, [
+    :- info(assert_expansion_hook/2, [
         comment is 'Register expansion hooks.'
     ]).
     assert_expansion_hook(Object, Predicate) :-
@@ -56,7 +56,7 @@ http:request_expansion(RequestIn, RequestOut) :-
         ; true).
 
     :- public(retract_expansion_hook/2).
-    :- info(retract_expansioin_hook/2, [
+    :- info(retract_expansion_hook/2, [
         comment is 'Deregister expansion hooks.'
     ]).
     retract_expansion_hook(Object, Predicate) :-

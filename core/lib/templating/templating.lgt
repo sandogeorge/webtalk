@@ -243,6 +243,7 @@
         comment is 'Given a handler ID, return the url.'
     ]).
     url_for(Id, Out) :-
-        user::http_location_by_id(Id, Out).
+        atom_string(IdAtom, Id),
+        user:http_location_by_id(IdAtom, Out).
 
 :- end_object.

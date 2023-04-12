@@ -30,7 +30,7 @@ http:location(static, root('static'), []).
 
 %% Static endpoints.
 :- http_handler(static(.),
-    [Request]>>(static::static(Request)), [id("static"), prefix]).
+    [Request]>>(static::static(Request)), [id('static'), prefix]).
 
 :- object(static).
 
